@@ -295,9 +295,83 @@ app.get('*', (req, res) => {
 // ============================================================
 // Start
 // ============================================================
-app.listen(PORT, () => {
+
+// Auto-discover template images from repo root on startup
+async function autoDiscoverTemplates() {
+  const tplDir = path.join(__dirname, 'templates');
+  if (!fs.existsSync(tplDir)) return;
+  const files = fs.readdirSync(tplDir);
+  
+  // Find template sets: name-1080.png, name-1080-ref.png, name-1920.png, name-1920-ref.png
+  const templateFiles = files.filter(f => /^.+-(1080|1920)(-ref)?\.png$/i.test(f));
+  if (templateFiles.length === 0) return;
+
+  // Group by template name
+  const groups = {};
+  for (const f of templateFiles) {
+    const match = f.match(/^(.+?)-(1080|1920)(-ref)?\.png$/i);
+    if (!match) continue;
+    const [, name, size, isRef] = match;
+    const id = name.toLowerCase().replace(/\s+/g, '-');
+    if (!groups[id]) groups[id] = { name, id };
+    const key = `${size}${isRef ? '-ref' : ''}`;
+    groups[id][key] = f;
+  }
+
+  const templates = loadTemplates();
+  let changed = false;
+
+  for (const [id, g] of Object.entries(groups)) {
+    // Skip if already registered
+    if (templates.find(t => t.id === id)) continue;
+
+    // Build paths (files are already in templates/)
+    const backgrounds = {};
+    const references = {};
+    for (const key of ['1080', '1080-ref', '1920', '1920-ref']) {
+      if (!g[key]) continue;
+      if (key === '1080') backgrounds.square = `templates/${g[key]}`;
+      if (key === '1920') backgrounds.story = `templates/${g[key]}`;
+      if (key === '1080-ref') references.square = `templates/${g[key]}`;
+      if (key === '1920-ref') references.story = `templates/${g[key]}`;
+    }
+
+    // Auto-analyze
+    const configs = {};
+    try {
+      if (references.square && backgrounds.square) {
+        configs.square = await analyzeTemplate(
+          path.join(__dirname, references.square),
+          path.join(__dirname, backgrounds.square)
+        );
+      }
+      if (references.story && backgrounds.story) {
+        configs.story = await analyzeTemplate(
+          path.join(__dirname, references.story),
+          path.join(__dirname, backgrounds.story)
+        );
+      }
+    } catch (e) { console.error(`  Auto-analyze failed for ${id}:`, e.message); }
+
+    templates.push({
+      id,
+      name: g.name,
+      backgrounds,
+      references,
+      configs,
+      createdAt: new Date().toISOString()
+    });
+    changed = true;
+    console.log(`  Auto-discovered template: ${g.name}`);
+  }
+
+  if (changed) saveTemplates(templates);
+}
+
+app.listen(PORT, async () => {
   console.log(`\n  KJELDGAARD AD FACTORY`);
   console.log(`  Running on http://localhost:${PORT}`);
+  await autoDiscoverTemplates();
   console.log(`  Templates: ${loadTemplates().length}`);
   console.log(`  Testimonials: ${loadTestimonials().length}\n`);
 });
