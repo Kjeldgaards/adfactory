@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KJELDGAARD Ad Factory</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0c0f14; color:#e8e6e1; font-family:'Helvetica Neue',sans-serif; min-height:100vh; }
+  .header { padding:20px 28px; border-bottom:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-family:Georgia,serif; font-size:20px; font-weight:700; color:#fff; }
+  .subtitle { font-size:13px; color:rgba(255,255,255,0.4); letter-spacing:0.08em; margin-left:16px; }
+  .version { color:#B8943E; font-size:10px; margin-left:4px; }
+  .steps { display:flex; gap:4px; }
+  .step-dot { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .step-dot.active { background:#00B67A; color:#fff; }
+  .step-dot.done { background:rgba(0,182,122,0.2); color:#fff; }
+  .step-dot.pending { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.3); }
+  .content { padding:24px 28px; max-width:900px; margin:0 auto; }
+  input[type=text], input[type=number], textarea, select { width:100%; padding:10px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#fff; font-size:13px; outline:none; font-family:inherit; }
+  textarea { min-height:80px; resize:vertical; line-height:1.5; }
+  .label { font-size:11px; color:rgba(255,255,255,0.4); display:block; margin-bottom:6px; font-weight:500; }
+  .btn { padding:10px 20px; border-radius:8px; border:none; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.15s; }
+  .btn-gold { background:#B8943E; color:#fff; }
+  .btn-gold:hover { background:#C4A54D; }
+  .btn-green { background:rgba(0,182,122,0.1); color:#00B67A; border:1px solid rgba(0,182,122,0.3); }
+  .btn-outline { background:transparent; color:rgba(255,255,255,0.4); border:1px solid rgba(255,255,255,0.08); }
+  .btn-outline.active { border-color:#B8943E; color:#B8943E; background:rgba(184,148,62,0.12); }
+  .back-link { background:none; border:none; color:#B8943E; font-size:13px; cursor:pointer; padding:0; margin-bottom:16px; }
+  .tag { font-size:10px; padding:3px 8px; border-radius:4px; display:inline-block; }
+  .tag-green { background:rgba(0,182,122,0.08); color:#00B67A; }
+  .tag-gold { background:rgba(184,148,62,0.08); color:#B8943E; }
+  .tag-dim { background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.3); }
+  .review-card { padding:16px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); cursor:pointer; margin-bottom:8px; transition:all 0.15s; }
+  .review-card:hover { border-color:rgba(184,148,62,0.3); }
+  .stars { display:inline-flex; gap:1px; }
+  .stars svg { width:14px; height:14px; }
+  .template-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; }
+  .template-card { border-radius:10px; overflow:hidden; cursor:pointer; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); transition:all 0.2s; }
+  .template-card:hover { border-color:rgba(184,148,62,0.4); }
+  .template-card img { width:100%; aspect-ratio:1; object-fit:cover; }
+  .template-card .info { padding:10px 12px; }
+  .preview-box { display:flex; justify-content:center; padding:24px; background:rgba(255,255,255,0.015); border-radius:12px; border:1px solid rgba(255,255,255,0.04); }
+  .preview-box img { max-width:100%; max-height:500px; border-radius:4px; box-shadow:0 8px 40px rgba(0,0,0,0.5); }
+  .field-row { margin-bottom:16px; }
+  .field-row-inline { display:flex; align-items:center; gap:8px; }
+  .info-bar { font-size:12px; color:#B8943E; padding:6px 12px; background:rgba(184,148,62,0.08); border-radius:6px; display:inline-block; margin-bottom:12px; }
+  .empty { padding:32px; text-align:center; color:rgba(255,255,255,0.3); border:1px dashed rgba(255,255,255,0.08); border-radius:10px; }
+  .upload-zone { border:2px dashed rgba(184,148,62,0.3); border-radius:12px; padding:40px; text-align:center; cursor:pointer; transition:all 0.2s; }
+  .upload-zone:hover { border-color:#B8943E; background:rgba(184,148,62,0.05); }
+  .upload-zone input { display:none; }
+  h2 { font-size:18px; font-weight:600; color:#fff; margin-bottom:4px; }
+  .sub { font-size:13px; color:rgba(255,255,255,0.4); margin-bottom:20px; }
+  .flex-between { display:flex; justify-content:space-between; align-items:center; }
+  .gap-6 { display:flex; gap:6px; }
+  .gap-10 { display:flex; gap:10px; justify-content:center; margin-top:20px; }
+  .mt-12 { margin-top:12px; text-align:center; font-size:11px; color:rgba(255,255,255,0.2); }
+  .nulstil { font-size:10px; color:#B8943E; background:none; border:none; cursor:pointer; }
+  .edited { font-size:10px; color:#B8943E; }
+  .original { font-size:10px; color:rgba(255,255,255,0.2); }
+  .loading { display:flex; align-items:center; justify-content:center; padding:40px; color:rgba(255,255,255,0.3); }
+  .spinner { width:20px; height:20px; border:2px solid rgba(255,255,255,0.1); border-top-color:#B8943E; border-radius:50%; animation:spin 0.6s linear infinite; margin-right:10px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  /* Admin tab */
+  .tab-bar { display:flex; gap:0; margin-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .tab { padding:10px 20px; cursor:pointer; font-size:13px; color:rgba(255,255,255,0.4); border-bottom:2px solid transparent; }
+  .tab.active { color:#B8943E; border-bottom-color:#B8943E; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const API = '';
+const $ = (s,p) => (p||document).querySelector(s);
+const $$ = (s,p) => [...(p||document).querySelectorAll(s)];
+
+let state = {
+  page: 'factory', // factory | admin
+  step: 1,
+  testimonials: [],
+  templates: [],
+  search: '',
+  awFilter: 'all',
+  selT: null,
+  selTpl: null,
+  fmt: 'square',
+  editTxt: '',
+  editName: '',
+  headline: '',
+  customFsSq: 0, customFsSt: 0,
+  customHlFsSq: 0, customHlFsSt: 0,
+  previewImg: null,
+  previewLoading: false,
+  exporting: false,
+  uploading: false,
+};
+
+const AW_LABELS = {all:'Alle', most_aware:'Most Aware', product_aware:'Product Aware', solution_aware:'Solution Aware'};
+
+// Stars HTML
+function starsHtml(size=14) {
+  return '<span class="stars">' + [1,2,3,4,5].map(() =>
+    `<svg width="${size}" height="${size}" viewBox="0 0 20 20"><polygon points="10,1 12.6,7.4 19.5,7.6 14,12.1 15.8,19 10,15.4 4.2,19 6,12.1 0.5,7.6 7.4,7.4" fill="#00B67A"/></svg>`
+  ).join('') + '</span>';
+}
+
+// Search engine (same as prototype)
+const STEMS={"glød":["glød","glødende"],"strål":["stråle","stråler","strålende","udstråling"],"rynk":["rynk","rynke","rynker","rynkerne"],"fugt":["fugt","fugtig","fugter","fugtgivende","gennemfugtet"],"blød":["blød","bløde","blødere","silkeblød"],"glat":["glat","glatte","udglatte","udglattende"],"fast":["fast","fasthed","fastere","opstrammende"],"anbefal":["anbefal","anbefale","anbefaler","anbefaling","anbefales"],"pigment":["pigment","pigmentering"],"afhæng":["afhængig","vanedannende","uundværlig"]};
+const SYNS={"anti-aging":["rynke","rynker","fine linjer","yngre"],"glød":["glød","glødende","stråle","strålende","udstråling"],"fugt":["fugt","fugter","fugtig","fugtgivende","gennemfugtet"],"blød":["blød","bløde","blødere","silkeblød"],"glat":["glat","glatte","udglatte","udglattende"],"pigment":["pigment","pletter","solskade","alderspletter"]};
+
+function lev(a,b){if(!a.length)return b.length;if(!b.length)return a.length;const m=[];for(let i=0;i<=b.length;i++)m[i]=[i];for(let j=0;j<=a.length;j++)m[0][j]=j;for(let i=1;i<=b.length;i++)for(let j=1;j<=a.length;j++)m[i][j]=b[i-1]===a[j-1]?m[i-1][j-1]:Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1);return m[b.length][a.length];}
+function typoM(q,text){if(q.length<3)return false;const d=q.length<=4?1:2;return text.toLowerCase().split(/[\s,.!?;:()\-]+/).filter(w=>w.length>=3).some(w=>Math.abs(w.length-q.length)<=d&&lev(q,w)<=d);}
+
+function searchT(query, items) {
+  if (!query?.trim()) return items;
+  const q = query.toLowerCase().trim();
+  return items.map(t => {
+    let s=0; const tl=t.tekst.toLowerCase();
+    if(tl.includes(q))s+=100;
+    if(s===0){for(const[,forms]of Object.entries(STEMS)){if(forms.some(f=>q.includes(f)||f.includes(q))&&forms.some(f=>tl.includes(f))){s+=80;break;}}}
+    if(s===0){for(const[th,sy]of Object.entries(SYNS)){if((th.includes(q)||q.includes(th)||sy.some(x=>q.includes(x)||x.includes(q)))&&sy.some(x=>tl.includes(x))){s+=60;break;}}}
+    if(s===0&&typoM(q,t.tekst))s+=50;
+    if(s===0&&t.temaer.some(tm=>tm===q||tm.includes(q)||q.includes(tm)))s+=40;
+    if(t.navn.toLowerCase().includes(q))s+=30;
+    if(s===0&&t.temaer.some(tm=>lev(q,tm)<=2))s+=20;
+    return{...t,_s:s};
+  }).filter(t=>t._s>0).sort((a,b)=>b._s-a._s);
+}
+
+function getFiltered() {
+  let r = state.testimonials;
+  if (state.awFilter !== 'all') r = r.filter(t => t.awareness === state.awFilter);
+  if (state.search.trim()) r = searchT(state.search, r);
+  return r;
+}
+
+// Render
+function render() {
+  const app = $('#app');
+  app.innerHTML = `
+    <div class="header">
+      <div style="display:flex;align-items:center;gap:16px">
+        <span class="logo">KJELDGAARD</span>
+        <div style="height:20px;width:1px;background:rgba(255,255,255,0.15)"></div>
+        <span class="subtitle">AD FACTORY <span class="version">v5</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="tab-bar" style="border:none;margin:0">
+          <div class="tab ${state.page==='factory'?'active':''}" data-page="factory">Ads</div>
+          <div class="tab ${state.page==='admin'?'active':''}" data-page="admin">Templates</div>
+        </div>
+        ${state.page==='factory'?`<div class="steps">
+          ${[1,2,3].map(s=>`<div class="step-dot ${state.step===s?'active':state.step>s?'done':'pending'}" data-step="${s}">${s}</div>`).join('')}
+        </div>`:''}
+      </div>
+    </div>
+    <div class="content">
+      ${state.page==='factory' ? renderFactory() : renderAdmin()}
+    </div>
+  `;
+  bindEvents();
+}
+
+function renderFactory() {
+  if (state.step === 1) return renderStep1();
+  if (state.step === 2) return renderStep2();
+  if (state.step === 3) return renderStep3();
+  return '';
+}
+
+function renderStep1() {
+  const filtered = getFiltered();
+  return `
+    <h2>Vælg testimonial</h2>
+    <p class="sub">${state.testimonials.length} Trustpilot-reviews · Fuzzy-søgning med stavefejlstolerance</p>
+    <input type="text" id="search" value="${esc(state.search)}" placeholder="Søg fx glød, rynker, tør hud, anti-aging...">
+    ${state.search.trim()?`<div class="info-bar">${filtered.length} af ${state.testimonials.length} matcher</div>`:''}
+    <div class="gap-6" style="margin-bottom:16px">
+      <select id="awFilter">${Object.entries(AW_LABELS).map(([k,v])=>`<option value="${k}" ${state.awFilter===k?'selected':''}>${v}</option>`).join('')}</select>
+      ${state.search?'<button class="btn btn-outline" id="clearSearch">Ryd</button>':''}
+    </div>
+    <div>
+      ${filtered.length===0?'<div class="empty">Ingen matcher</div>':''}
+      ${filtered.map(t=>`
+        <div class="review-card" data-id="${t.id}">
+          <div class="flex-between" style="margin-bottom:6px">
+            <span style="font-size:13px;font-weight:600;color:#B8943E">${esc(t.navn)}</span>
+            ${starsHtml(12)}
+          </div>
+          <p style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.45">${esc(t.tekst)}</p>
+          <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+            ${t.temaer.map(tm=>`<span class="tag tag-green">${tm}</span>`).join('')}
+            <span class="tag tag-gold">${AW_LABELS[t.awareness]||t.awareness}</span>
+            <span class="tag tag-dim">${t.tekst.length} tegn</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderStep2() {
+  return `
+    <button class="back-link" id="backTo1">← Skift testimonial</button>
+    <div style="padding:12px 16px;border-radius:8px;background:rgba(184,148,62,0.06);border:1px solid rgba(184,148,62,0.12);margin-bottom:24px">
+      <div style="font-size:11px;color:#B8943E;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em">Valgt testimonial</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.4">"${esc(state.selT.tekst.substring(0,120))}..." — <span style="color:#B8943E">${esc(state.selT.navn)}</span></p>
+    </div>
+    <h2>Vælg template</h2>
+    <p class="sub">Upload templates under "Templates" fanen</p>
+    ${state.templates.length===0?'<div class="empty">Ingen templates uploaded endnu. Gå til Templates-fanen for at uploade.</div>':`
+    <div class="template-grid">
+      ${state.templates.map(tpl=>`
+        <div class="template-card" data-tpl="${tpl.id}">
+          ${tpl.references?.square?`<img src="/${tpl.references.square}" alt="${esc(tpl.name)}">`:`<div style="aspect-ratio:1;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.2)">No preview</div>`}
+          <div class="info">
+            <div style="font-size:12px;font-weight:600;color:#fff">${esc(tpl.name)}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px">
+              ${tpl.backgrounds.square?'1080':''}${tpl.backgrounds.square&&tpl.backgrounds.story?' + ':''}${tpl.backgrounds.story?'1920':''}
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`}
+  `;
+}
+
+function renderStep3() {
+  const cFs = state.fmt==='story'?state.customFsSt:state.customFsSq;
+  const cHlFs = state.fmt==='story'?state.customHlFsSt:state.customHlFsSq;
+  const hasHl = state.selTpl.configs?.square?.fields?.some(f=>f.label==='headline') || state.selTpl.configs?.story?.fields?.some(f=>f.label==='headline');
+  const defFs = state.selTpl.configs?.[state.fmt==='story'?'story':'square']?.fields?.find(f=>f.label==='testimonial')?.estimatedFontSize || 36;
+  const defHlFs = state.selTpl.configs?.[state.fmt==='story'?'story':'square']?.fields?.find(f=>f.label==='headline')?.estimatedFontSize || 48;
+
+  return `
+    <button class="back-link" id="backTo2">← Skift template</button>
+    <h2>Preview</h2>
+    <p class="sub">${esc(state.selTpl.name)} · ${esc(state.editName)} · ${state.editTxt.length} tegn</p>
+
+    ${hasHl?`
+    <div class="field-row">
+      <span class="label">HEADLINE</span>
+      <input type="text" id="headline" value="${esc(state.headline)}">
+    </div>
+    <div class="field-row">
+      <span class="label">HEADLINE FONT (px)</span>
+      <div class="field-row-inline">
+        <input type="number" id="hlFs" value="${cHlFs||defHlFs}" min="8" max="120" style="width:70px">
+        <span style="font-size:11px;color:rgba(255,255,255,0.25)">default: ${defHlFs}px</span>
+        ${cHlFs?'<button class="nulstil" id="resetHlFs">Nulstil</button>':''}
+      </div>
+    </div>`:''}
+
+    <div class="field-row">
+      <div class="flex-between" style="margin-bottom:6px">
+        <span class="label" style="margin:0">TESTIMONIAL TEKST</span>
+        ${state.editTxt!==state.selT.tekst?'<button class="nulstil" id="resetTxt">Nulstil</button>':''}
+      </div>
+      <textarea id="editTxt">${esc(state.editTxt)}</textarea>
+      <div class="flex-between" style="margin-top:4px">
+        <span class="${state.editTxt!==state.selT.tekst?'edited':'original'}">${state.editTxt!==state.selT.tekst?'Redigeret':'Original'}</span>
+        <span class="original">${state.editTxt.length} tegn</span>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <span class="label">NAVN</span>
+      <input type="text" id="editName" value="${esc(state.editName)}">
+    </div>
+
+    <div class="field-row">
+      <span class="label">FONT (px)</span>
+      <div class="field-row-inline">
+        <input type="number" id="fs" value="${cFs||defFs}" min="8" max="120" style="width:70px">
+        <span style="font-size:11px;color:rgba(255,255,255,0.25)">default: ${defFs}px</span>
+        ${cFs?'<button class="nulstil" id="resetFs">Nulstil</button>':''}
+      </div>
+    </div>
+
+    <div class="gap-6" style="margin-bottom:20px">
+      <button class="btn ${state.fmt==='square'?'btn-outline active':'btn-outline'}" data-fmt="square">□ 1080×1080</button>
+      <button class="btn ${state.fmt==='story'?'btn-outline active':'btn-outline'}" data-fmt="story">▯ 1080×1920</button>
+    </div>
+
+    <div class="preview-box">
+      ${state.previewLoading?'<div class="loading"><div class="spinner"></div>Genererer preview...</div>':
+        state.previewImg?`<img src="${state.previewImg}" id="previewImg">`:'<div class="loading">Klik "Generer preview" nedenfor</div>'}
+    </div>
+
+    <div class="gap-10">
+      <button class="btn btn-gold" id="genPreview">${state.previewLoading?'Genererer...':'Generer preview'}</button>
+      <button class="btn btn-green" id="doExport">${state.exporting?'Eksporterer...':'↓ Download PNG'}</button>
+    </div>
+  `;
+}
+
+function renderAdmin() {
+  return `
+    <h2>Template Management</h2>
+    <p class="sub">Upload baggrund (uden tekst) + reference (med tekst) fra Canva</p>
+
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="fileInput" multiple accept=".png,.jpg,.jpeg">
+      <div style="font-size:14px;color:#B8943E;margin-bottom:8px">Klik her eller træk filer</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.3)">
+        Upload 2-4 filer per template:<br>
+        <strong>navn-1080.png</strong> (baggrund) + <strong>navn-1080-ref.png</strong> (reference med tekst)<br>
+        Valgfrit: <strong>navn-1920.png</strong> + <strong>navn-1920-ref.png</strong> for story-format
+      </div>
+    </div>
+    ${state.uploading?'<div class="loading" style="margin-top:16px"><div class="spinner"></div>Uploader og analyserer...</div>':''}
+
+    <div style="margin-top:24px">
+      <h2 style="margin-bottom:16px">Uploadede templates (${state.templates.length})</h2>
+      ${state.templates.length===0?'<div class="empty">Ingen templates endnu</div>':''}
+      ${state.templates.map(tpl=>`
+        <div style="display:flex;gap:16px;padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);margin-bottom:12px;align-items:center">
+          ${tpl.references?.square?`<img src="/${tpl.references.square}" style="width:80px;height:80px;object-fit:cover;border-radius:6px">`:'<div style="width:80px;height:80px;background:rgba(255,255,255,0.04);border-radius:6px"></div>'}
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:600;color:#fff">${esc(tpl.name)}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px">
+              Formater: ${tpl.backgrounds.square?'1080×1080':''}${tpl.backgrounds.square&&tpl.backgrounds.story?' + ':''}${tpl.backgrounds.story?'1080×1920':''}
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">
+              Felter: ${tpl.configs?.square?.fields?.map(f=>f.label).join(', ')||'Ingen konfiguration'}
+            </div>
+          </div>
+          <button class="btn btn-outline" data-delete="${tpl.id}" style="color:#ff5555;border-color:rgba(255,85,85,0.3)">Slet</button>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// Events
+function bindEvents() {
+  // Tabs
+  $$('.tab').forEach(t => t.onclick = () => { state.page = t.dataset.page; render(); });
+
+  // Steps
+  $$('.step-dot').forEach(d => d.onclick = () => {
+    const s = +d.dataset.step;
+    if (s===1) state.step=1;
+    else if (s===2 && state.selT) state.step=2;
+    else if (s===3 && state.selTpl) state.step=3;
+    render();
+  });
+
+  // Step 1
+  const searchEl = $('#search');
+  if (searchEl) {
+    searchEl.oninput = () => { state.search = searchEl.value; render(); setTimeout(()=>{const el=$('#search');if(el){el.focus();el.selectionStart=el.selectionEnd=el.value.length;}},0); };
+  }
+  const awEl = $('#awFilter');
+  if (awEl) awEl.onchange = () => { state.awFilter = awEl.value; render(); };
+  const clearEl = $('#clearSearch');
+  if (clearEl) clearEl.onclick = () => { state.search=''; render(); };
+
+  // Review cards
+  $$('.review-card').forEach(c => c.onclick = () => {
+    const t = state.testimonials.find(t => t.id === +c.dataset.id);
+    if (t) { state.selT = t; state.editTxt = t.tekst; state.editName = t.navn; state.customFsSq=0; state.customFsSt=0; state.customHlFsSq=0; state.customHlFsSt=0; state.previewImg=null; state.step=2; render(); }
+  });
+
+  // Step 2
+  const back1 = $('#backTo1'); if (back1) back1.onclick = () => { state.step=1; render(); };
+  $$('.template-card').forEach(c => c.onclick = () => {
+    const tpl = state.templates.find(t => t.id === c.dataset.tpl);
+    if (tpl) { state.selTpl=tpl; state.headline=''; state.previewImg=null; state.step=3; render(); }
+  });
+
+  // Step 3
+  const back2 = $('#backTo2'); if (back2) back2.onclick = () => { state.step=2; render(); };
+  const hlEl = $('#headline'); if (hlEl) hlEl.oninput = () => { state.headline=hlEl.value; };
+  const etEl = $('#editTxt'); if (etEl) etEl.oninput = () => { state.editTxt=etEl.value; };
+  const enEl = $('#editName'); if (enEl) enEl.oninput = () => { state.editName=enEl.value; };
+  const fsEl = $('#fs'); if (fsEl) fsEl.onchange = () => { if(state.fmt==='story')state.customFsSt=+fsEl.value;else state.customFsSq=+fsEl.value; };
+  const hlFsEl = $('#hlFs'); if (hlFsEl) hlFsEl.onchange = () => { if(state.fmt==='story')state.customHlFsSt=+hlFsEl.value;else state.customHlFsSq=+hlFsEl.value; };
+  const resetFs = $('#resetFs'); if (resetFs) resetFs.onclick = () => { if(state.fmt==='story')state.customFsSt=0;else state.customFsSq=0; render(); };
+  const resetHlFs = $('#resetHlFs'); if (resetHlFs) resetHlFs.onclick = () => { if(state.fmt==='story')state.customHlFsSt=0;else state.customHlFsSq=0; render(); };
+  const resetTxt = $('#resetTxt'); if (resetTxt) resetTxt.onclick = () => { state.editTxt=state.selT.tekst; state.editName=state.selT.navn; render(); };
+
+  $$('[data-fmt]').forEach(b => b.onclick = () => { state.fmt=b.dataset.fmt; state.previewImg=null; render(); });
+
+  const genPrev = $('#genPreview'); if (genPrev) genPrev.onclick = generatePreview;
+  const doExp = $('#doExport'); if (doExp) doExp.onclick = doExport;
+
+  // Admin
+  const uploadZone = $('#uploadZone');
+  const fileInput = $('#fileInput');
+  if (uploadZone) {
+    uploadZone.onclick = () => fileInput.click();
+    uploadZone.ondragover = (e) => { e.preventDefault(); uploadZone.style.borderColor='#B8943E'; };
+    uploadZone.ondragleave = () => { uploadZone.style.borderColor='rgba(184,148,62,0.3)'; };
+    uploadZone.ondrop = (e) => { e.preventDefault(); uploadZone.style.borderColor='rgba(184,148,62,0.3)'; handleUpload(e.dataTransfer.files); };
+  }
+  if (fileInput) fileInput.onchange = () => handleUpload(fileInput.files);
+
+  $$('[data-delete]').forEach(b => b.onclick = async () => {
+    if (!confirm('Slet template?')) return;
+    await fetch(`${API}/api/templates/${b.dataset.delete}`, {method:'DELETE'});
+    await loadData();
+    render();
+  });
+}
+
+async function generatePreview() {
+  state.previewLoading = true; render();
+  try {
+    const cFs = state.fmt==='story'?state.customFsSt:state.customFsSq;
+    const cHlFs = state.fmt==='story'?state.customHlFsSt:state.customHlFsSq;
+    const res = await fetch(`${API}/api/preview`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        templateId: state.selTpl.id,
+        format: state.fmt,
+        testimonial: state.editTxt,
+        name: state.editName,
+        headline: state.headline,
+        fontSize: cFs || undefined,
+        headlineFontSize: cHlFs || undefined
+      })
+    });
+    const data = await res.json();
+    state.previewImg = data.image;
+  } catch(e) { console.error(e); alert('Preview fejlede: ' + e.message); }
+  state.previewLoading = false; render();
+}
+
+async function doExport() {
+  state.exporting = true; render();
+  try {
+    const cFs = state.fmt==='story'?state.customFsSt:state.customFsSq;
+    const cHlFs = state.fmt==='story'?state.customHlFsSt:state.customHlFsSq;
+    const res = await fetch(`${API}/api/export`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        templateId: state.selTpl.id,
+        format: state.fmt,
+        testimonial: state.editTxt,
+        name: state.editName,
+        headline: state.headline,
+        fontSize: cFs || undefined,
+        headlineFontSize: cHlFs || undefined
+      })
+    });
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `kjeldgaard-${state.selTpl.id}-${state.fmt}-${Date.now()}.png`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) { console.error(e); alert('Export fejlede: ' + e.message); }
+  state.exporting = false; render();
+}
+
+async function handleUpload(files) {
+  if (!files.length) return;
+  state.uploading = true; render();
+  try {
+    const fd = new FormData();
+    for (const f of files) fd.append('files', f);
+    const res = await fetch(`${API}/api/templates/upload`, { method:'POST', body:fd });
+    const data = await res.json();
+    if (data.error) { alert('Fejl: ' + data.error); }
+    else { alert(data.message); }
+    await loadData();
+  } catch(e) { console.error(e); alert('Upload fejlede: ' + e.message); }
+  state.uploading = false; render();
+}
+
+async function loadData() {
+  const [tRes, templRes] = await Promise.all([
+    fetch(`${API}/api/testimonials`),
+    fetch(`${API}/api/templates`)
+  ]);
+  state.testimonials = await tRes.json();
+  state.templates = await templRes.json();
+}
+
+// Init
+async function init() {
+  await loadData();
+  render();
+}
+
+init();
+</script>
+</body>
+</html>
