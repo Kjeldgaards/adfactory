@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KJELDGAARD Ad Factory</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#0c0f14; color:#e8e6e1; font-family:'Helvetica Neue',sans-serif; min-height:100vh; }
@@ -40,8 +42,7 @@
   .template-card:hover { border-color:rgba(184,148,62,0.4); }
   .template-card img { width:100%; aspect-ratio:1; object-fit:cover; }
   .template-card .info { padding:10px 12px; }
-  .preview-box { display:flex; justify-content:center; padding:24px; background:rgba(255,255,255,0.015); border-radius:12px; border:1px solid rgba(255,255,255,0.04); }
-  .preview-box img { max-width:100%; max-height:500px; border-radius:4px; box-shadow:0 8px 40px rgba(0,0,0,0.5); }
+  .preview-container { display:flex; justify-content:center; padding:24px; background:rgba(255,255,255,0.015); border-radius:12px; border:1px solid rgba(255,255,255,0.04); overflow:hidden; }
   .field-row { margin-bottom:16px; }
   .field-row-inline { display:flex; align-items:center; gap:8px; }
   .info-bar { font-size:12px; color:#B8943E; padding:6px 12px; background:rgba(184,148,62,0.08); border-radius:6px; display:inline-block; margin-bottom:12px; }
@@ -54,17 +55,53 @@
   .flex-between { display:flex; justify-content:space-between; align-items:center; }
   .gap-6 { display:flex; gap:6px; }
   .gap-10 { display:flex; gap:10px; justify-content:center; margin-top:20px; }
-  .mt-12 { margin-top:12px; text-align:center; font-size:11px; color:rgba(255,255,255,0.2); }
   .nulstil { font-size:10px; color:#B8943E; background:none; border:none; cursor:pointer; }
   .edited { font-size:10px; color:#B8943E; }
   .original { font-size:10px; color:rgba(255,255,255,0.2); }
   .loading { display:flex; align-items:center; justify-content:center; padding:40px; color:rgba(255,255,255,0.3); }
   .spinner { width:20px; height:20px; border:2px solid rgba(255,255,255,0.1); border-top-color:#B8943E; border-radius:50%; animation:spin 0.6s linear infinite; margin-right:10px; }
   @keyframes spin { to { transform:rotate(360deg); } }
-  /* Admin tab */
   .tab-bar { display:flex; gap:0; margin-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.06); }
   .tab { padding:10px 20px; cursor:pointer; font-size:13px; color:rgba(255,255,255,0.4); border-bottom:2px solid transparent; }
   .tab.active { color:#B8943E; border-bottom-color:#B8943E; }
+
+  /* CLIENT-SIDE AD RENDERER */
+  .ad-canvas {
+    position:relative;
+    overflow:hidden;
+    font-family:'Inter','Helvetica Neue',Arial,sans-serif;
+  }
+  .ad-canvas img.bg {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .ad-canvas .hl {
+    position:absolute;
+    font-weight:900;
+    text-align:center;
+    text-transform:uppercase;
+    line-height:1.15;
+    word-wrap:break-word;
+  }
+  .ad-canvas .tbox {
+    position:absolute;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    overflow:hidden;
+  }
+  .ad-canvas .tm {
+    font-weight:400;
+    line-height:1.3;
+    word-wrap:break-word;
+    overflow-wrap:break-word;
+  }
+  .ad-canvas .nm {
+    font-weight:700;
+    line-height:1.3;
+  }
 </style>
 </head>
 <body>
@@ -75,7 +112,7 @@ const $ = (s,p) => (p||document).querySelector(s);
 const $$ = (s,p) => [...(p||document).querySelectorAll(s)];
 
 let state = {
-  page: 'factory', // factory | admin
+  page: 'factory',
   step: 1,
   testimonials: [],
   templates: [],
@@ -89,22 +126,19 @@ let state = {
   headline: '',
   customFsSq: 0, customFsSt: 0,
   customHlFsSq: 0, customHlFsSt: 0,
-  previewImg: null,
-  previewLoading: false,
   exporting: false,
   uploading: false,
 };
 
 const AW_LABELS = {all:'Alle', most_aware:'Most Aware', product_aware:'Product Aware', solution_aware:'Solution Aware'};
 
-// Stars HTML
 function starsHtml(size=14) {
   return '<span class="stars">' + [1,2,3,4,5].map(() =>
     `<svg width="${size}" height="${size}" viewBox="0 0 20 20"><polygon points="10,1 12.6,7.4 19.5,7.6 14,12.1 15.8,19 10,15.4 4.2,19 6,12.1 0.5,7.6 7.4,7.4" fill="#00B67A"/></svg>`
   ).join('') + '</span>';
 }
 
-// Search engine (same as prototype)
+// Search
 const STEMS={"glød":["glød","glødende"],"strål":["stråle","stråler","strålende","udstråling"],"rynk":["rynk","rynke","rynker","rynkerne"],"fugt":["fugt","fugtig","fugter","fugtgivende","gennemfugtet"],"blød":["blød","bløde","blødere","silkeblød"],"glat":["glat","glatte","udglatte","udglattende"],"fast":["fast","fasthed","fastere","opstrammende"],"anbefal":["anbefal","anbefale","anbefaler","anbefaling","anbefales"],"pigment":["pigment","pigmentering"],"afhæng":["afhængig","vanedannende","uundværlig"]};
 const SYNS={"anti-aging":["rynke","rynker","fine linjer","yngre"],"glød":["glød","glødende","stråle","strålende","udstråling"],"fugt":["fugt","fugter","fugtig","fugtgivende","gennemfugtet"],"blød":["blød","bløde","blødere","silkeblød"],"glat":["glat","glatte","udglatte","udglattende"],"pigment":["pigment","pletter","solskade","alderspletter"]};
 
@@ -134,7 +168,93 @@ function getFiltered() {
   return r;
 }
 
-// Render
+// ============================================================
+// CLIENT-SIDE AD RENDERING
+// ============================================================
+
+function autoFontSize(text, isStory) {
+  const len = text.length;
+  const b = isStory ? 1.15 : 1;
+  if (len < 60) return Math.round(42 * b);
+  if (len < 100) return Math.round(36 * b);
+  if (len < 150) return Math.round(30 * b);
+  if (len < 200) return Math.round(26 * b);
+  if (len < 260) return Math.round(23 * b);
+  if (len < 340) return Math.round(20 * b);
+  if (len < 440) return Math.round(17 * b);
+  if (len < 560) return Math.round(15 * b);
+  return Math.round(13 * b);
+}
+
+function getDefaultFontSize() {
+  const isStory = state.fmt === 'story';
+  return autoFontSize(state.editTxt, isStory);
+}
+
+function getDefaultHlFontSize() {
+  const cfg = state.selTpl?.configs?.[state.fmt === 'story' ? 'story' : 'square'];
+  return cfg?.fields?.find(f => f.label === 'headline')?.estimatedFontSize || 48;
+}
+
+function renderAdCanvas(scale) {
+  // scale: e.g. 0.5 for preview, 1.0 for export
+  const isStory = state.fmt === 'story';
+  const W = 1080, H = isStory ? 1920 : 1080;
+  const cfg = state.selTpl?.configs?.[isStory ? 'story' : 'square'];
+  const bgUrl = '/' + state.selTpl.backgrounds[isStory ? 'story' : 'square'];
+
+  const hl = cfg?.fields?.find(f => f.label === 'headline');
+  const tm = cfg?.fields?.find(f => f.label === 'testimonial');
+  const nm = cfg?.fields?.find(f => f.label === 'name');
+
+  const cFs = isStory ? state.customFsSt : state.customFsSq;
+  const cHlFs = isStory ? state.customHlFsSt : state.customHlFsSq;
+  const fontSize = cFs || autoFontSize(state.editTxt, isStory);
+  const hlFontSize = cHlFs || (hl?.estimatedFontSize || 48);
+  const nmFontSize = Math.max(14, Math.round(fontSize * 0.55));
+
+  const hlColor = hl?.color || '#cdf4fe';
+  const tmColor = tm?.color || '#cdddf2';
+  const nmColor = nm?.color || tmColor;
+
+  // Positions from detection
+  const hlX = hl ? hl.x : Math.round(W * 0.14);
+  const hlY = hl ? hl.y : Math.round(H * 0.10);
+  const hlW = hl ? hl.width : Math.round(W * 0.71);
+
+  const tmX = tm ? tm.x : (isStory ? 450 : 541);
+  const tmY = tm ? tm.y : (isStory ? 404 : 413);
+  const tmW = tm ? tm.width : (isStory ? 608 : 456);
+  const nmDetectedY = nm ? nm.y : (isStory ? 928 : 743);
+  const tmMaxH = nmDetectedY - tmY;
+
+  const s = scale;
+
+  return `
+    <div class="ad-canvas" id="adCanvas" style="width:${W*s}px;height:${H*s}px;">
+      <img class="bg" src="${bgUrl}" crossorigin="anonymous" style="position:absolute;top:0;left:0;width:${W*s}px;height:${H*s}px;">
+      ${state.headline ? `<div class="hl" style="
+        left:${hlX*s}px;top:${hlY*s}px;width:${hlW*s}px;
+        color:${hlColor};font-size:${hlFontSize*s}px;
+      ">${esc(state.headline)}</div>` : ''}
+      <div class="tbox" style="
+        left:${tmX*s}px;top:${tmY*s}px;width:${tmW*s}px;max-height:${tmMaxH*s}px;
+      ">
+        ${state.editTxt ? `<div class="tm" style="
+          color:${tmColor};font-size:${fontSize*s}px;
+        ">${esc(state.editTxt)}</div>` : ''}
+        ${state.editName ? `<div class="nm" style="
+          color:${nmColor};font-size:${nmFontSize*s}px;margin-top:${Math.round(fontSize*0.4)*s}px;
+        ">-${esc(state.editName)}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// RENDER UI
+// ============================================================
+
 function render() {
   const app = $('#app');
   app.innerHTML = `
@@ -229,8 +349,12 @@ function renderStep3() {
   const cFs = state.fmt==='story'?state.customFsSt:state.customFsSq;
   const cHlFs = state.fmt==='story'?state.customHlFsSt:state.customHlFsSq;
   const hasHl = state.selTpl.configs?.square?.fields?.some(f=>f.label==='headline') || state.selTpl.configs?.story?.fields?.some(f=>f.label==='headline');
-  const defFs = state.selTpl.configs?.[state.fmt==='story'?'story':'square']?.fields?.find(f=>f.label==='testimonial')?.estimatedFontSize || 36;
-  const defHlFs = state.selTpl.configs?.[state.fmt==='story'?'story':'square']?.fields?.find(f=>f.label==='headline')?.estimatedFontSize || 48;
+  const defFs = getDefaultFontSize();
+  const defHlFs = getDefaultHlFontSize();
+
+  // Calculate preview scale to fit in viewport
+  const isStory = state.fmt === 'story';
+  const previewScale = isStory ? 0.35 : 0.5;
 
   return `
     <button class="back-link" id="backTo2">← Skift template</button>
@@ -282,13 +406,12 @@ function renderStep3() {
       <button class="btn ${state.fmt==='story'?'btn-outline active':'btn-outline'}" data-fmt="story">▯ 1080×1920</button>
     </div>
 
-    <div class="preview-box">
-      ${state.previewLoading?'<div class="loading"><div class="spinner"></div>Genererer preview...</div>':
-        state.previewImg?`<img src="${state.previewImg}" id="previewImg">`:'<div class="loading">Klik "Generer preview" nedenfor</div>'}
+    <div class="preview-container">
+      ${renderAdCanvas(previewScale)}
     </div>
 
     <div class="gap-10">
-      <button class="btn btn-gold" id="genPreview">${state.previewLoading?'Genererer...':'Generer preview'}</button>
+      <button class="btn btn-gold" id="refreshPreview">Opdater preview</button>
       <button class="btn btn-green" id="doExport">${state.exporting?'Eksporterer...':'↓ Download PNG'}</button>
     </div>
   `;
@@ -298,7 +421,6 @@ function renderAdmin() {
   return `
     <h2>Template Management</h2>
     <p class="sub">Upload baggrund (uden tekst) + reference (med tekst) fra Canva</p>
-
     <div class="upload-zone" id="uploadZone">
       <input type="file" id="fileInput" multiple accept=".png,.jpg,.jpeg">
       <div style="font-size:14px;color:#B8943E;margin-bottom:8px">Klik her eller træk filer</div>
@@ -309,7 +431,6 @@ function renderAdmin() {
       </div>
     </div>
     ${state.uploading?'<div class="loading" style="margin-top:16px"><div class="spinner"></div>Uploader og analyserer...</div>':''}
-
     <div style="margin-top:24px">
       <h2 style="margin-bottom:16px">Uploadede templates (${state.templates.length})</h2>
       ${state.templates.length===0?'<div class="empty">Ingen templates endnu</div>':''}
@@ -322,7 +443,7 @@ function renderAdmin() {
               Formater: ${tpl.backgrounds.square?'1080×1080':''}${tpl.backgrounds.square&&tpl.backgrounds.story?' + ':''}${tpl.backgrounds.story?'1080×1920':''}
             </div>
             <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">
-              Felter: ${tpl.configs?.square?.fields?.map(f=>f.label).join(', ')||'Ingen konfiguration'}
+              Felter: ${tpl.configs?.square?.fields?.map(f=>f.label).join(', ')||'Ingen'}
             </div>
           </div>
           <button class="btn btn-outline" data-delete="${tpl.id}" style="color:#ff5555;border-color:rgba(255,85,85,0.3)">Slet</button>
@@ -334,12 +455,12 @@ function renderAdmin() {
 
 function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// Events
-function bindEvents() {
-  // Tabs
-  $$('.tab').forEach(t => t.onclick = () => { state.page = t.dataset.page; render(); });
+// ============================================================
+// EVENTS
+// ============================================================
 
-  // Steps
+function bindEvents() {
+  $$('.tab').forEach(t => t.onclick = () => { state.page = t.dataset.page; render(); });
   $$('.step-dot').forEach(d => d.onclick = () => {
     const s = +d.dataset.step;
     if (s===1) state.step=1;
@@ -348,7 +469,6 @@ function bindEvents() {
     render();
   });
 
-  // Step 1
   const searchEl = $('#search');
   if (searchEl) {
     searchEl.oninput = () => { state.search = searchEl.value; render(); setTimeout(()=>{const el=$('#search');if(el){el.focus();el.selectionStart=el.selectionEnd=el.value.length;}},0); };
@@ -358,20 +478,17 @@ function bindEvents() {
   const clearEl = $('#clearSearch');
   if (clearEl) clearEl.onclick = () => { state.search=''; render(); };
 
-  // Review cards
   $$('.review-card').forEach(c => c.onclick = () => {
     const t = state.testimonials.find(t => t.id === +c.dataset.id);
-    if (t) { state.selT = t; state.editTxt = t.tekst; state.editName = t.navn; state.customFsSq=0; state.customFsSt=0; state.customHlFsSq=0; state.customHlFsSt=0; state.previewImg=null; state.step=2; render(); }
+    if (t) { state.selT = t; state.editTxt = t.tekst; state.editName = t.navn; state.customFsSq=0; state.customFsSt=0; state.customHlFsSq=0; state.customHlFsSt=0; state.step=2; render(); }
   });
 
-  // Step 2
   const back1 = $('#backTo1'); if (back1) back1.onclick = () => { state.step=1; render(); };
   $$('.template-card').forEach(c => c.onclick = () => {
     const tpl = state.templates.find(t => t.id === c.dataset.tpl);
-    if (tpl) { state.selTpl=tpl; state.headline=''; state.previewImg=null; state.step=3; render(); }
+    if (tpl) { state.selTpl=tpl; state.headline=''; state.step=3; render(); }
   });
 
-  // Step 3
   const back2 = $('#backTo2'); if (back2) back2.onclick = () => { state.step=2; render(); };
   const hlEl = $('#headline'); if (hlEl) hlEl.oninput = () => { state.headline=hlEl.value; };
   const etEl = $('#editTxt'); if (etEl) etEl.oninput = () => { state.editTxt=etEl.value; };
@@ -382,12 +499,11 @@ function bindEvents() {
   const resetHlFs = $('#resetHlFs'); if (resetHlFs) resetHlFs.onclick = () => { if(state.fmt==='story')state.customHlFsSt=0;else state.customHlFsSq=0; render(); };
   const resetTxt = $('#resetTxt'); if (resetTxt) resetTxt.onclick = () => { state.editTxt=state.selT.tekst; state.editName=state.selT.navn; render(); };
 
-  $$('[data-fmt]').forEach(b => b.onclick = () => { state.fmt=b.dataset.fmt; state.previewImg=null; render(); });
+  $$('[data-fmt]').forEach(b => b.onclick = () => { state.fmt=b.dataset.fmt; render(); });
 
-  const genPrev = $('#genPreview'); if (genPrev) genPrev.onclick = generatePreview;
+  const refreshEl = $('#refreshPreview'); if (refreshEl) refreshEl.onclick = () => { render(); };
   const doExp = $('#doExport'); if (doExp) doExp.onclick = doExport;
 
-  // Admin
   const uploadZone = $('#uploadZone');
   const fileInput = $('#fileInput');
   if (uploadZone) {
@@ -406,56 +522,49 @@ function bindEvents() {
   });
 }
 
-async function generatePreview() {
-  state.previewLoading = true; render();
-  try {
-    const cFs = state.fmt==='story'?state.customFsSt:state.customFsSq;
-    const cHlFs = state.fmt==='story'?state.customHlFsSt:state.customHlFsSq;
-    const res = await fetch(`${API}/api/preview`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        templateId: state.selTpl.id,
-        format: state.fmt,
-        testimonial: state.editTxt,
-        name: state.editName,
-        headline: state.headline,
-        fontSize: cFs || undefined,
-        headlineFontSize: cHlFs || undefined
-      })
-    });
-    const data = await res.json();
-    state.previewImg = data.image;
-  } catch(e) { console.error(e); alert('Preview fejlede: ' + e.message); }
-  state.previewLoading = false; render();
-}
+// ============================================================
+// EXPORT (html2canvas)
+// ============================================================
 
 async function doExport() {
   state.exporting = true; render();
   try {
-    const cFs = state.fmt==='story'?state.customFsSt:state.customFsSq;
-    const cHlFs = state.fmt==='story'?state.customHlFsSt:state.customHlFsSq;
-    const res = await fetch(`${API}/api/export`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        templateId: state.selTpl.id,
-        format: state.fmt,
-        testimonial: state.editTxt,
-        name: state.editName,
-        headline: state.headline,
-        fontSize: cFs || undefined,
-        headlineFontSize: cHlFs || undefined
-      })
+    // Create a hidden full-size canvas
+    const hidden = document.createElement('div');
+    hidden.style.position = 'fixed';
+    hidden.style.left = '-9999px';
+    hidden.style.top = '0';
+    hidden.innerHTML = renderAdCanvas(1.0); // full size
+    document.body.appendChild(hidden);
+
+    // Wait for background image to load
+    const img = hidden.querySelector('img.bg');
+    if (img && !img.complete) {
+      await new Promise((res, rej) => { img.onload = res; img.onerror = rej; });
+    }
+
+    const canvas = await html2canvas(hidden.querySelector('.ad-canvas'), {
+      width: 1080,
+      height: state.fmt === 'story' ? 1920 : 1080,
+      scale: 1,
+      useCORS: true,
+      backgroundColor: null,
     });
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `kjeldgaard-${state.selTpl.id}-${state.fmt}-${Date.now()}.png`;
-    a.click();
-    URL.revokeObjectURL(url);
+
+    document.body.removeChild(hidden);
+
+    // Download
+    const link = document.createElement('a');
+    link.download = `kjeldgaard-${state.selTpl.id}-${state.fmt}-${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
   } catch(e) { console.error(e); alert('Export fejlede: ' + e.message); }
   state.exporting = false; render();
 }
+
+// ============================================================
+// UPLOAD & DATA
+// ============================================================
 
 async function handleUpload(files) {
   if (!files.length) return;
@@ -481,12 +590,7 @@ async function loadData() {
   state.templates = await templRes.json();
 }
 
-// Init
-async function init() {
-  await loadData();
-  render();
-}
-
+async function init() { await loadData(); render(); }
 init();
 </script>
 </body>
