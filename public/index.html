@@ -81,7 +81,7 @@
     position:absolute;
     font-weight:900;
     text-align:center;
-    text-transform:uppercase;
+    text-transform:uppercase;font-style:italic;
     line-height:1.15;
     word-wrap:break-word;
   }
@@ -175,15 +175,15 @@ function getFiltered() {
 function autoFontSize(text, isStory) {
   const len = text.length;
   const b = isStory ? 1.15 : 1;
-  if (len < 60) return Math.round(42 * b);
-  if (len < 100) return Math.round(36 * b);
-  if (len < 150) return Math.round(30 * b);
-  if (len < 200) return Math.round(26 * b);
-  if (len < 260) return Math.round(23 * b);
-  if (len < 340) return Math.round(20 * b);
-  if (len < 440) return Math.round(17 * b);
-  if (len < 560) return Math.round(15 * b);
-  return Math.round(13 * b);
+  if (len < 60) return Math.round(48 * b);
+  if (len < 100) return Math.round(42 * b);
+  if (len < 150) return Math.round(38 * b);
+  if (len < 200) return Math.round(32 * b);
+  if (len < 260) return Math.round(28 * b);
+  if (len < 340) return Math.round(24 * b);
+  if (len < 440) return Math.round(20 * b);
+  if (len < 560) return Math.round(17 * b);
+  return Math.round(14 * b);
 }
 
 function getDefaultFontSize() {
@@ -211,11 +211,11 @@ function renderAdCanvas(scale) {
   const cHlFs = isStory ? state.customHlFsSt : state.customHlFsSq;
   const fontSize = cFs || autoFontSize(state.editTxt, isStory);
   const hlFontSize = cHlFs || (hl?.estimatedFontSize || 48);
-  const nmFontSize = Math.max(14, Math.round(fontSize * 0.55));
+  const nmFontSize = Math.max(16, Math.round(fontSize * 0.7));
 
-  const hlColor = hl?.color || '#cdf4fe';
-  const tmColor = tm?.color || '#cdddf2';
-  const nmColor = nm?.color || tmColor;
+  const hlColor = hl?.color || '#d4eaf5';
+  const tmColor = tm?.color || '#FFFFFF';
+  const nmColor = nm?.color || '#FFFFFF';
 
   // Positions from detection
   const hlX = hl ? hl.x : Math.round(W * 0.14);
@@ -225,8 +225,10 @@ function renderAdCanvas(scale) {
   const tmX = tm ? tm.x : (isStory ? 450 : 541);
   const tmY = tm ? tm.y : (isStory ? 404 : 413);
   const tmW = tm ? tm.width : (isStory ? 608 : 456);
-  const nmDetectedY = nm ? nm.y : (isStory ? 928 : 743);
-  const tmMaxH = nmDetectedY - tmY;
+  // Text area goes from testimonial start down to just above stars
+  // Stars are in background at: 1080=y789, 1920=y973
+  const starsY = isStory ? 965 : 780;
+  const tmH = starsY - tmY;
 
   const s = scale;
 
@@ -238,13 +240,13 @@ function renderAdCanvas(scale) {
         color:${hlColor};font-size:${hlFontSize*s}px;
       ">${esc(state.headline)}</div>` : ''}
       <div class="tbox" style="
-        left:${tmX*s}px;top:${tmY*s}px;width:${tmW*s}px;max-height:${tmMaxH*s}px;
+        left:${tmX*s}px;top:${tmY*s}px;width:${tmW*s}px;height:${tmH*s}px;
       ">
         ${state.editTxt ? `<div class="tm" style="
           color:${tmColor};font-size:${fontSize*s}px;
         ">${esc(state.editTxt)}</div>` : ''}
         ${state.editName ? `<div class="nm" style="
-          color:${nmColor};font-size:${nmFontSize*s}px;margin-top:${Math.round(fontSize*0.4)*s}px;
+          color:${nmColor};font-size:${nmFontSize*s}px;margin-top:auto;
         ">-${esc(state.editName)}</div>` : ''}
       </div>
     </div>
@@ -323,7 +325,7 @@ function renderStep2() {
   return `
     <button class="back-link" id="backTo1">← Skift testimonial</button>
     <div style="padding:12px 16px;border-radius:8px;background:rgba(184,148,62,0.06);border:1px solid rgba(184,148,62,0.12);margin-bottom:24px">
-      <div style="font-size:11px;color:#B8943E;font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em">Valgt testimonial</div>
+      <div style="font-size:11px;color:#B8943E;font-weight:600;margin-bottom:4px;text-transform:uppercase;font-style:italic;letter-spacing:0.05em">Valgt testimonial</div>
       <p style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.4">"${esc(state.selT.tekst.substring(0,120))}..." — <span style="color:#B8943E">${esc(state.selT.navn)}</span></p>
     </div>
     <h2>Vælg template</h2>
