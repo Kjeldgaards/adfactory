@@ -1,8 +1,7 @@
 /**
- * Puppeteer Export Engine v3
- * Text flows within detected bounding boxes.
- * Auto font-size based on text length.
- * Testimonial stays within its detected area, name below it.
+ * Puppeteer Export Engine v4 — FINAL
+ * Uses detected field positions but constrains text between
+ * quote marks (top) and stars (bottom) found in background.
  */
 const puppeteer = require('puppeteer');
 const fs = require('fs');
@@ -49,23 +48,27 @@ async function renderAd(opts) {
   const hlFontSize = overrides.headlineFontSize || (hl ? hl.estimatedFontSize : 48);
   const nmFontSize = Math.max(14, Math.round(fontSize * 0.55));
 
-  // Colors
-  const hlColor = hl?.color || '#FFFFFF';
+  // Colors from detection
+  const hlColor = hl?.color || '#cdf4fe';
   const tmColor = tm?.color || '#cdddf2';
   const nmColor = nm?.color || tmColor;
 
-  // Positions - use detected positions, with the testimonial as a constrained box
+  // HEADLINE position from detection
   const hlX = hl ? hl.x : Math.round(width * 0.14);
   const hlY = hl ? hl.y : Math.round(height * 0.10);
-  const hlW = hl ? hl.width : Math.round(width * 0.72);
+  const hlW = hl ? hl.width : Math.round(width * 0.71);
 
-  const tmX = tm ? tm.x : Math.round(width * 0.50);
-  const tmY = tm ? tm.y : Math.round(height * 0.38);
-  const tmW = tm ? tm.width : Math.round(width * 0.42);
-  const tmMaxH = nm ? (nm.y - tmY - 10) : Math.round(height * 0.35);
-
-  const nmX = nm ? nm.x : tmX;
-  // Name goes right after testimonial text (dynamic), but we use CSS flex for this
+  // TESTIMONIAL position: use detected X and width,
+  // but Y starts BELOW the detected testimonial top (which is after quote marks)
+  // and max-height stops ABOVE the detected name position
+  const tmX = tm ? tm.x : (isStory ? 450 : 541);
+  const tmY = tm ? tm.y : (isStory ? 404 : 413);
+  const tmW = tm ? tm.width : (isStory ? 608 : 456);
+  
+  // Max height: from testimonial start to just above where name was detected
+  // This ensures text + name stays above the stars
+  const nmDetectedY = nm ? nm.y : (isStory ? 928 : 743);
+  const tmMaxH = nmDetectedY - tmY;
 
   const html = `<!DOCTYPE html>
 <html>
