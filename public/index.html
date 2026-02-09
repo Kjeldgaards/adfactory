@@ -91,6 +91,7 @@
     flex-direction:column;
     justify-content:flex-start;
     overflow:hidden;
+    box-sizing:border-box;
   }
   .ad-canvas .tm {
     font-weight:400;
@@ -492,11 +493,30 @@ function bindEvents() {
   });
 
   const back2 = $('#backTo2'); if (back2) back2.onclick = () => { state.step=2; render(); };
-  const hlEl = $('#headline'); if (hlEl) hlEl.oninput = () => { state.headline=hlEl.value; };
-  const etEl = $('#editTxt'); if (etEl) etEl.oninput = () => { state.editTxt=etEl.value; };
-  const enEl = $('#editName'); if (enEl) enEl.oninput = () => { state.editName=enEl.value; };
-  const fsEl = $('#fs'); if (fsEl) fsEl.onchange = () => { if(state.fmt==='story')state.customFsSt=+fsEl.value;else state.customFsSq=+fsEl.value; };
-  const hlFsEl = $('#hlFs'); if (hlFsEl) hlFsEl.onchange = () => { if(state.fmt==='story')state.customHlFsSt=+hlFsEl.value;else state.customHlFsSq=+hlFsEl.value; };
+  // Debounced render for live preview
+  let _renderTimer = null;
+  function liveRender() {
+    clearTimeout(_renderTimer);
+    _renderTimer = setTimeout(() => {
+      // Save cursor positions
+      const active = document.activeElement;
+      const activeId = active?.id;
+      const selStart = active?.selectionStart;
+      const selEnd = active?.selectionEnd;
+      render();
+      // Restore focus and cursor
+      if (activeId) {
+        const el = document.getElementById(activeId);
+        if (el) { el.focus(); if (selStart !== undefined) { el.selectionStart = selStart; el.selectionEnd = selEnd; } }
+      }
+    }, 200);
+  }
+
+  const hlEl = $('#headline'); if (hlEl) hlEl.oninput = () => { state.headline=hlEl.value; liveRender(); };
+  const etEl = $('#editTxt'); if (etEl) etEl.oninput = () => { state.editTxt=etEl.value; liveRender(); };
+  const enEl = $('#editName'); if (enEl) enEl.oninput = () => { state.editName=enEl.value; liveRender(); };
+  const fsEl = $('#fs'); if (fsEl) fsEl.onchange = () => { if(state.fmt==='story')state.customFsSt=+fsEl.value;else state.customFsSq=+fsEl.value; render(); };
+  const hlFsEl = $('#hlFs'); if (hlFsEl) hlFsEl.onchange = () => { if(state.fmt==='story')state.customHlFsSt=+hlFsEl.value;else state.customHlFsSq=+hlFsEl.value; render(); };
   const resetFs = $('#resetFs'); if (resetFs) resetFs.onclick = () => { if(state.fmt==='story')state.customFsSt=0;else state.customFsSq=0; render(); };
   const resetHlFs = $('#resetHlFs'); if (resetHlFs) resetHlFs.onclick = () => { if(state.fmt==='story')state.customHlFsSt=0;else state.customHlFsSq=0; render(); };
   const resetTxt = $('#resetTxt'); if (resetTxt) resetTxt.onclick = () => { state.editTxt=state.selT.tekst; state.editName=state.selT.navn; render(); };
