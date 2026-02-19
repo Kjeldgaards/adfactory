@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(express.static('public'));
 app.use('/templates', express.static('templates'));
 
@@ -93,25 +93,15 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 });
 
-/**
- * Upload template images
- * Expects 2 or 4 files:
- * - name-1080.png (background without text, square)
- * - name-1080-ref.png (reference with text, square)
- * - name-1920.png (background without text, story) [optional]
- * - name-1920-ref.png (reference with text, story) [optional]
- */
 app.post('/api/templates/upload', upload.array('files', 4), async (req, res) => {
   try {
     if (!req.files || req.files.length < 2) {
       return res.status(400).json({ error: 'Need at least 2 files: background (-1080.png) and reference (-1080-ref.png)' });
     }
 
-    // Parse file names to determine template name and type
     const fileMap = {};
     for (const file of req.files) {
       const name = file.originalname;
-      // Pattern: templatename-1080.png, templatename-1080-ref.png, templatename-1920.png, templatename-1920-ref.png
       const match = name.match(/^(.+?)-(1080|1920)(-ref)?\.png$/i);
       if (!match) {
         return res.status(400).json({
@@ -127,7 +117,6 @@ app.post('/api/templates/upload', upload.array('files', 4), async (req, res) => 
     const templateName = fileMap._name;
     const templateId = templateName.toLowerCase().replace(/\s+/g, '-');
 
-    // Rename files to permanent locations
     const backgrounds = {};
     const references = {};
     const configs = {};
@@ -145,7 +134,6 @@ app.post('/api/templates/upload', upload.array('files', 4), async (req, res) => 
       if (key === '1920-ref') references.story = `templates/${newName}`;
     }
 
-    // Auto-analyze text regions
     if (references.square && backgrounds.square) {
       const squareConfig = await analyzeTemplate(
         path.join(__dirname, references.square),
@@ -162,7 +150,6 @@ app.post('/api/templates/upload', upload.array('files', 4), async (req, res) => 
       configs.story = storyConfig;
     }
 
-    // Save template config
     const templates = loadTemplates();
     const existing = templates.findIndex(t => t.id === templateId);
     const templateData = {
@@ -247,7 +234,7 @@ app.post('/api/export', async (req, res) => {
 });
 
 // ============================================================
-// API: Preview (same as export but returns base64 for UI)
+// API: Preview
 // ============================================================
 app.post('/api/preview', async (req, res) => {
   try {
@@ -266,7 +253,6 @@ app.post('/api/preview', async (req, res) => {
     }
 
     const isStory = format === 'story';
-    // Render at smaller size for preview
     const buffer = await renderAd({
       backgroundPath: bgPath,
       fields: config.fields,
@@ -286,6 +272,282 @@ app.post('/api/preview', async (req, res) => {
 });
 
 // ============================================================
+// ADMIN DATA FILES CONFIG
+// ============================================================
+const DATA_FILES = {
+  testimonials: path.join(__dirname, 'data', 'testimonials.json'),
+  videos: path.join(__dirname, 'data', 'video-master.json'),
+  metacomments: path.join(__dirname, 'data', 'meta-comments.json')
+};
+
+Object.entries(DATA_FILES).forEach(([key, filepath]) => {
+  if (!fs.existsSync(filepath)) {
+    fs.writeFileSync(filepath, '[]', 'utf8');
+    console.log(`Created empty ${key} file`);
+  }
+});
+
+function loadJSON(filepath) {
+  try {
+    return JSON.parse(fs.readFileSync(filepath, 'utf8'));
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveJSON(filepath, data) {
+  fs.writeFileSync(filepath, JSON.stringify(data, null, 2), 'utf8');
+}
+
+function getNextId(items) {
+  if (!items.length) return 1;
+  return Math.max(...items.map(i => i.id || 0)) + 1;
+}
+
+// ============================================================
+// TRUSTPILOT TESTIMONIALS API (Admin)
+// ============================================================
+app.post('/api/testimonials', (req, res) => {
+  const data = loadJSON(DATA_FILES.testimonials);
+  const newItem = {
+    id: getNextId(data),
+    navn: req.body.navn || 'Anonym',
+    dato: req.body.dato || new Date().toISOString().split('T')[0],
+    rating: req.body.rating || 5,
+    tekst: req.body.tekst || '',
+    temaer: req.body.temaer || [],
+    awareness: req.body.awareness || 'product_aware',
+    createdAt: new Date().toISOString()
+  };
+  data.push(newItem);
+  saveJSON(DATA_FILES.testimonials, data);
+  res.json({ success: true, item: newItem, total: data.length });
+});
+
+app.put('/api/testimonials/:id', (req, res) => {
+  const data = loadJSON(DATA_FILES.testimonials);
+  const idx = data.findIndex(t => t.id === parseInt(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  data[idx] = { ...data[idx], ...req.body, id: data[idx].id, updatedAt: new Date().toISOString() };
+  saveJSON(DATA_FILES.testimonials, data);
+  res.json({ success: true, item: data[idx] });
+});
+
+app.delete('/api/testimonials/:id', (req, res) => {
+  let data = loadJSON(DATA_FILES.testimonials);
+  const initialLength = data.length;
+  data = data.filter(t => t.id !== parseInt(req.params.id));
+  if (data.length === initialLength) return res.status(404).json({ error: 'Not found' });
+  saveJSON(DATA_FILES.testimonials, data);
+  res.json({ success: true, remaining: data.length });
+});
+
+app.post('/api/testimonials/bulk', (req, res) => {
+  const data = loadJSON(DATA_FILES.testimonials);
+  const newItems = req.body.items || [];
+  newItems.forEach(item => {
+    data.push({
+      id: getNextId(data),
+      navn: item.navn || 'Anonym',
+      dato: item.dato || new Date().toISOString().split('T')[0],
+      rating: item.rating || 5,
+      tekst: item.tekst || '',
+      temaer: item.temaer || [],
+      awareness: item.awareness || 'product_aware',
+      createdAt: new Date().toISOString()
+    });
+  });
+  saveJSON(DATA_FILES.testimonials, data);
+  res.json({ success: true, added: newItems.length, total: data.length });
+});
+
+// ============================================================
+// VIDEO MASTER API
+// ============================================================
+app.get('/api/videos', (req, res) => res.json(loadJSON(DATA_FILES.videos)));
+
+app.post('/api/videos', (req, res) => {
+  const data = loadJSON(DATA_FILES.videos);
+  const newItem = {
+    id: getNextId(data),
+    navn: req.body.navn || 'Ukendt',
+    alder: req.body.alder || null,
+    hudbekymring: req.body.hudbekymring || null,
+    videoLængde: req.body.videoLængde || null,
+    transkription: req.body.transkription || '',
+    filename: req.body.filename || null,
+    quotes: req.body.quotes || [],
+    temaer: req.body.temaer || [],
+    awareness: req.body.awareness || 'product_aware',
+    score: req.body.score || null,
+    createdAt: new Date().toISOString()
+  };
+  data.push(newItem);
+  saveJSON(DATA_FILES.videos, data);
+  res.json({ success: true, item: newItem, total: data.length });
+});
+
+app.put('/api/videos/:id', (req, res) => {
+  const data = loadJSON(DATA_FILES.videos);
+  const idx = data.findIndex(v => v.id === parseInt(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  data[idx] = { ...data[idx], ...req.body, id: data[idx].id, updatedAt: new Date().toISOString() };
+  saveJSON(DATA_FILES.videos, data);
+  res.json({ success: true, item: data[idx] });
+});
+
+app.delete('/api/videos/:id', (req, res) => {
+  let data = loadJSON(DATA_FILES.videos);
+  const initialLength = data.length;
+  data = data.filter(v => v.id !== parseInt(req.params.id));
+  if (data.length === initialLength) return res.status(404).json({ error: 'Not found' });
+  saveJSON(DATA_FILES.videos, data);
+  res.json({ success: true, remaining: data.length });
+});
+
+// ============================================================
+// META COMMENTS API
+// ============================================================
+app.get('/api/metacomments', (req, res) => res.json(loadJSON(DATA_FILES.metacomments)));
+
+app.post('/api/metacomments', (req, res) => {
+  const data = loadJSON(DATA_FILES.metacomments);
+  const newItem = {
+    id: getNextId(data),
+    navn: req.body.navn || 'Anonym',
+    dato: req.body.dato || new Date().toISOString().split('T')[0],
+    tekst: req.body.tekst || '',
+    kilde: req.body.kilde || 'facebook',
+    adId: req.body.adId || null,
+    postUrl: req.body.postUrl || null,
+    sentiment: req.body.sentiment || 'positiv',
+    temaer: req.body.temaer || [],
+    createdAt: new Date().toISOString()
+  };
+  data.push(newItem);
+  saveJSON(DATA_FILES.metacomments, data);
+  res.json({ success: true, item: newItem, total: data.length });
+});
+
+app.put('/api/metacomments/:id', (req, res) => {
+  const data = loadJSON(DATA_FILES.metacomments);
+  const idx = data.findIndex(c => c.id === parseInt(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  data[idx] = { ...data[idx], ...req.body, id: data[idx].id, updatedAt: new Date().toISOString() };
+  saveJSON(DATA_FILES.metacomments, data);
+  res.json({ success: true, item: data[idx] });
+});
+
+app.delete('/api/metacomments/:id', (req, res) => {
+  let data = loadJSON(DATA_FILES.metacomments);
+  const initialLength = data.length;
+  data = data.filter(c => c.id !== parseInt(req.params.id));
+  if (data.length === initialLength) return res.status(404).json({ error: 'Not found' });
+  saveJSON(DATA_FILES.metacomments, data);
+  res.json({ success: true, remaining: data.length });
+});
+
+// ============================================================
+// STATS
+// ============================================================
+app.get('/api/stats', (req, res) => {
+  res.json({
+    testimonials: loadJSON(DATA_FILES.testimonials).length,
+    videos: loadJSON(DATA_FILES.videos).length,
+    metacomments: loadJSON(DATA_FILES.metacomments).length
+  });
+});
+
+// ============================================================
+// IMAGE EXTRACTION (Claude Vision)
+// ============================================================
+const Anthropic = require('@anthropic-ai/sdk');
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+app.post('/api/extract-from-image', async (req, res) => {
+  try {
+    const { image, type } = req.body;
+    if (!image) return res.status(400).json({ error: 'No image provided' });
+
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
+    const mediaType = image.match(/^data:(image\/\w+);/)?.[1] || 'image/png';
+
+    let systemPrompt = '';
+    let userPrompt = '';
+
+    if (type === 'tp') {
+      systemPrompt = `Du er en data-ekstraktor. Du læser screenshots af Trustpilot anmeldelser og returnerer struktureret JSON.
+Returner ALTID gyldig JSON i dette format:
+{
+  "navn": "kundens navn",
+  "dato": "YYYY-MM-DD",
+  "rating": 5,
+  "tekst": "den fulde anmeldelsestekst",
+  "temaer": ["tema1", "tema2"],
+  "awareness": "product_aware"
+}
+Temaer skal vælges fra: rynker, fugt, tør hud, glød, sensitiv, rødme, anti-aging, barriere, resultat, anbefaling, genbestilling, enkelhed, skeptiker
+Awareness skal være en af: problem_aware, solution_aware, product_aware, most_aware
+Hvis datoen er relativ (fx "for 3 dage siden"), beregn den faktiske dato baseret på dags dato.`;
+      userPrompt = 'Læs denne Trustpilot anmeldelse og returner data som JSON:';
+
+    } else if (type === 'vid') {
+      systemPrompt = `Du er en data-ekstraktor. Du læser screenshots af video-transskriptioner og returnerer struktureret JSON.
+Returner ALTID gyldig JSON i dette format:
+{
+  "navn": "personens navn hvis nævnt",
+  "alder": 64,
+  "videoLængde": "~1:30",
+  "hudbekymring": "rynker, tør hud",
+  "transkription": "den fulde tekst",
+  "temaer": ["tema1", "tema2"]
+}
+Temaer skal vælges fra: barriere, fugt, rynker, glød, rødme, enkelhed, skeptiker, gentagne køb, følelsesmæssig forandring, alder
+Hvis alder ikke nævnes, sæt null.`;
+      userPrompt = 'Læs denne video-transskription og returner data som JSON:';
+
+    } else if (type === 'meta') {
+      systemPrompt = `Du er en data-ekstraktor. Du læser screenshots af Facebook/Instagram kommentarer og returnerer struktureret JSON.
+Returner ALTID gyldig JSON i dette format:
+{
+  "navn": "personens navn",
+  "tekst": "kommentarteksten",
+  "kilde": "facebook",
+  "sentiment": "positiv",
+  "temaer": ["tema1", "tema2"]
+}
+Kilde skal være: facebook, instagram, eller messenger
+Sentiment skal være: positiv, neutral, eller negativ
+Temaer skal vælges fra: spørgsmål, anbefaling, resultat, pris, levering, kritik, ros`;
+      userPrompt = 'Læs denne social media kommentar og returner data som JSON:';
+    }
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64Data } },
+          { type: 'text', text: userPrompt }
+        ]
+      }]
+    });
+
+    const responseText = response.content[0].text;
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return res.status(400).json({ error: 'Could not extract data from image' });
+
+    res.json(JSON.parse(jsonMatch[0]));
+
+  } catch (err) {
+    console.error('Image extraction error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
 // Serve frontend for all non-API routes
 // ============================================================
 app.get('*', (req, res) => {
@@ -295,18 +557,14 @@ app.get('*', (req, res) => {
 // ============================================================
 // Start
 // ============================================================
-
-// Auto-discover template images from repo root on startup
 async function autoDiscoverTemplates() {
   const tplDir = path.join(__dirname, 'templates');
   if (!fs.existsSync(tplDir)) return;
   const files = fs.readdirSync(tplDir);
-  
-  // Find template sets: name-1080.png, name-1080-ref.png, name-1920.png, name-1920-ref.png
+
   const templateFiles = files.filter(f => /^.+-(1080|1920)(-ref)?\.png$/i.test(f));
   if (templateFiles.length === 0) return;
 
-  // Group by template name
   const groups = {};
   for (const f of templateFiles) {
     const match = f.match(/^(.+?)-(1080|1920)(-ref)?\.png$/i);
@@ -322,10 +580,8 @@ async function autoDiscoverTemplates() {
   let changed = false;
 
   for (const [id, g] of Object.entries(groups)) {
-    // Skip if already registered
     if (templates.find(t => t.id === id)) continue;
 
-    // Build paths (files are already in templates/)
     const backgrounds = {};
     const references = {};
     for (const key of ['1080', '1080-ref', '1920', '1920-ref']) {
@@ -336,7 +592,6 @@ async function autoDiscoverTemplates() {
       if (key === '1920-ref') references.story = `templates/${g[key]}`;
     }
 
-    // Auto-analyze
     const configs = {};
     try {
       if (references.square && backgrounds.square) {
@@ -353,14 +608,7 @@ async function autoDiscoverTemplates() {
       }
     } catch (e) { console.error(`  Auto-analyze failed for ${id}:`, e.message); }
 
-    templates.push({
-      id,
-      name: g.name,
-      backgrounds,
-      references,
-      configs,
-      createdAt: new Date().toISOString()
-    });
+    templates.push({ id, name: g.name, backgrounds, references, configs, createdAt: new Date().toISOString() });
     changed = true;
     console.log(`  Auto-discovered template: ${g.name}`);
   }
