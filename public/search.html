@@ -106,6 +106,8 @@
     .copy-btn:hover { border-color: #B8943E; color: #B8943E; }
     .gen-avg { text-align: center; padding: 12px; background: #0f1117; border-radius: 8px; margin-bottom: 16px; color: #71717a; font-size: 13px; }
     .gen-avg strong { color: #B8943E; font-size: 18px; }
+    .btn-copy-all { display: block; margin: 0 auto 16px; background: none; border: 1px solid #B8943E; border-radius: 8px; padding: 8px 20px; color: #B8943E; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-copy-all:hover { background: #B8943E; color: #000; }
   </style>
 </head>
 <body>
@@ -419,6 +421,7 @@
         if (!data.results || !data.results.length) { resultsDiv.innerHTML = '<div class="empty-state"><p>Ingen resultater</p></div>'; return; }
         resultsDiv.innerHTML =
           '<div class="gen-avg">Gns. score: <strong>' + (data.meta?.averageScore || '?') + '/10</strong> · ' + data.results.length + ' resultater · ' + (data.meta?.type || '') + '</div>' +
+          '<button class="btn-copy-all" onclick="copyAll()">📋 Kopiér alle til Claude Project</button>' +
           data.results.map((r, i) =>
             '<div class="gen-result-card">' +
               '<div class="gen-result-text">' + (r.text || '') + '</div>' +
@@ -437,6 +440,27 @@
     window.copyText = function(btn) {
       const text = btn.closest('.gen-result-card').querySelector('.gen-result-text').textContent;
       navigator.clipboard.writeText(text).then(() => { btn.textContent = '✓ Kopieret'; setTimeout(() => btn.textContent = 'Kopiér', 2000); });
+    };
+
+    window.copyAll = function() {
+      const cards = document.querySelectorAll('.gen-result-card');
+      const lines = [];
+      cards.forEach((card, i) => {
+        const text = card.querySelector('.gen-result-text').textContent.trim();
+        const scoreEl = card.querySelector('.gen-score');
+        const score = scoreEl ? scoreEl.textContent.trim() : '';
+        const wordsEl = card.querySelector('.gen-words');
+        const words = wordsEl ? wordsEl.textContent.replace('Kundeord: ', '').trim() : '';
+        lines.push((i+1) + '. ' + text);
+        lines.push('   Score: ' + score + (words ? ' | Kundeord: ' + words : ''));
+        lines.push('');
+      });
+      const header = '--- GENERERET FRA AD FACTORY ---\nType: ' + (document.getElementById('gen-type').selectedOptions[0].text) + '\nAntal: ' + cards.length + '\nMin. score: ' + document.getElementById('gen-score').value + '\n\n';
+      navigator.clipboard.writeText(header + lines.join('\n')).then(() => {
+        const btn = document.querySelector('.btn-copy-all');
+        btn.textContent = '✓ Kopieret til clipboard';
+        setTimeout(() => btn.textContent = '📋 Kopiér alle til Claude Project', 2000);
+      });
     };
 
     async function loadTemaer() {
