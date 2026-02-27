@@ -807,20 +807,20 @@
       } catch (e) { console.error(e); }
     }
     
-    // Load recent
+    // Load all items
     async function loadRecent(type, containerId) {
       try {
         const res = await fetch(API + '/api/' + type);
         const data = await res.json();
-        const recent = data.slice(-5).reverse();
+        const items = data.slice().reverse(); // ALL items, newest first
         
         const container = document.getElementById(containerId);
-        if (!recent.length) {
+        if (!items.length) {
           container.innerHTML = '<div class="empty-state">Ingen tilføjet endnu</div>';
           return;
         }
         
-        container.innerHTML = recent.map(item => `
+        container.innerHTML = '<div class="recent-title">Alle (' + items.length + ')</div>' + items.map(item => `
           <div class="recent-item" data-id="${item.id}">
             <button class="recent-item-delete" onclick="deleteItem('${type}', ${item.id})">Slet</button>
             <div class="recent-item-name">${item.navn || 'Anonym'}${item.alder ? ', ' + item.alder + ' år' : ''}</div>
