@@ -1,0 +1,151 @@
+FACTS_KJELDGAARD_EFFICACY.txt
+Version: FINAL v10
+Opdateret: Januar 2026
+Rule: "MÅ SIGES" må bruges i marketing. "MÅ IKKE SIGES" må aldrig bruges.
+
+============================================================
+EFFICACY-01
+TEST: Zurko Research – Klinisk Efficacy Studie (28 dage, n=21)
+KILDE: VV_ET-16/20DXT3(D)-A_723_22_001, Zurko Research S.L., Spanien (EU)
+METODE: In vivo human trial, 28 dage, 2x daglig anvendelse, PRIMOS-CR® 3D imaging
+
+Kort fakta:
+- 28 dages daglig brug (morgen + aften).
+- 21 deltagere (30-70 år, kvinder og mænd, sensitiv + ikke-sensitiv hud).
+- PRIMOS-CR® 3D måling af fine linjer og rynker (crow's feet).
+- Statistisk signifikante resultater (p<0.05).
+- Dermatologisk kontrol gennem hele studiet.
+
+MÅ SIGES I MARKEDSFØRING:
+- Klinisk testet.
+- Klinisk dokumenteret effekt på fine linjer og rynker.
+- Reducerer synlige fine linjer og rynker.
+- Udjævner fine linjer.
+- 27% reduktion i fine linjer efter 28 dage.
+- 18% reduktion i fine linjer efter 14 dage.
+- 100% af deltagere oplevede forbedring efter 28 dage.
+- 81% af deltagere oplevede forbedring efter 14 dage.
+- Fremskynder hudens cellefornyelse.
+- Sætter gang i hudens cellefornyelse.
+- Udglatter synligt fine linjer og kragetæer over tid.
+- Forstærker (fortificerer) hudbarrieren over tid.
+- Reducerer synlige rynker over tid.
+- Reducerer rynker.
+- Udglatter fine linjer og reducerer rynker.
+- Reducerer fine linjer.
+- Reducerer linjer.
+- Gør huden glattere og mere ensartet i overfladen.
+- Styrker hudbarrieren over tid.
+- Hjælper med at reparere en svækket hudbarriere over tid.
+- Når hudbarrieren bliver stærkere, ser huden ofte mere rolig, fugtmættet og modstandsdygtig ud.
+- Dermatologisk vurderet hudtolerance efter 28 dages brug.
+- Testet i EU laboratorium.
+- Testet i europæisk laboratorium.
+
+MÅ IKKE SIGES:
+- Fjerner rynker permanent.
+- Garanterer identiske resultater for alle.
+- Medicinske helbredelsesclaims.
+============================================================
+
+============================================================
+EFFICACY-02
+TEST: COMPLIFE Italia – Blue Light & Antioxidant Studie (in vitro)
+KILDE: COMPLIFE Italia S.r.l., Italien (EU), December 2022
+METODE: In vitro på hudceller, statistisk signifikante resultater
+
+Kort fakta:
+- Lab-test på hudceller (ikke et klinisk studie på mennesker).
+- Op til 40,2% beskyttelse af celleoverlevelse mod blåt lys.
+- Op til 49,7% reduktion i oxidativt stress (lipidperoxidation).
+- Statistisk signifikante resultater.
+
+MÅ SIGES I MARKEDSFØRING:
+- I en laboratorietest viste serummet en beskyttende effekt mod stress fra blåt lys.
+- Beskytter mod blåt lys (in vitro dokumenteret).
+- Blue light protection.
+- Op til 40% beskyttelse mod blåt lys (in vitro).
+- Laboratorietesten peger på antioxidant-effekt.
+- Antioxidant effekt.
+- Beskytter mod oxidativt stress.
+- Op til 50% reduktion i oxidativt stress (in vitro).
+- In vitro testet.
+- Testet i EU laboratorium.
+
+MÅ IKKE SIGES:
+- Beskytter din hud mod blåt lys som en solcreme/SPF.
+- Stopper skader fra skærmlys / 100% beskyttelse.
+- Bevist effekt på mennesker i daglig brug (uden at specificere in vitro).
+============================================================
+
+============================================================
+EFFICACY-03
+TEST: COMPLIFE Italia – Cell Proliferation Studie (in vitro)
+KILDE: COMPLIFE Italia S.r.l., Italien (EU), December 2022
+METODE: In vitro på human skin keratinocytes, statistisk signifikante resultater
+
+Kort fakta:
+- Lab-test på hudceller (ikke et klinisk studie på mennesker).
+- 24 timer: Op til 41% øget celleproliferation (statistisk signifikant).
+- 48 timer: Op til 53,9% øget celleproliferation (statistisk signifikant).
+- 72 timer: 8-12% øgning (ikke statistisk signifikant).
+
+MÅ SIGES I MARKEDSFØRING:
+- Fremskynder hudens cellefornyelse.
+- Sætter gang i hudens cellefornyelse.
+- Understøtter hudens naturlige fornyelse.
+- Støtter cellefornyelse.
+- Op til 54% øget celleproliferation (in vitro).
+- I en laboratorietest viste serummet øget celleaktivitet, som hænger sammen med hudens naturlige fornyelse.
+- Laboratorietesten peger på støtte til hudfornyelse på celleniveau.
+- In vitro testet.
+- Testet i EU laboratorium.
+
+MÅ IKKE SIGES:
+- Bevist hurtigere hudfornyelse hos mennesker (uden at specificere in vitro).
+- Garanteret øget kollagen/elastin.
+============================================================
+
+============================================================
+EFFICACY-04
+TEST: Zurko Research – Subjektiv Evaluering (28 dage, n=21)
+KILDE: VV_ET-16/20DXT3(D)-A_723_22_001, Zurko Research S.L., Spanien (EU)
+METODE: Standardiseret spørgeskema efter 28 dages brug
+
+Kort fakta:
+- 21 deltagere evaluerede produktet efter 28 dages brug.
+- Høj tilfredshed på tværs af alle parametre.
+- Resultaterne er baseret på deltagernes subjektive oplevelse.
+
+MÅ SIGES I MARKEDSFØRING (med "oplevede" eller tilsvarende):
+- 100% tilfredse med resultatet på huden.
+- 100% fik opfyldt forventninger.
+- 100% oplevede næret hud.
+- 95% oplevede mere fugtet hud.
+- 90% oplevede mere glødende hud.
+- 90% oplevede blødere hud.
+- 90% oplevede at produktet ikke irriterer.
+- 86% tilfredse med teksturen.
+- 81% oplevede forbedret hudtekstur.
+- 81% oplevede 24-timers fugtgivning.
+- 81% fandt produktet nemt at dosere og bruge.
+- 81% oplevede hurtig absorption.
+- 76% oplevede glattere hud.
+- 71% oplevede ikke-fedtet følelse.
+- 48% oplevede at fine linjer og rynker er blevet mindre synlige.
+
+KØBSINTENTION (må bruges som social proof):
+- 86% ville sandsynligvis eller helt sikkert købe produktet.
+
+MÅ IKKE SIGES:
+- Procent-claims uden "oplevede" eller tilsvarende subjektiv formulering.
+- Claims præsenteret som objektive fakta uden kontekst.
+============================================================
+
+============================================================
+EFFICACY-05 (UDGÅET - INTEGRERET I EFFICACY-04)
+TEST: Standardiseret spørgeskema til brugervurdering (skabelon)
+
+BEMÆRK: Denne sektion er nu erstattet af EFFICACY-04, som indeholder 
+de faktiske resultater fra den kliniske studie.
+============================================================

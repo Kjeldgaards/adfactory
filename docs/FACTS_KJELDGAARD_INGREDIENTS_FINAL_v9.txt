@@ -1,0 +1,287 @@
+FACTS_KJELDGAARD_INGREDIENTS.txt
+Version: FINAL v9
+Rule: “MÅ SIGES” må bruges i marketing. “MÅ IKKE SIGES” må aldrig bruges.
+Note: Hvis en kilde er leverandør/marketingmateriale, holdes “MÅ SIGES” ekstra konservativt.
+
+============================================================
+INGREDIENTS-01
+INGREDIENS: Encapsulated retinol (ROVISOME® Retinol Moist)
+
+Kort fakta:
+- Leverandørmateriale om en retinol delivery-løsning.
+- Dokumenterer bedre stabilitet af retinol over tid i leverandørens testopsætning.
+- Beskriver lavere irritationspotentiale (ikke “ingen irritation”).
+
+MÅ SIGES I MARKEDSFØRING:
+- Encapsulated retinol – udviklet til at give retinol på en mere skånsom måde.
+- Leverandøren dokumenterer bedre retinol-stabilitet over tid i test.
+- Udviklet til at støtte en glattere hud og et mere ensartet udtryk over tid.
+
+MÅ IKKE SIGES:
+- Ingen irritation / kan ikke give reaktion.
+- Fjerner rynker.
+- Klinisk bevist på mennesker (hvis påstanden kun bygger på leverandørens materiale).
+============================================================
+
+============================================================
+INGREDIENTS-02
+INGREDIENS: Hyaluronsyre-krydspolymer (Sodium Hyaluronate Crosspolymer) – råvare-spec
+
+Kort fakta:
+- Råvare-spec for en hyaluronsyre-blanding inkl. crosspolymer (leverandør/spec-materiale).
+- Indeholder bl.a. Sodium Hyaluronate Crosspolymer (ifølge råvare-spec).
+
+MÅ SIGES I MARKEDSFØRING:
+- Formuleret med hyaluronsyre-krydspolymer, udviklet til at give fugt og et mere “fyldigt” udtryk.
+- Formuleret med hyaluronsyre-krydspolymer for en mere fyldig og fugtmættet hud. 
+- Udviklet til at give en glattere og mere fyldig hudoverflade.
+
+MÅ IKKE SIGES:
+- “24 timers effekt” / konkrete tids- eller %-tal uden produkt-specifik dokumentation.
+- “Klinisk bevist” på mennesker ud fra råvare-spec alene.
+============================================================
+
+============================================================
+INGREDIENTS-03
+INGREDIENS: Ferulinsyre (Ferulic acid) – antioxidant
+
+Kort fakta:
+- Leverandør-TDS beskriver ferulinsyre som antioxidant.
+- Dokumentet indeholder også irrelevante/for stærke udsagn, som ikke må bruges i kosmetik-marketing.
+
+MÅ SIGES I MARKEDSFØRING:
+- Ferulinsyre er en antioxidant.
+- Hjælper med at beskytte huden mod oxidativt stress fra frie radikaler.
+
+MÅ IKKE SIGES:
+- SPF/solbeskyttelse/UV-claims.
+- Whitening/bleaching-claims.
+- Sygdom/medicinske claims.
+============================================================
+
+============================================================
+INGREDIENTS-04
+INGREDIENS: Konserveringssystem (Phenoxyethanol + Ethylhexylglycerin)
+
+Kort fakta:
+- Leverandørmateriale beskriver Ethylhexylglycerin som “preservative booster” i kosmetiske formuleringer.
+- Phenoxyethanol omtales som et traditionelt konserveringsmiddel, som kan støttes i kombination.
+
+MÅ SIGES I MARKEDSFØRING:
+- Konserveret for at sikre, at produktet holder sig stabilt og sikkert over tid.
+- Indeholder ingredienser, der er valgt for at støtte produktets mikrobiologiske stabilitet.
+- Formuleret med en kombination, der kan støtte konserveringen i kosmetiske formuleringer.
+
+MÅ IKKE SIGES:
+- “Konserveringsfri”.
+- “Dræber bakterier på huden” / medicinske/antibakterielle påstande.
+- Konkrete holdbarhedstal ud fra råvare-dokumenter alene.
+============================================================
+
+============================================================
+INGREDIENTS-05
+INGREDIENS: Fugtbasen (humectants) – Butylene Glycol + Propanediol + PEG-8 + Glycereth-26
+
+Kort fakta:
+- Disse ingredienser bruges i kosmetiske formuleringer som fugtbinding/humectants og til at støtte komfort og brugbarhed.
+- Råvaremateriale for Glycereth-26 beskriver forbedret “moisturization” i en råvare/panel-opsætning.
+
+MÅ SIGES I MARKEDSFØRING:
+- Formuleret med fugtbindende ingredienser, der hjælper huden med at holde på fugten.
+- Giver en mere fugtmættet hudfølelse og en blødere, mere smidig overflade.
+- Udviklet til at give komfort, så huden føles mere behagelig og mindre tør.
+
+MÅ IKKE SIGES:
+- “24 timers fugt” / konkrete tids- eller %-tal (uden produkt-specifik dokumentation).
+- “Klinisk dokumenteret dybde-hydrering” ud fra råvare-datasheets alene.
+- Medicinske claims.
+============================================================
+
+============================================================
+INGREDIENTS-06 (v2)
+INGREDIENS: Tekstur & stabilitet (konsistens, finish og formel-balance)
+
+Kort fakta:
+- Ingredienser i denne gruppe bruges til at skabe en ensartet konsistens, bedre finish og stabilitet i formuleringen.
+- Leverandørmateriale inkluderer bl.a. tekstur- og stabilitetsfunktioner samt chelant-beskrivelser.
+
+MÅ SIGES I MARKEDSFØRING:
+- Udviklet til en glat, blød og silkefin fornemmelse på huden.
+- Udviklet til at føles behagelig – uden en klistret finish.
+- Formuleret til at holde serummet ensartet i konsistens og finish.
+- Ingredienserne er valgt for at støtte formlens stabilitet og kvalitet over tid.
+
+MÅ IKKE SIGES:
+- Dokumenteret holdbarhed i X måneder/år (kræver separat shelf life/PAO for færdigt produkt).
+- “Kan aldrig ændre sig” / “ingen ændringer over tid”.
+- “EU/FDA-godkendt produkt”.
+============================================================
+
+============================================================
+RISK-01
+KILDETYPE: Leverandør/marketingmateriale (høj risiko)
+INGREDIENS: Squalane (marketing sheet)
+
+Kort fakta:
+- Dokumentet indeholder marketingtunge udsagn.
+
+MÅ SIGES I MARKEDSFØRING:
+- Squalane bruges i hudpleje for at give en blødere, mere smidig hudfølelse.
+- Kan være et godt valg til tør og sensitiv hud (leverandørbeskrivelse).
+
+MÅ IKKE SIGES:
+- Stimulerer kollagen / fjerner rynker / “wrinkle-free”.
+- Garanteret effekt for alle.
+============================================================
+
+============================================================
+RISK-02 (FINAL)
+KILDETYPE: Leverandørmateriale (høj risiko – stram fortolkning)
+EMNE: Peptider (Argireline + Matrixyl Synthe’6)
+
+Kort fakta:
+- Argireline: leverandørmateriale angiver INCI for aktivt peptid (Acetyl Hexapeptide-8) samt behandlings-/brugsdata for leverandørens løsning.
+- Matrixyl Synthe’6: leverandør-synopsis beskriver in vitro- og in vivo-resultater for råvaren i deres testopsætninger.
+- Dokumentation er for råvarer/leverandør-tests – ikke et klinisk studie af jeres færdige serum.
+
+MÅ SIGES I MARKEDSFØRING:
+- Hjælper med at øge hudens kollagenproduktion (leverandørdata for peptid).
+- Øger hudens kollagenproduktion (leverandørdata for peptid i laboratorietest).
+- Udviklet med peptider, der er kendt i hudpleje for at støtte et glattere hududtryk.
+- Leverandørens test viser forbedringer i synlige linjer over tid, når peptidet bruges konsekvent.
+- Udviklet til at hjælpe rynker med at se mindre tydelige ud og give en glattere overflade.
+- Bygger på peptid-teknologi, der i leverandørens dokumentation er koblet til et mere “fyldigt” og glat udtryk i huden.
+
+MÅ IKKE SIGES:
+- Klinisk bevist, at Barrier Defense Serum øger kollagenproduktionen i menneskehud (uden separat produktstudie).
+- Alle konkrete %-tal fra leverandørens test som resultat af jeres serum.
+- “Botox-effekt” / injektions- eller medicinske påstande.
+- At resultaterne er fra jeres færdige serum.
+============================================================
+
+============================================================
+RISK-03 (FINAL)
+KILDETYPE: Leverandørmateriale (høj risiko – stram fortolkning)
+INGREDIENS: Soliberine® (Greentech) – “360° photo-protector”
+
+Kort fakta:
+- Leverandørmateriale beskriver råvaren som målrettet påvirkninger fra UV, synligt lys (blåt lys) og infrarødt.
+- Dokumentet viser både in vitro-evalueringer og en in vivo-opsætning for leverandørens råvare/testcreme.
+
+MÅ SIGES I MARKEDSFØRING:
+- Indeholder en antioxidant-aktiv ingrediens, der er udviklet til at beskytte huden mod oxidativt stress.
+- Udviklet til at støtte huden, når den udsættes for udefrakommende påvirkninger som lys og miljø.
+- Leverandørens tests peger på beskyttende effekt mod stress fra både UV og blåt lys.
+- Udviklet til at hjælpe med at holde hudens udtryk mere ensartet over tid.
+
+MÅ IKKE SIGES:
+- SPF/solbeskyttelse-claim (UV filter, SPF osv.).
+- “Stopper aldring” / garanti for at forhindre photoaging.
+- At resultaterne er fra jeres færdige serum.
+- Alle konkrete %-tal/grafer som “bevis” for jeres serum.
+============================================================
+
+============================================================
+RISK-04 (FINAL)
+KILDETYPE: Leverandørmateriale (høj risiko – stram fortolkning)
+INGREDIENS: Sytenol® A (INCI: Bakuchiol)
+
+Kort fakta:
+- INCI: Bakuchiol.
+- Leverandørmateriale beskriver råvaren som et alternativ til retinol og angiver anbefalet brug 0,5–1% i færdig formulering.
+- Dokumentet indeholder både formuleringsteknik og marketingtunge påstande.
+
+MÅ SIGES I MARKEDSFØRING:
+- Bakuchiol er en plantebaseret aktiv ingrediens, der ofte bruges til et glattere og mere ensartet hududtryk.
+- Udviklet til at støtte hudens fasthed og give et mere friskt udseende over tid.
+- Et populært valg til anti-age hudpleje, hvor du ønsker effekt – men en mere skånsom oplevelse.
+- Formuleret til at fungere stabilt i hudpleje (leverandørmateriale).
+
+MÅ IKKE SIGES:
+- “Samme effekt som retinol” / “bedre end retinol” som sikkert claim for jeres produkt.
+- “Klinisk bevist” som claim for jeres serum (uden separat produktstudie).
+- “Stimulerer kollagen/elastin/aquaporin” som sikre effekter i menneskehud ud fra denne guide alene.
+============================================================
+
+============================================================
+INGREDIENTS-07
+INGREDIENS: Glucam™ E-20 (INCI: Methyl Gluceth-20) – fugt + let finish (leverandør)
+
+Kort fakta:
+- Leverandørens produktark beskriver ingrediensen som mild og designet til at give fugt med en let hudfølelse.
+- Leverandørtekst nævner lavt irritationspotentiale og brug i formuleringer til sensitiv hud.
+- Leverandørtekst nævner også reduktion af “klistret” fornemmelse i glycerin-tunge formuleringer.
+
+MÅ SIGES I MARKEDSFØRING:
+- Formuleret med en fugtgivende ingrediens, der er udviklet til at give en let og behagelig hudfølelse.
+- Giver en blødere, glattere finish – uden at føles tung på huden.
+- Udviklet til at mindske den “klistrede” fornemmelse og gøre serummet mere komfortabelt at bruge.
+- En mild ingrediens, som leverandøren beskriver som velegnet til sensitiv hud.
+
+MÅ IKKE SIGES:
+- “Hypoallergen / allergivenlig” som garanti.
+- “0% irritation” / “ingen kan reagere”.
+- “Klinisk bevist effekt på din hud” ud fra råvare-ark alene.
+============================================================
+
+============================================================
+INGREDIENTS-08 (FINAL)
+INGREDIENS: Vitamin E Acetate (INCI: Tocopheryl Acetate) – antioxidant + hudkomfort (BASF)
+
+Kort fakta:
+- INCI: Tocopheryl Acetate.
+- Leverandørmateriale beskriver antioxidant-vinkel og “elasticity/smoothness” i “example of use”.
+
+MÅ SIGES I MARKEDSFØRING:
+- Indeholder vitamin E i en stabil form (vitamin E-acetat).
+- Bidrager med antioxidant-support og hjælper med at beskytte mod oxidativt stress fra frie radikaler.
+- Udviklet til at støtte en blødere, mere smidig hudfølelse.
+
+MÅ IKKE SIGES:
+- SPF/solbeskyttelse-claim.
+- “Reparerer solskader” / “forhindrer aldring”.
+- “Klinisk bevist på mennesker” ud fra dette datasheet alene.
+============================================================
+
+============================================================
+SUPPORT-01 (UPDATED)
+INGREDIENS: Bisabolol (BASF)
+
+Kort fakta:
+- INCI: Bisabolol.
+- Leverandørmateriale beskriver brug i produkter til sensitiv hud samt formulering/stabilitet.
+
+MÅ SIGES I MARKEDSFØRING:
+- Bisabolol er en ingrediens, der ofte bruges i hudpleje til sensitiv hud.
+- Udviklet til at støtte en roligere og mere behagelig hudfølelse.
+- Et godt match i hudpleje, hvor komfort og tolerance er i fokus.
+
+MÅ IKKE SIGES:
+- “Heler huden” / “accelererer heling” (medicinsk claim).
+- “Behandler inflammation” som helbredspåstand.
+============================================================
+
+============================================================
+INGREDIENTS-09
+INGREDIENS: Promois WU-32R (Hydrolyzed Collagen i vand) – leverandørinfo
+
+Kort fakta:
+- Leverandørmateriale beskriver Hydrolyzed Collagen i vand (samt konservering i råvare-opsætning).
+- Dokumentet er primært rettet mod generelle “conditioning”-vinkler (ikke et stærkt anti-age dokument for ansigt).
+
+MÅ SIGES I MARKEDSFØRING:
+- Indeholder hydrolyseret kollagen, som bruges i kosmetiske formuleringer for en blødere og mere velplejet hudfølelse.
+- Bidrager til en mere glat og behagelig finish i formelen.
+
+MÅ IKKE SIGES:
+- “Øger hudens kollagenproduktion.”
+- “Reducerer rynker” (baseret på Promois-dokumentet alene).
+- “Opbygger kollagen i huden.”
+- “Klinisk dokumenteret anti-age effekt” ud fra dette dokument alene.
+============================================================
+
+============================================================
+AFVENTER (når S&J svarer på mailen)
+S&J skriftlig bekræftelse – hudbarriere (over tid)
+- Indsættes som selvstændig FACTS-blok, når I har svaret på skrift.
+============================================================

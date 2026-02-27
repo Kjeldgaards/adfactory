@@ -1,0 +1,155 @@
+FACTS_KJELDGAARD_SAFETY.txt
+Version: FINAL v10
+Opdateret: Januar 2026
+Rule: "MÅ SIGES" må bruges i marketing. "MÅ IKKE SIGES" må aldrig bruges.
+
+============================================================
+SAFETY-01
+TEST: Zurko Research – Patch Test (96 timer okklusiv, n=32)
+KILDE: VV_CC-PT/30D3T1(D)1_723_22_001, Zurko Research S.L., Spanien (EU)
+METODE: Single patch application, 96 timer okklusiv kontakt, dermatologisk kontrol
+
+Kort fakta:
+- Patch-test under dermatologisk kontrol (skærpede testforhold).
+- 32 deltagere (18-70 år, alle hudtyper inkl. sensitiv, Fitzpatrick I-IV).
+- 96 timers okklusiv eksponering (Finn Chamber Aqua®).
+- Mean Irritation Index (M.I.I.): 0,016 (grænse for "ikke-irriterende" er <0,200).
+- Officiel klassifikation: "Non-irritating (NI) / Good cutaneous compatibility".
+
+RESULTATER:
+- 97% (31/32) viste INGEN reaktion.
+- 3% (1/32) viste let erythem (score 1 af 3) – én 19-årig mand med sensitiv hud.
+- Ingen ødem, ingen andre hudreaktioner hos nogen deltagere.
+
+MÅ SIGES I MARKEDSFØRING:
+- Patch-testet under dermatologisk kontrol.
+- Klassificeret som ikke-irriterende i dermatologisk patch-test.
+- Ikke-irriterende / Non-irritating.
+- God hudkompatibilitet / Good cutaneous compatibility.
+- Dokumenteret god hudtolerance under skærpede testforhold.
+- M.I.I. 0,016 – langt under irritationsgrænsen.
+- 97% viste ingen hudreaktion i patch-test.
+- Testet på både sensitiv og ikke-sensitiv hud.
+- Testet på alle hudtyper (Fitzpatrick I-IV).
+- Testet i EU laboratorium.
+
+MÅ IKKE SIGES:
+- 0% reaktioner i patch-test (ikke korrekt – 3% havde let reaktion).
+- 100% ingen reaktion i patch-test.
+- Allergivenlig / hypoallergenic.
+- Ingen kan reagere.
+- Egnet til alle / garanteret uden irritation.
+============================================================
+
+============================================================
+SAFETY-02
+TEST: Zurko Research – Klinisk Tolerance (28 dage normal brug, n=21)
+KILDE: VV_ET-16/20DXT3(D)-A_723_22_001, Zurko Research S.L., Spanien (EU)
+METODE: 28 dages daglig brug (2x dagligt), dermatologisk kontrol
+
+Kort fakta:
+- 21 deltagere (30-70 år, kvinder og mænd, sensitiv + ikke-sensitiv hud).
+- 28 dages normal brug i ansigtet.
+- Dermatologisk vurdering ved dag 0, 14 og 28.
+- 0% observerede bivirkninger.
+
+RESULTATER:
+- 0% bivirkninger observeret af dermatolog.
+- Ingen desquamation, tørhed, acne, rødme, pletter, ødemer eller vesikler.
+- 100% af deltagere rapporterede ingen uønskede effekter.
+- 90% enige: "Produktet irriterer ikke".
+
+MÅ SIGES I MARKEDSFØRING:
+- Dermatologisk testet.
+- 0% bivirkninger i 28-dages klinisk studie.
+- Dermatologisk godkendt.
+- Egnet til sensitiv hud.
+- Testet på sensitiv hud.
+- Klinisk testet for tolerance.
+- 100% rapporterede ingen uønskede effekter (28 dages brug).
+- 90% oplevede at produktet ikke irriterer.
+- Testet i EU laboratorium.
+
+MÅ IKKE SIGES:
+- 0% reaktioner generelt (gælder kun 28-dages studiet, ikke patch-test).
+- Kan ikke give reaktioner.
+- Egnet til alle hudtyper uden undtagelse.
+============================================================
+
+============================================================
+SAFETY-03
+TEST: Konserveringstest (mikrobiologisk sikkerhed) – bestået
+
+Kort fakta:
+- Testet efter en anerkendt standard for konservering.
+- Resultat: bestået.
+
+MÅ SIGES I MARKEDSFØRING:
+- Testet for mikrobiologisk stabilitet (konservering) – bestået.
+- Konserveringen er testet efter en anerkendt standard.
+
+MÅ IKKE SIGES:
+- Sterilt produkt / fri for bakterier for altid.
+- Holder X måneder/år (uden separat dokumentation).
+- Beskytter mod infektioner (medicinsk claim).
+============================================================
+
+============================================================
+SAFETY-04
+TEST: Stabilitetstest 12 uger – bestået
+
+Kort fakta:
+- Stabilitetstest over 12 uger.
+- Konklusion: bestået.
+- Rapporten nævner mindre ændringer under visse betingelser.
+
+MÅ SIGES I MARKEDSFØRING:
+- Stabilitetstestet – bestået.
+- Testet for stabilitet over tid.
+
+MÅ IKKE SIGES:
+- Dokumenteret stabil i 24/36 måneder (uden separat holdbarhedsdokument).
+- Ingen ændringer over tid.
+============================================================
+
+============================================================
+SAFETY-05
+TEST: GMP-certifikat (produktion)
+
+Kort fakta:
+- Producenten er GMP-certificeret for kosmetik (Thailand FDA / Ministry of Public Health).
+- Certifikat ref. nr. 1-5-04-17-20-0100.
+- Issued on: 2 November 2020. Valid until: 1 November 2023.
+
+MÅ SIGES I MARKEDSFØRING:
+- Fremstillet hos en GMP-certificeret kosmetikproducent.
+- Produceret under Good Manufacturing Practice (GMP) for kosmetik.
+
+MÅ IKKE SIGES:
+- "FDA-godkendt produkt" / produktgodkendelse.
+- "Medicinsk kvalitet" / "farmaceutisk GMP".
+- "Gælder stadig i dag", hvis I ikke har et nyere certifikat end 1 Nov 2023.
+
+BEMÆRK: Tjek om der findes et opdateret GMP-certifikat efter Nov 2023.
+============================================================
+
+============================================================
+SAFETY-06
+TEST: EU Laboratorier – Samlet dokumentation
+
+Kort fakta:
+- Alle efficacy- og safety-tests er udført i EU-laboratorier.
+- COMPLIFE Italia S.r.l., Italien (in vitro tests).
+- Zurko Research S.L., Madrid, Spanien (kliniske tests).
+
+MÅ SIGES I MARKEDSFØRING:
+- Testet i EU laboratorium.
+- Testet i europæisk laboratorium.
+- Testet i EU.
+- Klinisk testet i europæisk laboratorium.
+- In vitro testet i EU laboratorium.
+
+MÅ IKKE SIGES:
+- EU-godkendt (der findes ingen sådan godkendelse for kosmetik).
+- Certificeret af EU.
+============================================================

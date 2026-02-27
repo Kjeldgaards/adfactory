@@ -274,6 +274,31 @@ app.post('/api/preview', async (req, res) => {
 // ============================================================
 // ADMIN DATA FILES CONFIG
 // ============================================================
+
+// Volume seeding: if data/ is empty (fresh volume mount), copy from data-seed/
+const DATA_DIR = path.join(__dirname, 'data');
+const SEED_DIR = path.join(__dirname, 'data-seed');
+
+function seedDataIfEmpty() {
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  
+  const dataFiles = fs.readdirSync(DATA_DIR).filter(f => f.endsWith('.json'));
+  
+  if (dataFiles.length === 0 && fs.existsSync(SEED_DIR)) {
+    console.log('  Volume empty — seeding from data-seed/...');
+    const seedFiles = fs.readdirSync(SEED_DIR).filter(f => f.endsWith('.json'));
+    seedFiles.forEach(f => {
+      fs.copyFileSync(path.join(SEED_DIR, f), path.join(DATA_DIR, f));
+      console.log(`    Seeded: ${f}`);
+    });
+    console.log(`  Seeded ${seedFiles.length} files`);
+  } else {
+    console.log(`  Data dir has ${dataFiles.length} files (volume OK)`);
+  }
+}
+
+seedDataIfEmpty();
+
 const DATA_FILES = {
   testimonials: path.join(__dirname, 'data', 'testimonials.json'),
   videos: path.join(__dirname, 'data', 'video-master.json'),

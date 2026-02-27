@@ -1,0 +1,460 @@
+═══════════════════════════════════════════════════════════════
+ORDBANK: ENGELSK MARKETING-SPROG → DANSK HUDPLEJE-SPROG
+═══════════════════════════════════════════════════════════════
+Version: 1.0
+Opdateret: Januar 2026
+Målgruppe: Kvinder 45+ med moden hud
+Brandtone: Premium, omsorgsfuld, videnskabeligt funderet
+
+═══════════════════════════════════════════════════════════════
+SÅDAN BRUGES DENNE FIL
+═══════════════════════════════════════════════════════════════
+
+Denne ordbank er OBLIGATORISK reference ved alle oversættelser fra engelsk til dansk.
+
+WORKFLOW:
+1. Modtag engelsk script
+2. Identificér alle ord/vendinger fra VENSTRE kolonne
+3. Erstat med HØJRE kolonne (dansk hudpleje-sprog)
+4. Tjek at resultatet lyder som noget en dansk kvinde på 45+ ville sige
+
+PRINCIP:
+Engelsk marketing-sprog er ofte aggressivt, action-orienteret og "salgsy".
+Dansk premium hudpleje-sprog er omsorgsfuldt, roligt og respektfuldt.
+
+Vi taler til intelligente, voksne kvinder — ikke "targets" der skal "konverteres".
+
+═══════════════════════════════════════════════════════════════
+SEKTION 1: ACTION-VERBER (de værste syndere)
+═══════════════════════════════════════════════════════════════
+
+Engelske scripts bruger ofte aggressive verber. På dansk lyder de forkert.
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| chase symptoms | jagte symptomer | fokusere på symptomerne |
+| target the cause | gå efter årsagen | tage hånd om årsagen |
+| target the cause | ramme årsagen | fokusere på årsagen |
+| fight aging | bekæmpe aldring | støtte hudens naturlige proces |
+| fight aging | kæmpe mod aldring | give huden det, den har brug for |
+| combat dryness | bekæmpe tørhed | lindre tørhed |
+| combat dryness | kæmpe mod tørhed | give huden fugt |
+| attack wrinkles | angribe rynker | reducere synlige rynker |
+| battle fine lines | bekæmpe fine linjer | blødgøre fine linjer |
+| fix the foundation | reparere fundamentet | styrke hudens fundament |
+| fix your skin | fikse din hud | give din hud det, den mangler |
+| blast away | sprænge væk | reducere |
+| banish wrinkles | forvise rynker | mindske synlige rynker |
+| kick-start | kickstarte | sætte gang i |
+| boost | booste | styrke / støtte |
+| supercharge | superlade | give ekstra støtte til |
+| turbocharge | turbolade | give intensiv støtte til |
+| amp up | skrue op for | styrke |
+| rev up | sætte fut i | understøtte |
+| unlock | låse op for | hjælpe huden med at genfinde |
+| unleash | frigøre | støtte |
+| harness | udnytte | drage fordel af |
+| tackle | tackle | tage hånd om |
+| conquer | erobre | få bugt med |
+| defeat | besejre | reducere |
+| eliminate | eliminere | mindske |
+| eradicate | udrydde | reducere synligheden af |
+| zap | zappe | reducere |
+| nuke | nuke | (brug aldrig) |
+| destroy | ødelægge | (brug aldrig om hud) |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 2: RESULTAT-ORD
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| delivers results | leverer resultater | giver synlige resultater |
+| gets results | får resultater | giver resultater |
+| powerful results | kraftfulde resultater | synlige resultater |
+| dramatic results | dramatiske resultater | tydelige resultater |
+| stunning results | forbløffende resultater | smukke resultater |
+| amazing results | fantastiske resultater | synlige forbedringer |
+| incredible results | utrolige resultater | mærkbare resultater |
+| visible transformation | synlig transformation | synlig forandring |
+| total transformation | total transformation | en hud, der føles fornyet |
+| skin transformation | hudtransformation | hudens forandring |
+| complete makeover | komplet makeover | en fornyet hud |
+| game-changing | game-changing | (brug aldrig) |
+| life-changing | livsforandrende | en mærkbar forskel |
+| breakthrough | gennembrud | nyt / effektiv |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 3: PRODUKT-BESKRIVELSER
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| powerful formula | kraftfuld formel | effektiv formel |
+| powerful formula | magtfuld formel | koncentreret formel |
+| potent formula | potent formel | aktiv formel |
+| advanced formula | avanceret formel | udviklet formel |
+| cutting-edge | banebrydende | moderne / nyudviklet (eller "banebrydende" i hooks) |
+| revolutionary | revolutionerende | nyskabende |
+| groundbreaking | banebrydende | ny tilgang |
+| state-of-the-art | state-of-the-art | moderne |
+| high-performance | high-performance | effektiv |
+| clinical-strength | klinisk styrke | klinisk testet |
+| pharmaceutical-grade | farmaceutisk kvalitet | høj kvalitet |
+| doctor-recommended | lægeanbefalet | dermatologisk testet |
+| scientifically proven | videnskabeligt bevist | klinisk dokumenteret |
+| clinically proven | klinisk bevist | klinisk testet |
+| lab-tested | laboratorietestet | testet |
+| dermatologist-approved | godkendt af dermatologer | dermatologisk testet |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 4: HURTIGHED OG TIMING
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| instantly | øjeblikkeligt | med det samme |
+| immediate results | øjeblikkelige resultater | hurtige resultater |
+| fast-acting | hurtigt virkende | effektiv |
+| rapid results | hurtige resultater | resultater inden for kort tid |
+| quick fix | hurtig løsning | enkel løsning |
+| overnight results | resultater natten over | resultater over tid |
+| in just days | på bare dage | inden for få dage |
+| in no time | på ingen tid | inden for kort tid |
+| lightning-fast | lynhurtig | hurtig |
+| super-fast | superhurtig | effektiv |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 5: INTENSITET OG STYRKE
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| super | super | (undgå som forstærker) |
+| ultra | ultra | ekstra / intensiv |
+| mega | mega | (undgå) |
+| extreme | ekstrem | intensiv |
+| maximum | maksimal | optimal |
+| intense | intens | dyb / koncentreret |
+| aggressive | aggressiv | aktiv |
+| hardcore | hardcore | (brug aldrig) |
+| serious | seriøs | effektiv |
+| heavy-duty | heavy-duty | koncentreret |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 6: PROBLEM-BESKRIVELSER
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| problem skin | problemhud | hud, der har brug for ekstra omsorg |
+| damaged skin | skadet hud | hud, der er blevet påvirket |
+| aging skin | aldrende hud | moden hud |
+| old-looking skin | gammel-udseende hud | hud, der viser tegn på tiden |
+| tired skin | træt hud | hud uden glød |
+| dull skin | kedelig hud | mat hud |
+| lifeless skin | livløs hud | hud uden udstråling |
+| sagging skin | hængende hud | hud, der har mistet spændstighed |
+| saggy skin | slap hud | løs hud |
+| crepey skin | rynket hud | hud med fine linjer |
+| rough skin | ru hud | ujævn hud |
+| troubled skin | plaget hud | sensitiv hud |
+| stressed skin | stresset hud | hud, der er ude af balance |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 7: LØSNINGS-SPROG
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| the solution | løsningen | svaret |
+| the answer | svaret | det, din hud har brug for |
+| the secret | hemmeligheden | nøglen |
+| the key | nøglen | det, der gør forskellen |
+| the trick | tricket | en enkel måde |
+| the hack | hacket | (brug aldrig) |
+| what works | det der virker | det, der giver resultater |
+| what really works | det der virkelig virker | det, din hud reagerer på |
+| the missing piece | det manglende stykke | det, der manglede |
+| your new secret weapon | dit nye hemmelige våben | din nye favorit |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 8: KONTRAST-VENDINGER
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| treats symptoms, not the cause | behandler symptomer, ikke årsagen | fokuserer på symptomerne — ikke årsagen |
+| this one targets the cause | denne går efter årsagen | denne tager hånd om årsagen |
+| most products fail because | de fleste produkter fejler fordi | mange produkter overser |
+| unlike other products | i modsætning til andre produkter | hvor mange produkter kun fokuserer på overfladen |
+| while others just... | mens andre bare... | hvor andre produkter ofte... |
+| stops the problem at the source | stopper problemet ved kilden | tager hånd om den underliggende årsag |
+| gets to the root | kommer til roden | går til kernen |
+| addresses the root cause | adresserer rodårsagen | fokuserer på den underliggende årsag |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 9: GARANTI OG RISIKO
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| risk-free | risikofri | uden risiko |
+| no risk | ingen risiko | helt uden risiko |
+| nothing to lose | intet at tabe | du risikerer ingenting |
+| try it free | prøv det gratis | prøv det uden forpligtelse |
+| money-back guarantee | pengene-tilbage-garanti | tilfredshedsgaranti |
+| satisfaction guaranteed | tilfredshed garanteret | vi står bag produktet |
+| if you're not satisfied | hvis du ikke er tilfreds | ser du ingen forskel |
+| you pay nothing | du betaler ingenting | får du pengene tilbage |
+| zero risk | nul risiko | uden risiko |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 10: CTA OG HANDLING
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| buy now | køb nu | prøv i dag |
+| order now | bestil nu | kom i gang |
+| act now | handl nu | (undgå — for aggressivt) |
+| don't wait | vent ikke | (undgå — for pressende) |
+| limited time | begrænset tid | (kun hvis sandt) |
+| hurry | skynd dig | (brug aldrig) |
+| grab yours | tag din | få din |
+| get yours today | få din i dag | prøv den i dag |
+| claim your | gør krav på din | få din |
+| secure yours | sikr dig din | bestil din |
+| try it today | prøv det i dag | ✅ (kan bruges) |
+| see the difference | se forskellen | oplev forskellen |
+| feel the difference | mærk forskellen | oplev forskellen |
+| experience | oplev | ✅ (godt dansk ord) |
+| discover | opdag | oplev / prøv |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 11: SOCIALE BEVISER
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| thousands of women | tusindvis af kvinder | ✅ (kan bruges) |
+| women love it | kvinder elsker det | kvinder anbefaler den |
+| women swear by it | kvinder sværger til det | kvinder vender tilbage til den |
+| raving reviews | begejstrede anmeldelser | positive anmeldelser |
+| rave reviews | rave reviews | stærke anmeldelser |
+| fans agree | fans er enige | kunderne bekræfter |
+| people are saying | folk siger | kunderne fortæller |
+| everyone's talking about | alle snakker om | mange har opdaget |
+| viral sensation | viral sensation | (brug aldrig) |
+| trending | trending | populær |
+| best-seller | bestseller | en af vores mest populære |
+| #1 choice | #1 valg | et populært valg |
+| top-rated | top-rated | højt vurderet |
+| award-winning | prisvindende | (kun hvis dokumenteret) |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 12: ALDRING OG TID
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| anti-aging | anti-aging | til moden hud |
+| anti-wrinkle | anti-rynke | mod synlige rynker |
+| age-defying | alderstrodsende | til moden hud |
+| turn back time | skru tiden tilbage | give huden ny energi |
+| reverse aging | reversere aldring | støtte hudens naturlige proces |
+| look younger | se yngre ud | få en mere strålende hud |
+| look years younger | se år yngre ud | (undgå — urealistisk) |
+| youthful glow | ungdommelig glød | naturlig glød |
+| youthful skin | ungdommelig hud | strålende hud |
+| youthful appearance | ungdommeligt udseende | frisk udseende |
+| fountain of youth | ungdomskilde | (brug aldrig) |
+| stop aging | stop aldring | støtte huden over tid |
+| slow down aging | bremse aldring | give huden det, den har brug for |
+| aging gracefully | ældes med ynde | hud, der trives |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 13: TEKNISKE TERMER
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| skin barrier | hudbarriere | ✅ (korrekt term) |
+| moisture barrier | fugtbarriere | hudbarriere |
+| lipid barrier | lipidbarriere | hudens beskyttende lag |
+| encapsulated retinol | encapsulated retinol | indkapslet retinol |
+| hyaluronic acid | hyaluronsyre | hyaluronsyre krydspolymer |
+| peptides | peptider | ✅ (korrekt term) |
+| antioxidants | antioxidanter | ✅ (korrekt term) |
+| free radicals | frie radikaler | ✅ (korrekt term) |
+| collagen | kollagen | ✅ (korrekt term) |
+| elastin | elastin | ✅ (korrekt term) |
+| cell renewal | cellefornyelse | hudens naturlige fornyelse | hudens naturlige cellefornyelse |
+| cell turnover | celleomsætning | hudens fornyelsesproces |
+| skin regeneration | hudregeneration | hudens naturlige genopbygning |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 14: EMOTIONELLE VENDINGER
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| you deserve | du fortjener | din hud fortjener |
+| treat yourself | forkæl dig selv | giv din hud noget godt |
+| pamper yourself | forkæl dig selv | giv dig selv en stund |
+| indulge | nyd | forkæl din hud |
+| love your skin | elsk din hud | en hud, du er glad for |
+| confidence boost | selvtillidsboost | fornyet selvtillid |
+| feel confident | føl dig selvsikker | føl dig godt tilpas |
+| feel beautiful | føl dig smuk | føl dig godt i din hud |
+| the skin you've always wanted | huden du altid har ønsket | en hud, du er tilfreds med |
+| finally | endelig | ✅ (kan bruges) |
+| at last | endelig | ✅ (kan bruges) |
+| imagine | forestil dig | ✅ (kan bruges) |
+| picture this | forestil dig | tænk på |
+| what if | hvad nu hvis | ✅ (kan bruges) |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 15: SAMMENLIGNING OG KONTRAST
+═══════════════════════════════════════════════════════════════
+
+| ENGELSK | ❌ IKKE DETTE | ✅ DANSK HUDPLEJE-SPROG |
+|---------|---------------|-------------------------|
+| better than | bedre end | en anden tilgang end |
+| superior to | overlegen i forhold til | mere effektiv end |
+| outperforms | overgår | giver bedre resultater end |
+| leaves others behind | efterlader andre | adskiller sig fra |
+| nothing else compares | intet andet kan måle sig | (undgå direkte sammenligning) |
+| forget everything else | glem alt andet | (undgå) |
+| throw away your other products | smid dine andre produkter væk | (brug aldrig) |
+| the only product you need | det eneste produkt du har brug for | ét produkt, der gør en forskel |
+| all-in-one | alt-i-en | en enkel løsning |
+| replaces X products | erstatter X produkter | kan forenkle din rutine |
+
+═══════════════════════════════════════════════════════════════
+SEKTION 16: FULDSTÆNDIGE SÆTNINGER (EKSEMPLER)
+═══════════════════════════════════════════════════════════════
+
+Her er eksempler på hele sætninger, før og efter:
+
+---
+
+HOOK-EKSEMPLER:
+
+❌ "This one targets the cause."
+✅ "Denne tager hånd om årsagen."
+
+❌ "Stop chasing symptoms."
+✅ "Stop med at fokusere på symptomerne."
+
+❌ "Fight aging at its source."
+✅ "Giv din hud det, den har brug for."
+
+❌ "Unlock your skin's potential."
+✅ "Hjælp din hud med at genfinde sin naturlige glød."
+
+---
+
+MEKANISME-EKSEMPLER:
+
+❌ "This powerful formula attacks wrinkles at their root."
+✅ "Denne effektive formel fokuserer på den underliggende årsag til synlige rynker."
+
+❌ "It combats dryness and fights fine lines."
+✅ "Den lindrer tørhed og hjælper med at reducere fine linjer."
+
+❌ "The serum aggressively targets aging."
+✅ "Serummet er udviklet til at støtte moden hud."
+
+---
+
+RESULTAT-EKSEMPLER:
+
+❌ "Experience a total skin transformation."
+✅ "Oplev en hud, der føles fornyet."
+
+❌ "Get dramatic, visible results fast."
+✅ "Se synlige resultater inden for de første uger."
+
+❌ "Your skin will look years younger."
+✅ "Din hud vil se mere strålende og frisk ud."
+
+---
+
+CTA-EKSEMPLER:
+
+❌ "Act now and claim your bottle!"
+✅ "Prøv den i dag."
+
+❌ "Don't wait — grab yours before it's gone!"
+✅ "Kom i gang med din hudplejerutine."
+
+❌ "Hurry — limited time offer!"
+✅ "Prøv Barrier Defense Serum uden risiko."
+
+═══════════════════════════════════════════════════════════════
+SEKTION 17: TONEPRINCIP
+═══════════════════════════════════════════════════════════════
+
+HUSK ALTID:
+
+Vi taler til VOKSNE, INTELLIGENTE KVINDER på 45+.
+
+De har set tusindvis af reklamer. De genkender marketing-tricks øjeblikkeligt.
+De vil ikke "jagtes", "targetes" eller "konverteres".
+De vil behandles med respekt og få ærlig information.
+
+TONEN SKAL VÆRE:
+• Omsorgsfuld — som en god veninde, der deler sin viden
+• Rolig — ingen pres, ingen urgency-tricks
+• Respektfuld — de kan selv tage beslutninger
+• Ærlig — realistiske forventninger, ikke mirakelløfter
+• Premium — kvalitet over kvantitet, effekt over hype
+
+TONEN SKAL IKKE VÆRE:
+• Aggressiv — ingen "kamp"-sprog
+• Pressende — ingen falsk urgency
+• Nedladende — de er ikke dumme
+• Overhypet — ingen mirakelclaims
+• Ungdommelig — de er ikke 25 og vil ikke lyde som det
+
+═══════════════════════════════════════════════════════════════
+SEKTION 18: HURTIG REFERENCE — DE 20 VÆRSTE SYNDERE
+═══════════════════════════════════════════════════════════════
+
+Disse ord/vendinger skal ALTID erstattes:
+
+| # | UNDGÅ | BRUG I STEDET |
+|---|-------|---------------|
+| 1 | jagte symptomer | fokusere på symptomerne |
+| 2 | gå efter årsagen | tage hånd om årsagen |
+| 3 | bekæmpe | lindre / reducere / støtte |
+| 4 | angribe | fokusere på |
+| 5 | kraftfuld formel | effektiv formel |
+| 6 | leverer resultater | giver resultater |
+| 7 | transformation | forandring / fornyelse |
+| 8 | reparere fundamentet | styrke hudens fundament |
+| 9 | anti-aging | til moden hud |
+| 10 | ungdommelig | strålende / naturlig |
+| 11 | øjeblikkeligt | med det samme |
+| 12 | dramatiske resultater | synlige resultater |
+| 13 | game-changing | (udelad helt) |
+| 14 | køb nu | prøv i dag |
+| 15 | handl nu | kom i gang |
+| 16 | vent ikke | (udelad helt) |
+| 17 | super/ultra/mega | (udelad eller brug: intensiv) |
+| 18 | problemhud | hud, der har brug for ekstra omsorg |
+| 19 | skadet hud | hud, der er blevet påvirket |
+| 20 | hacket/tricket | en enkel måde |
+
+═══════════════════════════════════════════════════════════════
+CHANGELOG
+═══════════════════════════════════════════════════════════════
+
+v1.0 (Januar 2026)
+- Første version
+- 18 sektioner med systematisk oversættelsesguide
+- Baseret på eksisterende DO/DON'T filer
+- Tilføjet toneprincip og hurtig reference
+
+═══════════════════════════════════════════════════════════════

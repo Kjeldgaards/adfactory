@@ -32,7 +32,10 @@ RUN npm install --production
 COPY . .
 
 # Create directories
-RUN mkdir -p templates data
+RUN mkdir -p templates data docs
+
+# Seed data: copy data/ to data-seed/ so volume mount doesn't lose initial data
+RUN cp -r data data-seed
 
 EXPOSE 3000
 
