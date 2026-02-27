@@ -3,121 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KJELDGAARD Søg</title>
+  <title>KJELDGAARD Søg & Generér</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; }
-    
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; padding-bottom: 80px; }
     .container { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
-    
     h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; }
     .subtitle { color: #71717a; font-size: 14px; margin-bottom: 24px; }
-    
-    /* Back link */
-    .back-link { display: inline-flex; align-items: center; gap: 6px; color: #71717a; text-decoration: none; font-size: 14px; margin-bottom: 24px; }
-    .back-link:hover { color: #a1a1aa; }
-    
-    /* Search bar */
+    .nav-links { display: flex; gap: 16px; margin-bottom: 24px; }
+    .nav-link { display: inline-flex; align-items: center; gap: 6px; color: #71717a; text-decoration: none; font-size: 14px; }
+    .nav-link:hover { color: #a1a1aa; }
     .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
     .search-input { flex: 1; background: #18181b; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; outline: none; }
     .search-input:focus { border-color: #3b82f6; }
     .search-input::placeholder { color: #52525b; }
     .search-btn { background: #3b82f6; color: #fff; border: none; border-radius: 8px; padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .search-btn:hover { background: #2563eb; }
-    
-    /* Filters */
     .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
     .filter-group { display: flex; gap: 4px; }
     .filter-btn { background: #18181b; border: 1px solid #27272a; border-radius: 6px; padding: 6px 14px; color: #a1a1aa; font-size: 13px; cursor: pointer; transition: all 0.15s; }
     .filter-btn:hover { border-color: #3f3f46; color: #e4e4e7; }
     .filter-btn.active { background: #3b82f6; border-color: #3b82f6; color: #fff; }
-    
-    .tema-select { background: #18181b; border: 1px solid #27272a; border-radius: 6px; padding: 6px 12px; color: #a1a1aa; font-size: 13px; cursor: pointer; margin-left: 8px; }
-    .tema-select:focus { border-color: #3b82f6; outline: none; }
-    
-    /* Quick tags */
     .quick-tags { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
     .quick-tag { background: #1e1e24; border: 1px solid #27272a; border-radius: 16px; padding: 4px 12px; color: #71717a; font-size: 12px; cursor: pointer; transition: all 0.15s; }
     .quick-tag:hover { border-color: #3b82f6; color: #3b82f6; }
     .quick-tag .count { color: #52525b; font-size: 11px; margin-left: 4px; }
-    
-    /* Results count */
+    .selection-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 10px 16px; background: #18181b; border: 1px solid #27272a; border-radius: 8px; }
+    .select-all-btn { background: none; border: 1px solid #3f3f46; border-radius: 6px; padding: 5px 12px; color: #a1a1aa; font-size: 12px; cursor: pointer; }
+    .select-all-btn:hover { border-color: #B8943E; color: #B8943E; }
+    .selection-count { color: #71717a; font-size: 13px; }
+    .selection-count strong { color: #B8943E; }
     .results-info { color: #71717a; font-size: 13px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1e1e24; }
     .results-info strong { color: #e4e4e7; }
-    
-    /* Result cards */
-    .result-card { background: #18181b; border: 1px solid #27272a; border-radius: 10px; padding: 16px; margin-bottom: 10px; transition: border-color 0.15s; }
+    .result-card { background: #18181b; border: 1px solid #27272a; border-radius: 10px; padding: 16px; margin-bottom: 10px; transition: border-color 0.15s; display: flex; gap: 12px; cursor: pointer; }
     .result-card:hover { border-color: #3f3f46; }
-    
+    .result-card.selected { border-color: #B8943E; background: #18170f; }
+    .result-checkbox { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: #B8943E; }
+    .result-content { flex: 1; min-width: 0; }
     .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .result-name { font-weight: 600; color: #fff; font-size: 15px; }
     .result-source { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
     .source-tp { background: #1e3a2f; color: #4ade80; }
     .source-vdo { background: #1e2a3e; color: #60a5fa; }
     .source-meta { background: #2e1e3a; color: #c084fc; }
-    
     .result-meta { display: flex; gap: 12px; color: #71717a; font-size: 12px; margin-bottom: 8px; flex-wrap: wrap; }
-    
     .result-text { color: #a1a1aa; font-size: 14px; line-height: 1.6; }
-    .result-text.truncated { max-height: 100px; overflow: hidden; }
     .result-text mark { background: #3b82f633; color: #93c5fd; border-radius: 2px; padding: 0 2px; }
-    
     .result-temaer { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
     .tema-tag { background: #27272a; color: #a1a1aa; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
     .tema-tag.match { background: #3b82f633; color: #93c5fd; }
-    
-    /* Expand button */
     .expand-btn { background: none; border: none; color: #3b82f6; font-size: 12px; cursor: pointer; margin-top: 8px; padding: 0; }
     .expand-btn:hover { color: #60a5fa; }
-    
-    /* Empty state */
     .empty-state { text-align: center; padding: 60px 20px; color: #52525b; }
     .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
     .empty-state p { font-size: 14px; }
-    
-    /* Loading */
     .loading { text-align: center; padding: 40px; color: #52525b; }
-    
-    /* Stats bar */
     .stats-bar { display: flex; gap: 16px; margin-bottom: 24px; }
     .stat-mini { background: #18181b; border: 1px solid #27272a; border-radius: 8px; padding: 10px 16px; flex: 1; text-align: center; }
     .stat-mini-number { font-size: 20px; font-weight: 700; color: #fff; }
     .stat-mini-label { font-size: 11px; color: #71717a; text-transform: uppercase; letter-spacing: 0.5px; }
-    
-    /* Keyboard shortcut hint */
     .kbd { background: #27272a; border: 1px solid #3f3f46; border-radius: 4px; padding: 1px 5px; font-size: 11px; color: #71717a; font-family: monospace; }
+    /* STICKY ACTION BAR */
+    .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #18181b; border-top: 2px solid #B8943E; padding: 12px 20px; display: none; z-index: 100; }
+    .action-bar.visible { display: block; }
+    .action-bar-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .action-info { color: #e4e4e7; font-size: 14px; }
+    .action-info strong { color: #B8943E; }
+    .action-info .source-breakdown { color: #71717a; font-size: 12px; }
+    .action-buttons { display: flex; gap: 8px; }
+    .btn-generate { background: #B8943E; color: #000; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-generate:hover { background: #d4a843; }
+    .btn-clear { background: none; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px 16px; font-size: 13px; color: #a1a1aa; cursor: pointer; }
+    .btn-clear:hover { border-color: #ef4444; color: #ef4444; }
+    /* GENERATE PANEL */
+    .generate-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; }
+    .generate-overlay.visible { display: flex; }
+    .generate-panel { background: #18181b; border: 1px solid #27272a; border-radius: 16px; padding: 32px; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+    .generate-panel h2 { font-size: 20px; color: #fff; margin-bottom: 4px; }
+    .generate-panel .sub { color: #71717a; font-size: 13px; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; color: #a1a1aa; font-size: 13px; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-select, .form-textarea { width: 100%; background: #0a0a0f; border: 1px solid #27272a; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; outline: none; }
+    .form-select:focus, .form-textarea:focus { border-color: #B8943E; }
+    .form-textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+    .form-row { display: flex; gap: 16px; }
+    .form-row .form-group { flex: 1; }
+    .btn-run { background: #B8943E; color: #000; border: none; border-radius: 8px; padding: 12px 28px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; }
+    .btn-run:hover { background: #d4a843; }
+    .btn-run:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-close-panel { background: none; border: none; color: #71717a; font-size: 24px; cursor: pointer; float: right; line-height: 1; }
+    .btn-close-panel:hover { color: #fff; }
+    .gen-results { margin-top: 24px; }
+    .gen-result-card { background: #0a0a0f; border: 1px solid #27272a; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+    .gen-result-text { color: #e4e4e7; font-size: 14px; line-height: 1.6; white-space: pre-wrap; margin-bottom: 10px; }
+    .gen-result-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .gen-score { font-weight: 700; font-size: 14px; padding: 2px 10px; border-radius: 6px; }
+    .gen-score.high { background: #1e3a2f; color: #4ade80; }
+    .gen-score.medium { background: #3a2e1e; color: #fbbf24; }
+    .gen-words { color: #71717a; font-size: 12px; }
+    .gen-notes { color: #52525b; font-size: 12px; font-style: italic; margin-top: 6px; }
+    .copy-btn { background: none; border: 1px solid #3f3f46; border-radius: 4px; padding: 3px 10px; color: #a1a1aa; font-size: 11px; cursor: pointer; }
+    .copy-btn:hover { border-color: #B8943E; color: #B8943E; }
+    .gen-avg { text-align: center; padding: 12px; background: #0f1117; border-radius: 8px; margin-bottom: 16px; color: #71717a; font-size: 13px; }
+    .gen-avg strong { color: #B8943E; font-size: 18px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <a href="/admin.html" class="back-link">← Tilbage til Admin</a>
-    
-    <h1>🔍 Søg i testimonials</h1>
-    <p class="subtitle">Søg på tværs af Trustpilot, Video og Meta kommentarer</p>
-    
-    <!-- Stats -->
-    <div class="stats-bar">
-      <div class="stat-mini">
-        <div class="stat-mini-number" id="stat-tp">-</div>
-        <div class="stat-mini-label">Trustpilot</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-number" id="stat-vdo">-</div>
-        <div class="stat-mini-label">Video</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-number" id="stat-meta">-</div>
-        <div class="stat-mini-label">Meta</div>
-      </div>
+    <div class="nav-links">
+      <a href="/" class="nav-link">← Ad Factory</a>
+      <a href="/admin.html" class="nav-link">📋 Admin</a>
     </div>
-    
-    <!-- Search -->
+    <h1>🔍 Søg & Generér</h1>
+    <p class="subtitle">Søg → vælg testimonials → generér scored indhold med customer language</p>
+    <div class="stats-bar">
+      <div class="stat-mini"><div class="stat-mini-number" id="stat-tp">-</div><div class="stat-mini-label">Trustpilot</div></div>
+      <div class="stat-mini"><div class="stat-mini-number" id="stat-vdo">-</div><div class="stat-mini-label">Video</div></div>
+      <div class="stat-mini"><div class="stat-mini-number" id="stat-meta">-</div><div class="stat-mini-label">Meta</div></div>
+    </div>
     <div class="search-bar">
       <input type="text" class="search-input" id="search-input" placeholder="Søg efter keyword, navn, tema..." autofocus>
       <button class="search-btn" id="search-btn">Søg</button>
     </div>
-    
-    <!-- Source filter -->
     <div class="filters">
       <div class="filter-group">
         <button class="filter-btn active" data-source="all">Alle</button>
@@ -126,17 +133,13 @@
         <button class="filter-btn" data-source="meta">Meta</button>
       </div>
     </div>
-    
-    <!-- Tema oversigt -->
-    <div class="quick-tags" id="quick-tags">
-      <span style="color:#52525b;font-size:12px;">Indlæser temaer...</span>
+    <div class="quick-tags" id="quick-tags"><span style="color:#52525b;font-size:12px;">Indlæser temaer...</span></div>
+    <div class="selection-bar" id="selection-bar">
+      <button class="select-all-btn" id="select-all-btn">☐ Vælg alle synlige</button>
+      <span class="selection-count" id="selection-count"></span>
     </div>
-    
-    <!-- Results -->
     <div id="results-info" class="results-info" style="display:none;"></div>
     <div id="results"></div>
-    
-    <!-- Empty state -->
     <div id="empty-state" class="empty-state">
       <div class="icon">🔍</div>
       <p>Søg efter et keyword eller vælg et tema for at finde testimonials</p>
@@ -144,12 +147,69 @@
     </div>
   </div>
 
+  <div class="action-bar" id="action-bar">
+    <div class="action-bar-inner">
+      <div class="action-info">
+        <span id="action-count"></span>
+        <div class="source-breakdown" id="action-breakdown"></div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn-clear" id="btn-clear-selection">Ryd valg</button>
+        <button class="btn-generate" id="btn-open-generate">✨ Generér indhold</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="generate-overlay" id="generate-overlay">
+    <div class="generate-panel">
+      <button class="btn-close-panel" id="btn-close-panel">✕</button>
+      <h2>✨ Generér indhold</h2>
+      <p class="sub" id="gen-sub">Fra 0 valgte testimonials</p>
+      <div class="form-group">
+        <label class="form-label">Hvad vil du generere?</label>
+        <select class="form-select" id="gen-type">
+          <option value="headlines">Meta Headlines / Hooks</option>
+          <option value="benefits">Benefit Statements</option>
+          <option value="adcopy">Meta Ad Copy (komplet)</option>
+          <option value="custom">Frit prompt</option>
+        </select>
+      </div>
+      <div class="form-group" id="custom-prompt-group" style="display:none;">
+        <label class="form-label">Dit prompt</label>
+        <textarea class="form-textarea" id="gen-custom-prompt" placeholder="Skriv hvad du vil have genereret med de valgte testimonials..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Antal</label>
+          <select class="form-select" id="gen-count">
+            <option value="3" selected>3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Min. Score (Benson)</label>
+          <select class="form-select" id="gen-score">
+            <option value="8.0">8.0</option>
+            <option value="8.5">8.5</option>
+            <option value="9.0" selected>9.0</option>
+            <option value="9.5">9.5</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-run" id="btn-run-generate">✨ Generér</button>
+      <div class="gen-results" id="gen-results"></div>
+    </div>
+  </div>
+
   <script>
     const API = window.location.origin;
     let currentSource = 'all';
     let expandedCards = new Set();
-    
-    // Load stats
+    let selectedItems = new Map();
+    let lastResults = null;
+    let allVisibleItems = [];
+
     async function loadStats() {
       try {
         const res = await fetch(API + '/api/stats');
@@ -159,75 +219,98 @@
         document.getElementById('stat-meta').textContent = data.metacomments || 0;
       } catch (e) { console.error(e); }
     }
-    
-    // Highlight matches in text
+
     function highlight(text, query) {
       if (!query || !text) return text || '';
       const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`(${escaped})`, 'gi');
-      return text.replace(regex, '<mark>$1</mark>');
+      return text.replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
     }
-    
-    // Search
+
+    function itemKey(item) { return item._source + '-' + item.id; }
+
+    function updateSelectionUI() {
+      const count = selectedItems.size;
+      const countEl = document.getElementById('selection-count');
+      const bar = document.getElementById('action-bar');
+
+      if (count > 0) {
+        const s = { tp: 0, vdo: 0, meta: 0 };
+        selectedItems.forEach(item => s[item._source]++);
+        const parts = [];
+        if (s.tp) parts.push(s.tp + ' TP');
+        if (s.vdo) parts.push(s.vdo + ' VDO');
+        if (s.meta) parts.push(s.meta + ' META');
+        countEl.innerHTML = '<strong>' + count + ' valgt</strong> (' + parts.join(', ') + ')';
+        bar.classList.add('visible');
+        document.getElementById('action-count').innerHTML = '<strong>' + count + ' testimonials valgt</strong>';
+        document.getElementById('action-breakdown').textContent = parts.map(p => p.replace('TP','Trustpilot').replace('VDO','Video')).join(' · ');
+      } else {
+        countEl.innerHTML = '';
+        bar.classList.remove('visible');
+      }
+
+      document.querySelectorAll('.result-checkbox').forEach(cb => {
+        const card = cb.closest('.result-card');
+        const isChecked = selectedItems.has(cb.dataset.key);
+        cb.checked = isChecked;
+        card.classList.toggle('selected', isChecked);
+      });
+
+      const allBtn = document.getElementById('select-all-btn');
+      const allSelected = allVisibleItems.length > 0 && allVisibleItems.every(item => selectedItems.has(itemKey(item)));
+      allBtn.textContent = allSelected ? '☑ Fravælg alle' : '☐ Vælg alle synlige';
+    }
+
     async function doSearch() {
       const q = document.getElementById('search-input').value.trim();
-      
       if (!q) {
         document.getElementById('results').innerHTML = '';
         document.getElementById('results-info').style.display = 'none';
         document.getElementById('empty-state').style.display = 'block';
+        allVisibleItems = [];
+        updateSelectionUI();
         return;
       }
-      
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('results').innerHTML = '<div class="loading">Søger...</div>';
-      
       try {
         const params = new URLSearchParams();
-        if (q) params.set('q', q);
+        params.set('q', q);
         params.set('source', currentSource);
-        
         const res = await fetch(API + '/api/search?' + params.toString());
         const data = await res.json();
         lastResults = data;
+        allVisibleItems = data.results || [];
         renderResults(data, q);
       } catch (e) {
-        document.getElementById('results').innerHTML = '<div class="empty-state"><p>Fejl ved søgning: ' + e.message + '</p></div>';
+        document.getElementById('results').innerHTML = '<div class="empty-state"><p>Fejl: ' + e.message + '</p></div>';
       }
     }
-    
-    // Render results
+
     function renderResults(data, query) {
       const container = document.getElementById('results');
       const info = document.getElementById('results-info');
-      
       if (!data.results.length) {
         info.style.display = 'none';
-        container.innerHTML = '<div class="empty-state"><div class="icon">🤷</div><p>Ingen resultater fundet</p></div>';
+        container.innerHTML = '<div class="empty-state"><div class="icon">🤷</div><p>Ingen resultater</p></div>';
         return;
       }
-      
-      // Count by source
       const counts = { tp: 0, vdo: 0, meta: 0 };
       data.results.forEach(r => counts[r._source]++);
-      
       const parts = [];
       if (counts.tp) parts.push(counts.tp + ' TP');
       if (counts.vdo) parts.push(counts.vdo + ' VDO');
       if (counts.meta) parts.push(counts.meta + ' META');
-      
       info.style.display = 'block';
-      info.innerHTML = '<strong>' + data.total + '</strong> resultater fundet (' + parts.join(', ') + ')';
-      
+      info.innerHTML = '<strong>' + data.total + '</strong> resultater (' + parts.join(', ') + ')';
+
       container.innerHTML = data.results.map((item, idx) => {
+        const key = itemKey(item);
+        const isSelected = selectedItems.has(key);
         const fullText = item.tekst || item.transkription || '';
         const isLong = fullText.length > 250;
         const isExpanded = expandedCards.has(idx);
         const displayText = (isLong && !isExpanded) ? fullText.substring(0, 250) + '...' : fullText;
-        
-        const sourceClass = 'source-' + item._source;
-        
-        // Meta info parts
         const metaParts = [];
         if (item.dato) metaParts.push(item.dato);
         if (item.alder) metaParts.push(item.alder + ' år');
@@ -235,59 +318,58 @@
         if (item.rating) metaParts.push('★'.repeat(item.rating));
         if (item.awareness) metaParts.push(item.awareness);
         if (item.kilde) metaParts.push(item.kilde);
-        
-        // Temaer
         const temaerHtml = (item.temaer || []).map(t => {
           const isMatch = query && t.toLowerCase().includes(query.toLowerCase());
           return '<span class="tema-tag' + (isMatch ? ' match' : '') + '">' + t + '</span>';
         }).join('');
-        
-        return `
-          <div class="result-card" data-idx="${idx}">
-            <div class="result-header">
-              <span class="result-name">${highlight(item.navn || 'Anonym', query)}</span>
-              <span class="result-source ${sourceClass}">${item._sourceLabel}</span>
-            </div>
-            ${metaParts.length ? '<div class="result-meta">' + metaParts.join(' · ') + '</div>' : ''}
-            <div class="result-text" style="${isLong && !isExpanded ? 'max-height:100px;overflow:hidden' : ''}">${highlight(displayText, query)}</div>
-            ${isLong ? '<button type="button" class="expand-btn" onclick="toggleExpand(' + idx + ')">' + (isExpanded ? 'Vis mindre ▲' : 'Vis mere ▼') + '</button>' : ''}
-            ${temaerHtml ? '<div class="result-temaer">' + temaerHtml + '</div>' : ''}
-          </div>
-        `;
+
+        return '<div class="result-card ' + (isSelected ? 'selected' : '') + '" data-key="' + key + '">' +
+          '<input type="checkbox" class="result-checkbox" data-key="' + key + '" data-idx="' + idx + '" ' + (isSelected ? 'checked' : '') + '>' +
+          '<div class="result-content">' +
+            '<div class="result-header">' +
+              '<span class="result-name">' + highlight(item.navn || 'Anonym', query) + '</span>' +
+              '<span class="result-source source-' + item._source + '">' + item._sourceLabel + '</span>' +
+            '</div>' +
+            (metaParts.length ? '<div class="result-meta">' + metaParts.join(' · ') + '</div>' : '') +
+            '<div class="result-text" style="' + (isLong && !isExpanded ? 'max-height:100px;overflow:hidden' : '') + '">' + highlight(displayText, query) + '</div>' +
+            (isLong ? '<button type="button" class="expand-btn" onclick="toggleExpand(' + idx + ')">' + (isExpanded ? 'Vis mindre ▲' : 'Vis mere ▼') + '</button>' : '') +
+            (temaerHtml ? '<div class="result-temaer">' + temaerHtml + '</div>' : '') +
+          '</div></div>';
       }).join('');
+
+      container.querySelectorAll('.result-checkbox').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const key = e.target.dataset.key;
+          const idx = parseInt(e.target.dataset.idx);
+          if (e.target.checked) selectedItems.set(key, data.results[idx]);
+          else selectedItems.delete(key);
+          updateSelectionUI();
+        });
+      });
+
+      container.querySelectorAll('.result-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.classList.contains('expand-btn') || e.target.classList.contains('result-checkbox')) return;
+          const cb = card.querySelector('.result-checkbox');
+          cb.checked = !cb.checked;
+          cb.dispatchEvent(new Event('change'));
+        });
+      });
+      updateSelectionUI();
     }
-    
-    // Toggle expand
-    var lastResults = null;
-    
+
     window.toggleExpand = function(idx) {
-      if (expandedCards.has(idx)) {
-        expandedCards.delete(idx);
-      } else {
-        expandedCards.add(idx);
-      }
-      // Re-render from cached results without fetching
+      expandedCards.has(idx) ? expandedCards.delete(idx) : expandedCards.add(idx);
       if (lastResults) {
-        var scrollBefore = window.pageYOffset;
+        const y = window.pageYOffset;
         renderResults(lastResults, document.getElementById('search-input').value.trim());
-        window.scrollTo(0, scrollBefore);
+        window.scrollTo(0, y);
       }
     };
-    
-    // Event listeners
-    document.getElementById('search-btn').addEventListener('click', () => {
-      expandedCards.clear();
-      doSearch();
-    });
-    
-    document.getElementById('search-input').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        expandedCards.clear();
-        doSearch();
-      }
-    });
-    
-    // Source filter buttons
+
+    document.getElementById('search-btn').addEventListener('click', () => { expandedCards.clear(); doSearch(); });
+    document.getElementById('search-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { expandedCards.clear(); doSearch(); } });
+
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -297,37 +379,83 @@
         doSearch();
       });
     });
-    
-    // Load temaer dynamically
+
+    document.getElementById('select-all-btn').addEventListener('click', () => {
+      const allSelected = allVisibleItems.every(item => selectedItems.has(itemKey(item)));
+      if (allSelected) allVisibleItems.forEach(item => selectedItems.delete(itemKey(item)));
+      else allVisibleItems.forEach(item => selectedItems.set(itemKey(item), item));
+      updateSelectionUI();
+    });
+
+    document.getElementById('btn-clear-selection').addEventListener('click', () => { selectedItems.clear(); updateSelectionUI(); });
+
+    document.getElementById('btn-open-generate').addEventListener('click', () => {
+      document.getElementById('generate-overlay').classList.add('visible');
+      document.getElementById('gen-sub').textContent = 'Fra ' + selectedItems.size + ' valgte testimonials';
+      document.getElementById('gen-results').innerHTML = '';
+    });
+
+    document.getElementById('btn-close-panel').addEventListener('click', () => { document.getElementById('generate-overlay').classList.remove('visible'); });
+    document.getElementById('generate-overlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('visible'); });
+    document.getElementById('gen-type').addEventListener('change', (e) => { document.getElementById('custom-prompt-group').style.display = e.target.value === 'custom' ? 'block' : 'none'; });
+
+    document.getElementById('btn-run-generate').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-run-generate');
+      const resultsDiv = document.getElementById('gen-results');
+      btn.disabled = true;
+      btn.textContent = '⏳ Genererer...';
+      resultsDiv.innerHTML = '<div class="loading">Claude arbejder med ' + selectedItems.size + ' testimonials og Benson scoring...</div>';
+      try {
+        const body = {
+          type: document.getElementById('gen-type').value,
+          count: parseInt(document.getElementById('gen-count').value),
+          minScore: parseFloat(document.getElementById('gen-score').value),
+          selectedIds: Array.from(selectedItems.keys()),
+          customPrompt: document.getElementById('gen-custom-prompt').value
+        };
+        const res = await fetch(API + '/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const data = await res.json();
+        if (data.error) { resultsDiv.innerHTML = '<div class="empty-state"><p>Fejl: ' + data.error + '</p></div>'; return; }
+        if (!data.results || !data.results.length) { resultsDiv.innerHTML = '<div class="empty-state"><p>Ingen resultater</p></div>'; return; }
+        resultsDiv.innerHTML =
+          '<div class="gen-avg">Gns. score: <strong>' + (data.meta?.averageScore || '?') + '/10</strong> · ' + data.results.length + ' resultater · ' + (data.meta?.type || '') + '</div>' +
+          data.results.map((r, i) =>
+            '<div class="gen-result-card">' +
+              '<div class="gen-result-text">' + (r.text || '') + '</div>' +
+              '<div class="gen-result-meta">' +
+                '<span class="gen-score ' + ((r.score||0) >= 9 ? 'high' : 'medium') + '">' + (r.score||'?') + '/10</span>' +
+                (r.customer_words_used ? '<span class="gen-words">Kundeord: ' + r.customer_words_used.join(', ') + '</span>' : '') +
+                '<button class="copy-btn" onclick="copyText(this)">Kopiér</button>' +
+              '</div>' +
+              (r.scoring_notes ? '<div class="gen-notes">' + r.scoring_notes + '</div>' : '') +
+            '</div>'
+          ).join('');
+      } catch (e) { resultsDiv.innerHTML = '<div class="empty-state"><p>Fejl: ' + e.message + '</p></div>'; }
+      finally { btn.disabled = false; btn.textContent = '✨ Generér'; }
+    });
+
+    window.copyText = function(btn) {
+      const text = btn.closest('.gen-result-card').querySelector('.gen-result-text').textContent;
+      navigator.clipboard.writeText(text).then(() => { btn.textContent = '✓ Kopieret'; setTimeout(() => btn.textContent = 'Kopiér', 2000); });
+    };
+
     async function loadTemaer() {
       try {
         const res = await fetch(API + '/api/temaer');
         const data = await res.json();
         const container = document.getElementById('quick-tags');
-        
-        container.innerHTML = data.temaer.map(t => 
-          `<span class="quick-tag" data-q="${t.tema}">${t.tema}<span class="count">${t.count}</span></span>`
-        ).join('');
-        
+        container.innerHTML = data.temaer.map(t => '<span class="quick-tag" data-q="' + t.tema + '">' + t.tema + '<span class="count">' + t.count + '</span></span>').join('');
         container.querySelectorAll('.quick-tag').forEach(tag => {
-          tag.addEventListener('click', () => {
-            document.getElementById('search-input').value = tag.dataset.q;
-            expandedCards.clear();
-            doSearch();
-          });
+          tag.addEventListener('click', () => { document.getElementById('search-input').value = tag.dataset.q; expandedCards.clear(); doSearch(); });
         });
       } catch (e) { console.error(e); }
     }
-    
-    // Keyboard shortcut: / to focus search
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) {
-        e.preventDefault();
-        document.getElementById('search-input').focus();
-      }
+      if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) { e.preventDefault(); document.getElementById('search-input').focus(); }
+      if (e.key === 'Escape') document.getElementById('generate-overlay').classList.remove('visible');
     });
-    
-    // Init
+
     loadStats();
     loadTemaer();
   </script>

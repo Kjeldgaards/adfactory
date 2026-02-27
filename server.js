@@ -798,6 +798,169 @@ async function autoDiscoverTemplates() {
   if (changed) saveTemplates(templates);
 }
 
+// ============================================================
+// GENERATE CONTENT FROM SELECTED TESTIMONIALS
+// ============================================================
+
+function loadDoc(filename) {
+  const filepath = path.join(__dirname, 'docs', filename);
+  if (!fs.existsSync(filepath)) return '';
+  return fs.readFileSync(filepath, 'utf8');
+}
+
+const GENERATION_TYPES = {
+  headlines: {
+    label: 'Meta Headlines / Hooks',
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
+    instruction: `Skriv {{count}} Meta ad headlines (hooks) til KJELDGAARD Barrier Defense Serum.
+Brug sprog og vendinger fra de valgte kundecitater herunder.
+Følg DO/DON'T reglerne nøje. Brug HOOKS_BEST som kvalitetseksempler.
+Hvert headline skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`
+  },
+  benefits: {
+    label: 'Benefit Statements',
+    docs: ['SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
+    instruction: `Skriv {{count}} benefit statements til KJELDGAARD Barrier Defense Serum.
+Brug sprog og vendinger fra de valgte kundecitater herunder.
+Følg DO/DON'T reglerne nøje. Brug BENEFITS_BEST som kvalitetseksempler.
+Hvert statement skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`
+  },
+  adcopy: {
+    label: 'Meta Ad Copy (komplet)',
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt', 'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt', 'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt'],
+    instruction: `Skriv {{count}} komplette Meta ad copy varianter til KJELDGAARD Barrier Defense Serum.
+Hver variant skal have: Hook → Problem/Interest → Mechanism → Benefit → Social Proof → CTA.
+Brug sprog og vendinger fra de valgte kundecitater herunder.
+Følg DO/DON'T reglerne nøje. Brug SWIPE-filerne som kvalitetseksempler.
+Hver ad copy skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`
+  },
+  custom: {
+    label: 'Frit prompt',
+    docs: ['SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt'],
+    instruction: `{{customPrompt}}`
+  }
+};
+
+app.post('/api/generate', async (req, res) => {
+  try {
+    const { type, count = 3, minScore = 9.0, customPrompt, selectedIds } = req.body;
+    
+    if (!type || !GENERATION_TYPES[type]) {
+      return res.status(400).json({ error: 'Invalid type. Options: ' + Object.keys(GENERATION_TYPES).join(', ') });
+    }
+    if (!selectedIds || !selectedIds.length) {
+      return res.status(400).json({ error: 'No testimonials selected' });
+    }
+
+    const config = GENERATION_TYPES[type];
+    
+    // Load selected testimonials from all sources
+    const tp = loadJSON(DATA_FILES.testimonials);
+    const vdo = loadJSON(DATA_FILES.videos);
+    const meta = loadJSON(DATA_FILES.metacomments);
+    
+    const allItems = [
+      ...tp.map(t => ({ ...t, _source: 'tp' })),
+      ...vdo.map(v => ({ ...v, _source: 'vdo' })),
+      ...meta.map(m => ({ ...m, _source: 'meta' }))
+    ];
+    
+    const selected = allItems.filter(item => {
+      const itemId = item._source + '-' + item.id;
+      return selectedIds.includes(itemId);
+    });
+    
+    if (!selected.length) {
+      return res.status(400).json({ error: 'No matching testimonials found for given IDs' });
+    }
+
+    // Load docs
+    const docsContent = config.docs.map(f => {
+      const content = loadDoc(f);
+      return content ? `\n=== ${f} ===\n${content}` : '';
+    }).filter(Boolean).join('\n');
+
+    // Always load Benson scoring
+    const benson = loadDoc('jon-benson-copychief-master-system_v3.md');
+
+    // Build testimonials context
+    const testimonialsText = selected.map(t => {
+      const src = t._source === 'tp' ? 'Trustpilot' : t._source === 'vdo' ? 'Video' : 'Meta';
+      const text = t.tekst || t.transkription || '';
+      const temaer = (t.temaer || []).join(', ');
+      return `[${src}] ${t.navn || 'Anonym'}${temaer ? ` (${temaer})` : ''}:\n"${text}"`;
+    }).join('\n\n');
+
+    // Build instruction
+    let instruction = config.instruction
+      .replace('{{count}}', count)
+      .replace('{{minScore}}', minScore)
+      .replace('{{customPrompt}}', customPrompt || '');
+
+    const systemPrompt = `Du er KJELDGAARD's senior copywriter. Du skriver på dansk til danske kvinder 40-65.
+Du scorer ALT output med Benson 12-factor systemet. Minimum score: ${minScore}/10.
+Brug kundens eget sprog (customer language) fra de valgte testimonials.
+Overhold ALTID DO/DON'T reglerne.
+
+${benson ? '=== BENSON SCORING SYSTEM ===\n' + benson.substring(0, 8000) : ''}
+
+${docsContent}`;
+
+    const userPrompt = `${instruction}
+
+=== VALGTE KUNDECITATER (${selected.length} stk) ===
+${testimonialsText}
+
+Returner output som JSON array:
+[
+  {
+    "text": "Den genererede tekst",
+    "score": 9.2,
+    "scoring_notes": "Kort begrundelse for scoren",
+    "customer_words_used": ["ord1", "ord2"]
+  }
+]
+
+Returner KUN JSON array, intet andet.`;
+
+    console.log(`  Generate: type=${type}, count=${count}, minScore=${minScore}, selected=${selected.length}`);
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      messages: [
+        { role: 'user', content: userPrompt }
+      ],
+      system: systemPrompt
+    });
+
+    const responseText = response.content[0].text;
+    
+    // Parse JSON from response
+    const jsonMatch = responseText.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) {
+      return res.json({ results: [], raw: responseText, error: 'Could not parse JSON from response' });
+    }
+
+    const results = JSON.parse(jsonMatch[0]);
+    
+    res.json({ 
+      results,
+      meta: {
+        type: config.label,
+        count: results.length,
+        selectedTestimonials: selected.length,
+        minScore,
+        averageScore: results.length ? (results.reduce((s, r) => s + (r.score || 0), 0) / results.length).toFixed(1) : 0
+      }
+    });
+
+  } catch (err) {
+    console.error('Generate error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(PORT, async () => {
   console.log(`\n  KJELDGAARD AD FACTORY`);
   console.log(`  Running on http://localhost:${PORT}`);
