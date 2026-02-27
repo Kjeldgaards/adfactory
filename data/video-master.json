@@ -1,1 +1,280 @@
-[]
+[
+  {
+    "id": 1,
+    "navn": "Pia Hansen 1",
+    "alder": 64,
+    "hudbekymring": "Rynker",
+    "varighed": "0:44",
+    "transkription": "Hej, jeg hedder Pia, jeg er 64 år. Jeg vil egentlig bare fortælle lidt om Kjeldgaards Serum, som jeg er mega glad for, og I elsker den. Jeg synes virkelig, I skal prøve den. Den har minsket mine rynker, jeg har fået en sundere og blød. Og når du bruger den, behøver du faktisk ingen andet at afbringe. Din hud bliver blød, lækker og røvig og simpelthen bare mega god. Så den synes jeg, I skulle prøve, og det gør I virkelig. Det er den bedste, bedste, bedste serum, som jeg simpelthen altid abonnerer. Og sådan er det bare. Den er nødt til at abonneres. Husk det. Brug den. Jamen, I bliver jo ingen af dem. Det er værd, jeg kan sige. Hej, hej.",
+    "temaer": [
+      "rynker",
+      "blød"
+    ]
+  },
+  {
+    "id": 2,
+    "navn": "Pia Hansen 2",
+    "alder": 64,
+    "hudbekymring": "Fine rynker, tør hud",
+    "varighed": "1:07",
+    "transkription": "Hej, jeg hedder Pia, og sådan set bare lige fortælle, hvor glad jeg er for den her. Det er noget af det bedste. Det er bare den bedste. Den har gjort så min hud. Den virker ikke tør med, at jeg minsker alle mine fine rynker, og jeg får en anden glød i huden. Og det skal siges, at det er min egen farve nu. Det er det. Så jeg kan kun varmt anbefale den her fra Kjeldgaard, og det kan jeg. Jeg ved simpelthen næsten ikke, hvad jeg skal sige, er den pissegod. Når du har taget den i hovedet, så bliver det faktisk ingen dagkræm, fordi den er allerede blød. Din hud bliver blød, lækker og virker rigtig behagelig. Så ja, prøv den. I vil ikke fortryde det. Måske, fordi I bliver afhængige af den. Det er nok lige der, hvor vi er. I bliver mega afhængige af den. I kan slet ikke stoppe igen. Hej, det var bare det, jeg ville sige, og så får I også at se piger over 64 år. Hej hej.",
+    "temaer": [
+      "rynker",
+      "blød",
+      "glød",
+      "fugt",
+      "afhængig",
+      "anbefaling"
+    ]
+  },
+  {
+    "id": 3,
+    "navn": "Maja Isaksen",
+    "alder": 71,
+    "hudbekymring": "Rynker",
+    "varighed": "1:09",
+    "transkription": "Hej, jeg hedder Monja, jeg er 71 år, og jeg har brugt Kjeldgaards Barrier Defense i omkring et år eller sådan noget. Nu er den desværre ved at være tom, så jeg er nødt til at bestille noget nyt. Men jeg kan bare anbefale den — jeg kan slet ikke undvære den, synes jeg. Det er simpelthen så lækkert at smøre ud. Nu har jeg jo taget den på her i morges, og jeg har desværre ikke nogen før- eller efterbilleder, men jeg synes, at min hud er fin. Den kan jo ikke fjerne alle rynker, men det er mega lækkert at smøre ud. Og nogle gange bruger jeg den også på min mand, så får han lige sådan en ansigtsbehandling, og han bliver så fin bagefter. Så er det jo en god idé, hvis han også ville gøre det hver dag. Ja, det var lige en anbefaling her fra mig.",
+    "temaer": [
+      "rynker",
+      "afhængig",
+      "anbefaling"
+    ]
+  },
+  {
+    "id": 4,
+    "navn": "Jane Pedersen",
+    "alder": null,
+    "hudbekymring": null,
+    "varighed": "0:20",
+    "transkription": "Hej, jeg hedder Jane. Jeg vil gerne give Kjeldgaards Barrier Defense 5 stjerner. Jeg er super glad for den. Jeg bruger den morgen og aften, og den gør min hud blød. Jeg bruger den på halsen og i ansigtet, og jeg behøver ikke nogen fugtighedscreme udover. Så 5 stjerner fra mig.",
+    "temaer": [
+      "blød",
+      "fugt"
+    ]
+  },
+  {
+    "id": 5,
+    "navn": "Signe Klint Buchbjerg",
+    "alder": null,
+    "hudbekymring": "Rynker",
+    "varighed": "0:35",
+    "transkription": "Jeg kan virkelig anbefale Kjeldgaards serum. Jeg begyndte at bruge det for et år siden, og jeg kan tydeligt se en forskel i mine rynker i ansigtet. Og at jeg har fået en mere ensartet glød. Jeg bruger det både i mit ansigt, men jeg bruger det også på min hals. Huden føles mere elastisk, så det er virkelig dejligt. Det fedter ikke, og det er let at smøre på. Så det eneste minus er, at man bliver afhængig. Men altså en kæmpe anbefaling herfra til Kjeldgaards serum. Du skal til at prøve det.",
+    "temaer": [
+      "rynker",
+      "glød",
+      "afhængig",
+      "anbefaling",
+      "fasthed"
+    ]
+  },
+  {
+    "id": 6,
+    "navn": "Dorte Wittrock",
+    "alder": null,
+    "hudbekymring": null,
+    "varighed": "0:10",
+    "transkription": "Jeg har brugt Kjeldgaards Defense Serum igennem det sidste halve år. Jeg har brugt andre serummer i flere år, men den her er simpelthen i en klasse for sig.",
+    "temaer": [
+      "anbefaling"
+    ]
+  },
+  {
+    "id": 7,
+    "navn": "Anita Gryager 1",
+    "alder": null,
+    "hudbekymring": "Rosacea (10+ år)",
+    "varighed": "0:25",
+    "transkription": "Jeg har brugt serummet fra KJELDGAARD i lidt over et års tid, og kan bestemt ikke undvære det. Jeg har rosacea og har haft det i over 10 år nu, og endelig har jeg fået forholdsvis styr på min hud. Og jeg er fuldstændig overbevist om, at serummet fra Kjeldgaard spiller en rigtig stor rolle i det.",
+    "temaer": [
+      "afhængig",
+      "rosacea"
+    ]
+  },
+  {
+    "id": 8,
+    "navn": "Anita Gryager 2",
+    "alder": null,
+    "hudbekymring": "Rosacea (10+ år)",
+    "varighed": "0:27",
+    "transkription": "Jeg er rigtig glad for serummet Kjeldgaard. Jeg har rosacea og har haft det i over 10 år. Og efter at jeg er begyndt at bruge produktet i snart over et års tid nu, har jeg fået en væsentlig forbedring i min hud. Og det fik jeg efter et par måneders brug. På panden her med en halv pipette og dupper det så ud i mit ansigt hver aften. Tak.",
+    "temaer": [
+      "rosacea"
+    ]
+  },
+  {
+    "id": 9,
+    "navn": "Marianne",
+    "alder": null,
+    "hudbekymring": "Grå/tør hud, fine linjer",
+    "varighed": "0:28",
+    "transkription": "Hej, nu har jeg brugt cremen fra Kjeldgaards Barrier Defense i et stykke tid. Før jeg begyndte at bruge cremen, var min hud grå at kigge på, og meget tør. Siden jeg begyndte at bruge cremen, er min hud bare silkeblød, og den har fået sin glød tilbage igen. Samtidig har den udglattet de små fine linjer og rynker. Og så synes jeg faktisk egentlig bare, at det er ren wellness at smøre den i ansigtet. Så, stor anbefaling herfra.",
+    "temaer": [
+      "rynker",
+      "blød",
+      "glød",
+      "fugt"
+    ]
+  },
+  {
+    "id": 10,
+    "navn": "Karina Video 1",
+    "alder": 60,
+    "hudbekymring": "Rynker (især øjenområdet)",
+    "varighed": "0:26",
+    "transkription": "Jeg hedder Karina, og jeg er 60 år gammel. Jeg har brugt Kjeldgaards serum, siden den kom frem. Tidligere der var det som om, jeg syntes, at mine rynker bare blev dybere og flere — især rundt om øjnene. Men efter at jeg er begyndt at bruge Kjeldgaards serum, så er de fine linjer udvisket, og de dybe rynker er knap så dybe. Desuden så trænger cremen hurtigt ind i huden, og det er jeg glad for. Jeg vil meget gerne anbefale Kjeldgaards serum til alle.",
+    "temaer": [
+      "rynker",
+      "anbefaling"
+    ]
+  },
+  {
+    "id": 11,
+    "navn": "Karina Video 2",
+    "alder": 60,
+    "hudbekymring": "Kragetæer, rynker (øjne og mund)",
+    "varighed": "0:26",
+    "transkription": "Jeg hedder Karina, og er 60 år gammel. Jeg har brugt Kjeldgaards Defense Serum, siden det kom på markedet. Det har mindsket mine kragetæer ved øjnene, og mine rynker under øjnene, og også rynkerne rundt omkring munden. Det trænger hurtigt ind i huden og er derfor nemt at bruge. Tidligere brugte jeg andre cremer — natcremer og dagcremer — men det her er simpelt, for det er kun ét produkt. Jeg vil varmt anbefale Kjeldgaards Defense Serum.",
+    "temaer": [
+      "rynker",
+      "anbefaling"
+    ]
+  },
+  {
+    "id": 12,
+    "navn": "Mona Hansen",
+    "alder": 74,
+    "hudbekymring": null,
+    "varighed": "0:31",
+    "transkription": "Hej, jeg hedder Mona Hansen, og jeg er 74 år. Jeg har brugt denne serum i syv måneder, og jeg føler, at min hud er blevet helt anderledes. Jeg føler, at den er mere glansfuld, og jeg ser mere glad og tilfreds ud. Jeg er virkelig glad for denne serum. Jeg har prøvet meget i mine 74 år alder, men denne her — den slår altså rekorden. Så tak for den. Jeg vil blive ved med at bruge den. Tak.",
+    "temaer": [
+      "glød"
+    ]
+  },
+  {
+    "id": 13,
+    "navn": "Tina Lyng Video 3",
+    "alder": null,
+    "hudbekymring": null,
+    "varighed": "0:33",
+    "transkription": "Efter jeg begyndte at bruge Kjeldgaard Barrier Defense, så kan jeg mærke forskel på min hud. Den er blevet mere frisk, mere blød, og så er der kommet en helt anden glød. Jeg har ikke problemer med min hud, men den føles bare meget bedre. Én sagde til mig: \"Du ældes med ynde.\" — det tager jeg som et kompliment. Og takket være Barrier Defense, for at have en finger med i spillet. Det er nu blevet en daglig rutine — både morgen og aften. Tøv ikke — det virker!",
+    "temaer": [
+      "blød",
+      "glød"
+    ]
+  },
+  {
+    "id": 14,
+    "navn": "Kirsten Theibel",
+    "alder": null,
+    "hudbekymring": "Tørre pletter",
+    "varighed": "0:22",
+    "transkription": "Halløj! Jeg vil bare lige sige — kender du ikke det her produkt? Så skal du stifte bekendtskab med det. Det er mega godt — en fantastisk serum. Jeg har faktisk haft nogle tørre pletter på min hud, og de er forsvundet. Og det gode er, at den fedter overhovedet ikke. Den trænger ind i løbet af, jamen jeg vil sige, 10-15 sekunder, så er den væk fra huden. Prøv den — du vil ikke fortryde det.",
+    "temaer": [
+      "fugt",
+      "pigment"
+    ]
+  },
+  {
+    "id": 15,
+    "navn": "Kirsten Callesen",
+    "alder": null,
+    "hudbekymring": "Pigmentfejl, ar, tør hud",
+    "varighed": "0:43",
+    "transkription": "Jeg bruger det her produkt og har brugt det i et stykke tid. Jeg er rigtig glad for det. Det gør at min hud den bliver mere smidig. Jeg behøver ikke at bruge hudcreme, som jeg ellers har brugt rigtig meget før. Jeg har haft en meget stor plet — pigmentfejl heroppe, som har været helt brun, og den er blevet rigtig fin nu. Jeg er begyndt at få en anden en, og den har været meget mørkebrun, og er allerede begyndt at reducere i farven. Heroppe, der har jeg haft et gammelt ar, som kløede rigtig meget. Og hvis jeg bruger denne her, så klør det heller ikke. Så, jeg bliver ved med at bruge den — jeg er glad for den. Så, thumbs up til den!",
+    "temaer": [
+      "pigment"
+    ]
+  },
+  {
+    "id": 16,
+    "navn": "Leise Hestbæk",
+    "alder": 80,
+    "hudbekymring": "Rynker",
+    "varighed": "0:26",
+    "transkription": "Jeg bliver snart 80, og jeg kunne godt se, at jeg var ved at blive rynket, så jeg tænkte, at jeg hellere måtte begynde at gøre noget. Jeg fandt så denne her serum, Barrier Defense Serum fra Kjeldgaard, og den har virkelig hjulpet på mine rynker. Så hvis du har det ligesom mig, der går op i dit udseende, så kan jeg varmt anbefale dig, at prøve denne her serum. Jeg holder i hvert fald aldrig op med den.",
+    "temaer": [
+      "rynker",
+      "anbefaling"
+    ]
+  },
+  {
+    "id": 17,
+    "navn": "Gitte Pedersen",
+    "alder": null,
+    "hudbekymring": "Fugt",
+    "varighed": "0:30",
+    "transkription": "Hej, jeg hedder Gitte. Jeg vil bare lige slå et lille slag for denne her lille serum — Det er Kjeldgaard Barrier Defense. Den har jeg brugt nu i tre måneder og er utrolig glad ved den. Den fugter min hud meget. Jeg bruger dog en solfaktor ovenpå som creme i løbet af dagen, men om natten har jeg helt skåret min natcreme væk, fordi jeg synes, at serummet giver mig nok fugt. Så bare lige thumbs up fra mig her med denne lille serum. Tak for mærket.",
+    "temaer": [
+      "fugt"
+    ]
+  },
+  {
+    "id": 18,
+    "navn": "Helle Madsen",
+    "alder": null,
+    "hudbekymring": null,
+    "varighed": "0:20",
+    "transkription": "Hej. Denne serum fra Kjeldgaard, har jeg brugt i tre måneder, og jeg er stor fan af den. Den er nem at smøre på, huden bliver smidig, og blød, og ser sundere ud. Jeg kan kun anbefale den. Igennem årene har jeg brugt rigtig mange forskellige serummer, men der er ingen, der kan måle sig med denne.",
+    "temaer": [
+      "blød",
+      "anbefaling"
+    ]
+  },
+  {
+    "id": 19,
+    "navn": "Sanne Madsen",
+    "alder": null,
+    "hudbekymring": "Vejrbidt hud",
+    "varighed": "0:27",
+    "transkription": "Jeg har brugt min serum her i tre måneder, tror jeg. Og noget af det som jeg oplever med den, det er, at nu har jeg sådan, skal vi sige, lidt vejrbidt hud. Og jeg synes bare, at den virker sådan mere elastisk, mere det ved jeg ikke, fast i det, og så helt sikkert med mere glød. Jeg elsker den her serum. Jeg elsker den.",
+    "temaer": [
+      "glød",
+      "fasthed"
+    ]
+  },
+  {
+    "id": 20,
+    "navn": "Bente Kristensen",
+    "alder": 68,
+    "hudbekymring": null,
+    "varighed": "0:25",
+    "transkription": "Hej. Er du 68 år ligesom mig og tænker, hvad skal jeg dog ønske mig til jul eller fødselsdag, for jeg har jo alt? Nej, det har jeg ikke. Den her, den er simpelthen uundværlig. Jeg tænkte, da den gik tør, ej, nu må jeg bruge den færdig, som jeg har, men den gik ikke. Der gik to dage, så måtte jeg trykke bestil igen, og nu ligger den fast på min ønskeseddel.",
+    "temaer": [
+      "fugt"
+    ]
+  },
+  {
+    "id": 21,
+    "navn": "Conny",
+    "alder": null,
+    "hudbekymring": "Poser under øjnene",
+    "varighed": "0:27",
+    "transkription": "Hej. Jeg har nu brugt Kjeldgaards serum i to måneder, og det er det bedste, jeg nogensinde har gjort for mig selv. Jeg kan tydeligt se, at der er blevet mindre her. Jeg har ikke så store poser under øjnene mere, som jeg havde før. For mig er det rent selvforkælelse, både morgen og aften. Jeg kan kun anbefale den. Jeg ville ønske, at jeg havde kendt den noget tidligere. Så jeg er på her. Tak.",
+    "temaer": [
+      "anbefaling",
+      "poser under øjne"
+    ]
+  },
+  {
+    "id": 22,
+    "navn": "Liselotte Bang",
+    "alder": 61,
+    "hudbekymring": "Tør hud (konsulteret læge)",
+    "varighed": "0:32",
+    "transkription": "Jeg hedder Liselotte, og jeg er 61 år. Jeg vil sige, at jeg er så glad for lige nøjagtigt den her. Det er min tredje flaske, jeg bruger. Og jeg har simpelthen haft så mange problemer med, at jeg blev bare helt tør her, Jeg har snakket med min læge om det. Og den første flaske brugte jeg morgen og aften, og så ellers har jeg bare begyndt at bruge den om morgenen, hvor jeg synes, jeg får faktisk rigtig meget fugt til min hud. Så jeg er meget tilfreds med den. Jeg håber, at de snart laver nogle flere cremer med den.",
+    "temaer": [
+      "fugt"
+    ]
+  },
+  {
+    "id": 23,
+    "navn": "Ingrid Hedevang",
+    "alder": null,
+    "hudbekymring": "Rynker (ansigt, hals, hænder)",
+    "varighed": "0:28",
+    "transkription": "Hej med jer! Jeg vil bare lige fortælle jer, at jeg bruger Kjeldgaards Serum Barrier, og det gør jeg simpelthen fordi, at det har hjulpet mig rigtig, rigtig meget igennem den sidste tid. Det glatter mit ansigt ud, hvor jeg har haft nogle meget voldsomme rynker. Jeg bruger det under halsen, hvor det også har glattet ud — som I kan se. Og jeg bruger det også på mine hænder — så det er bare fantastisk! Brug det!",
+    "temaer": [
+      "rynker"
+    ]
+  }
+]
