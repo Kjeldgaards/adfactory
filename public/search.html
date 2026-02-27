@@ -249,7 +249,7 @@
             </div>
             ${metaParts.length ? '<div class="result-meta">' + metaParts.join(' · ') + '</div>' : ''}
             <div class="result-text" style="${isLong && !isExpanded ? 'max-height:100px;overflow:hidden' : ''}">${highlight(displayText, query)}</div>
-            ${isLong ? '<button type="button" class="expand-btn" onclick="event.preventDefault();event.stopPropagation();toggleExpand(' + idx + ')">' + (isExpanded ? 'Vis mindre ▲' : 'Vis mere ▼') + '</button>' : ''}
+            ${isLong ? '<button type="button" class="expand-btn" onclick="toggleExpand(' + idx + ')">' + (isExpanded ? 'Vis mindre ▲' : 'Vis mere ▼') + '</button>' : ''}
             ${temaerHtml ? '<div class="result-temaer">' + temaerHtml + '</div>' : ''}
           </div>
         `;
@@ -258,6 +258,7 @@
     
     // Toggle expand
     window.toggleExpand = function(idx) {
+      const scrollY = window.scrollY;
       const card = document.querySelector(`[data-idx="${idx}"]`);
       if (!card) return;
       const textEl = card.querySelector('.result-text');
@@ -273,6 +274,7 @@
         textEl.style.overflow = 'visible';
         btn.textContent = 'Vis mindre ▲';
       }
+      window.scrollTo(0, scrollY);
     };
     
     // Event listeners
