@@ -249,7 +249,7 @@
               <span class="result-source ${sourceClass}">${item._sourceLabel}</span>
             </div>
             ${metaParts.length ? '<div class="result-meta">' + metaParts.join(' · ') + '</div>' : ''}
-            <div class="result-text${isLong && !isExpanded ? ' truncated' : ''}">${highlight(displayText, query)}</div>
+            <div class="result-text" style="${isLong && !isExpanded ? 'max-height:100px;overflow:hidden' : ''}">${highlight(displayText, query)}</div>
             ${isLong ? '<button type="button" class="expand-btn" onclick="toggleExpand(' + idx + ')">' + (isExpanded ? 'Vis mindre ▲' : 'Vis mere ▼') + '</button>' : ''}
             ${temaerHtml ? '<div class="result-temaer">' + temaerHtml + '</div>' : ''}
           </div>
@@ -259,23 +259,12 @@
     
     // Toggle expand
     window.toggleExpand = function(idx) {
-      var scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
-      var card = document.querySelector('[data-idx="' + idx + '"]');
-      if (!card) return;
-      var textEl = card.querySelector('.result-text');
-      var btn = card.querySelector('.expand-btn');
       if (expandedCards.has(idx)) {
         expandedCards.delete(idx);
-        textEl.classList.add('truncated');
-        btn.textContent = 'Vis mere ▼';
       } else {
         expandedCards.add(idx);
-        textEl.classList.remove('truncated');
-        btn.textContent = 'Vis mindre ▲';
       }
-      requestAnimationFrame(function() {
-        window.scrollTo(0, scrollPos);
-      });
+      doSearch();
     };
     
     // Event listeners
