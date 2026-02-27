@@ -8,7 +8,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857430"
   },
   {
@@ -20,7 +22,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857447"
   },
   {
@@ -32,7 +36,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857450"
   },
   {
@@ -44,7 +50,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "skeptiker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857452"
   },
   {
@@ -56,7 +64,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857453"
   },
   {
@@ -68,7 +79,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857455"
   },
   {
@@ -80,7 +93,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857456"
   },
   {
@@ -92,7 +107,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857458"
   },
   {
@@ -104,7 +121,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857459"
   },
   {
@@ -116,7 +135,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857460"
   },
   {
@@ -128,7 +150,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857462"
   },
   {
@@ -140,7 +164,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857463"
   },
   {
@@ -152,7 +178,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857464"
   },
   {
@@ -164,7 +192,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857465"
   },
   {
@@ -176,7 +206,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857467"
   },
   {
@@ -188,7 +220,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "glød",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857468"
   },
   {
@@ -200,7 +235,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857480"
   },
   {
@@ -212,7 +249,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857487"
   },
   {
@@ -224,7 +263,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "blød"
+    ],
     "createdAt": "2026-02-27T11:08:40.857488"
   },
   {
@@ -236,7 +278,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "glød",
+      "blød"
+    ],
     "createdAt": "2026-02-27T11:08:40.857489"
   },
   {
@@ -248,7 +294,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857490"
   },
   {
@@ -260,7 +308,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "glat"
+    ],
     "createdAt": "2026-02-27T11:08:40.857492"
   },
   {
@@ -272,7 +323,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857493"
   },
   {
@@ -284,7 +337,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857494"
   },
   {
@@ -296,7 +351,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857495"
   },
   {
@@ -308,7 +365,13 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "rynker",
+      "blød",
+      "glat",
+      "fasthed"
+    ],
     "createdAt": "2026-02-27T11:08:40.857496"
   },
   {
@@ -320,7 +383,13 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "blød",
+      "afhængig",
+      "glat",
+      "fasthed"
+    ],
     "createdAt": "2026-02-27T11:08:40.857498"
   },
   {
@@ -332,7 +401,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857499"
   },
   {
@@ -344,7 +415,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857500"
   },
   {
@@ -356,7 +429,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857501"
   },
   {
@@ -368,7 +444,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857505"
   },
   {
@@ -380,7 +458,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857506"
   },
   {
@@ -392,7 +472,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "skeptiker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857508"
   },
   {
@@ -404,7 +486,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857509"
   },
   {
@@ -416,7 +500,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857510"
   },
   {
@@ -428,7 +515,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857514"
   },
   {
@@ -440,7 +529,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857515"
   },
   {
@@ -452,7 +543,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "glød",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857516"
   },
   {
@@ -464,7 +558,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857517"
   },
   {
@@ -476,7 +573,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857518"
   },
   {
@@ -488,7 +587,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum",
+      "skeptiker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857520"
   },
   {
@@ -500,7 +602,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857521"
   },
   {
@@ -512,7 +617,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857522"
   },
   {
@@ -524,7 +631,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857523"
   },
   {
@@ -536,7 +645,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "blød",
+      "bedste serum",
+      "urenheder"
+    ],
     "createdAt": "2026-02-27T11:08:40.857525"
   },
   {
@@ -548,7 +661,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker",
+      "urenheder"
+    ],
     "createdAt": "2026-02-27T11:08:40.857526"
   },
   {
@@ -560,7 +676,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857527"
   },
   {
@@ -572,7 +690,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857528"
   },
   {
@@ -584,7 +704,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857529"
   },
   {
@@ -596,7 +718,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857533"
   },
   {
@@ -608,7 +732,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "blød"
+    ],
     "createdAt": "2026-02-27T11:08:40.857534"
   },
   {
@@ -620,7 +747,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857535"
   },
   {
@@ -632,7 +761,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857536"
   },
   {
@@ -644,7 +775,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering",
+      "mørke rande",
+      "poser under øjne"
+    ],
     "createdAt": "2026-02-27T11:08:40.857540"
   },
   {
@@ -656,7 +792,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "rynker",
+      "fugt",
+      "glat"
+    ],
     "createdAt": "2026-02-27T11:08:40.857541"
   },
   {
@@ -668,7 +809,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857544"
   },
   {
@@ -680,7 +824,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857546"
   },
   {
@@ -692,7 +838,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857547"
   },
   {
@@ -704,7 +852,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857548"
   },
   {
@@ -716,7 +866,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857549"
   },
   {
@@ -728,7 +880,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "pigment"
+    ],
     "createdAt": "2026-02-27T11:08:40.857551"
   },
   {
@@ -740,7 +895,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "blød",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857552"
   },
   {
@@ -752,7 +910,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857553"
   },
   {
@@ -764,7 +925,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857558"
   },
   {
@@ -776,7 +939,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857560"
   },
   {
@@ -788,7 +953,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857561"
   },
   {
@@ -800,7 +967,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "blød",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857562"
   },
   {
@@ -812,7 +982,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857564"
   },
   {
@@ -824,7 +996,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857565"
   },
   {
@@ -836,7 +1012,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering",
+      "fugt",
+      "rosacea"
+    ],
     "createdAt": "2026-02-27T11:08:40.857566"
   },
   {
@@ -848,7 +1029,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857567"
   },
   {
@@ -860,7 +1043,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857568"
   },
   {
@@ -872,7 +1057,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857570"
   },
   {
@@ -884,7 +1071,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857571"
   },
   {
@@ -896,7 +1085,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857574"
   },
   {
@@ -908,7 +1099,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857576"
   },
   {
@@ -920,7 +1113,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857577"
   },
   {
@@ -932,7 +1127,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857578"
   },
   {
@@ -944,7 +1141,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857580"
   },
   {
@@ -956,7 +1155,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857581"
   },
   {
@@ -968,7 +1170,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857586"
   },
   {
@@ -980,7 +1185,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig",
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857587"
   },
   {
@@ -992,7 +1200,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "fugt"
+    ],
     "createdAt": "2026-02-27T11:08:40.857589"
   },
   {
@@ -1004,7 +1214,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857590"
   },
   {
@@ -1016,7 +1228,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "blød",
+      "afhængig",
+      "glat"
+    ],
     "createdAt": "2026-02-27T11:08:40.857591"
   },
   {
@@ -1028,7 +1245,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857592"
   },
   {
@@ -1040,7 +1261,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "glød",
+      "afhængig",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857593"
   },
   {
@@ -1052,7 +1277,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857594"
   },
   {
@@ -1064,7 +1291,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857596"
   },
   {
@@ -1076,7 +1305,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "rynker",
+      "pigment"
+    ],
     "createdAt": "2026-02-27T11:08:40.857597"
   },
   {
@@ -1088,7 +1321,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857598"
   },
   {
@@ -1100,7 +1335,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857599"
   },
   {
@@ -1112,7 +1349,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering",
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857600"
   },
   {
@@ -1124,7 +1365,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "glød",
+      "levering",
+      "glat"
+    ],
     "createdAt": "2026-02-27T11:08:40.857602"
   },
   {
@@ -1136,7 +1381,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857603"
   },
   {
@@ -1148,7 +1395,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857604"
   },
   {
@@ -1160,7 +1409,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857605"
   },
   {
@@ -1172,7 +1423,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857606"
   },
   {
@@ -1184,7 +1438,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "rynker",
+      "glat",
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857608"
   },
   {
@@ -1196,7 +1455,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857609"
   },
   {
@@ -1208,7 +1470,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857610"
   },
   {
@@ -1220,7 +1484,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857611"
   },
   {
@@ -1232,7 +1498,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "urenheder"
+    ],
     "createdAt": "2026-02-27T11:08:40.857612"
   },
   {
@@ -1244,7 +1513,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857613"
   },
   {
@@ -1256,7 +1527,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "fugt",
+      "afhængig",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857614"
   },
   {
@@ -1268,7 +1544,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857616"
   },
   {
@@ -1280,7 +1559,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "skeptiker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857617"
   },
   {
@@ -1292,7 +1573,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857618"
   },
   {
@@ -1304,7 +1587,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857619"
   },
   {
@@ -1316,7 +1601,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857621"
   },
   {
@@ -1328,7 +1616,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857622"
   },
   {
@@ -1340,7 +1630,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857623"
   },
   {
@@ -1352,7 +1644,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857626"
   },
   {
@@ -1364,7 +1658,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857630"
   },
   {
@@ -1376,7 +1673,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering",
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857631"
   },
   {
@@ -1388,7 +1688,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857632"
   },
   {
@@ -1400,7 +1702,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "glød"
+    ],
     "createdAt": "2026-02-27T11:08:40.857633"
   },
   {
@@ -1412,7 +1717,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857634"
   },
   {
@@ -1424,7 +1731,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857636"
   },
   {
@@ -1436,7 +1745,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "rynker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857637"
   },
   {
@@ -1448,7 +1760,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "fugt",
+      "elsker",
+      "fasthed"
+    ],
     "createdAt": "2026-02-27T11:08:40.857638"
   },
   {
@@ -1460,7 +1777,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857639"
   },
   {
@@ -1472,7 +1791,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857640"
   },
   {
@@ -1484,7 +1805,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857642"
   },
   {
@@ -1496,7 +1819,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857643"
   },
   {
@@ -1508,7 +1833,13 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "glød",
+      "blød",
+      "glat",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857644"
   },
   {
@@ -1520,7 +1851,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "glød",
+      "levering",
+      "skeptiker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857645"
   },
   {
@@ -1532,7 +1868,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857646"
   },
   {
@@ -1544,7 +1883,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "pigment",
+      "skeptiker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857647"
   },
   {
@@ -1556,7 +1898,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857649"
   },
   {
@@ -1568,7 +1912,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "rynker",
+      "levering",
+      "glat"
+    ],
     "createdAt": "2026-02-27T11:08:40.857650"
   },
   {
@@ -1580,7 +1928,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "pigment"
+    ],
     "createdAt": "2026-02-27T11:08:40.857653"
   },
   {
@@ -1592,7 +1942,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857655"
   },
   {
@@ -1604,7 +1957,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "afhængig",
+      "fasthed"
+    ],
     "createdAt": "2026-02-27T11:08:40.857658"
   },
   {
@@ -1616,7 +1973,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "glød",
+      "blød",
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857659"
   },
   {
@@ -1628,7 +1989,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857661"
   },
   {
@@ -1640,7 +2003,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857662"
   },
   {
@@ -1652,7 +2017,12 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "fugt",
+      "glat",
+      "mørke rande",
+      "poser under øjne"
+    ],
     "createdAt": "2026-02-27T11:08:40.857663"
   },
   {
@@ -1664,7 +2034,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig",
+      "elsker"
+    ],
     "createdAt": "2026-02-27T11:08:40.857664"
   },
   {
@@ -1676,7 +2049,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857666"
   },
   {
@@ -1688,7 +2063,10 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering",
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857667"
   },
   {
@@ -1700,7 +2078,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857668"
   },
   {
@@ -1712,7 +2092,11 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling",
+      "glød",
+      "glat"
+    ],
     "createdAt": "2026-02-27T11:08:40.857669"
   },
   {
@@ -1724,7 +2108,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "bedste serum"
+    ],
     "createdAt": "2026-02-27T11:08:40.857670"
   },
   {
@@ -1736,7 +2122,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "anbefaling"
+    ],
     "createdAt": "2026-02-27T11:08:40.857673"
   },
   {
@@ -1748,7 +2136,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "afhængig"
+    ],
     "createdAt": "2026-02-27T11:08:40.857675"
   },
   {
@@ -1760,7 +2150,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "glød"
+    ],
     "createdAt": "2026-02-27T11:08:40.857676"
   },
   {
@@ -1772,7 +2164,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857677"
   },
   {
@@ -1784,7 +2178,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857678"
   },
   {
@@ -1796,7 +2192,9 @@
     "adId": null,
     "postUrl": null,
     "sentiment": "positiv",
-    "temaer": [],
+    "temaer": [
+      "levering"
+    ],
     "createdAt": "2026-02-27T11:08:40.857680"
   }
 ]
