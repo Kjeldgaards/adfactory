@@ -123,9 +123,6 @@
         <button class="filter-btn" data-source="vdo">Video</button>
         <button class="filter-btn" data-source="meta">Meta</button>
       </div>
-      <select class="tema-select" id="tema-filter">
-        <option value="">Alle temaer</option>
-      </select>
     </div>
     
     <!-- Quick search tags -->
@@ -133,13 +130,24 @@
       <span class="quick-tag" data-q="rynker">rynker</span>
       <span class="quick-tag" data-q="fugt">fugt</span>
       <span class="quick-tag" data-q="glød">glød</span>
-      <span class="quick-tag" data-q="rosacea">rosacea</span>
-      <span class="quick-tag" data-q="blød">blød</span>
+      <span class="quick-tag" data-q="blød hud">blød hud</span>
+      <span class="quick-tag" data-q="fasthed">fasthed</span>
       <span class="quick-tag" data-q="pigment">pigment</span>
+      <span class="quick-tag" data-q="rosacea">rosacea</span>
+      <span class="quick-tag" data-q="poser under øjne">poser under øjne</span>
+      <span class="quick-tag" data-q="mørke rande">mørke rande</span>
+      <span class="quick-tag" data-q="skeptiker">skeptiker</span>
       <span class="quick-tag" data-q="afhængig">afhængig</span>
-      <span class="quick-tag" data-q="skeptisk">skeptisk</span>
-      <span class="quick-tag" data-q="overgangsalder">overgangsalder</span>
       <span class="quick-tag" data-q="genbestilling">genbestilling</span>
+      <span class="quick-tag" data-q="anbefaling">anbefaling</span>
+      <span class="quick-tag" data-q="overgangsalder">overgangsalder</span>
+      <span class="quick-tag" data-q="resultat">resultat</span>
+      <span class="quick-tag" data-q="barriere">barriere</span>
+      <span class="quick-tag" data-q="tør hud">tør hud</span>
+      <span class="quick-tag" data-q="sensitiv">sensitiv</span>
+      <span class="quick-tag" data-q="rødme">rødme</span>
+      <span class="quick-tag" data-q="anti-aging">anti-aging</span>
+      <span class="quick-tag" data-q="enkelhed">enkelhed</span>
     </div>
     
     <!-- Results -->
@@ -170,21 +178,6 @@
       } catch (e) { console.error(e); }
     }
     
-    // Load temaer for dropdown
-    async function loadTemaer() {
-      try {
-        const res = await fetch(API + '/api/temaer');
-        const data = await res.json();
-        const select = document.getElementById('tema-filter');
-        data.temaer.forEach(t => {
-          const opt = document.createElement('option');
-          opt.value = t;
-          opt.textContent = t;
-          select.appendChild(opt);
-        });
-      } catch (e) { console.error(e); }
-    }
-    
     // Highlight matches in text
     function highlight(text, query) {
       if (!query || !text) return text || '';
@@ -196,9 +189,8 @@
     // Search
     async function doSearch() {
       const q = document.getElementById('search-input').value.trim();
-      const tema = document.getElementById('tema-filter').value;
       
-      if (!q && !tema) {
+      if (!q) {
         document.getElementById('results').innerHTML = '';
         document.getElementById('results-info').style.display = 'none';
         document.getElementById('empty-state').style.display = 'block';
@@ -212,7 +204,6 @@
         const params = new URLSearchParams();
         if (q) params.set('q', q);
         params.set('source', currentSource);
-        if (tema) params.set('tema', tema);
         
         const res = await fetch(API + '/api/search?' + params.toString());
         const data = await res.json();
@@ -327,12 +318,6 @@
       });
     });
     
-    // Tema filter
-    document.getElementById('tema-filter').addEventListener('change', () => {
-      expandedCards.clear();
-      doSearch();
-    });
-    
     // Quick tags
     document.querySelectorAll('.quick-tag').forEach(tag => {
       tag.addEventListener('click', () => {
@@ -352,7 +337,6 @@
     
     // Init
     loadStats();
-    loadTemaer();
   </script>
 </body>
 </html>
