@@ -270,13 +270,13 @@
         }).join('');
         
         return `
-          <div class="result-card">
+          <div class="result-card" data-idx="${idx}">
             <div class="result-header">
               <span class="result-name">${highlight(item.navn || 'Anonym', query)}</span>
               <span class="result-source ${sourceClass}">${item._sourceLabel}</span>
             </div>
             ${metaParts.length ? '<div class="result-meta">' + metaParts.join(' · ') + '</div>' : ''}
-            <div class="result-text">${highlight(displayText, query)}</div>
+            <div class="result-text" style="${isLong && !isExpanded ? 'max-height:100px;overflow:hidden' : ''}">${highlight(displayText, query)}</div>
             ${isLong ? '<button class="expand-btn" onclick="toggleExpand(' + idx + ')">' + (isExpanded ? 'Vis mindre ▲' : 'Vis mere ▼') + '</button>' : ''}
             ${temaerHtml ? '<div class="result-temaer">' + temaerHtml + '</div>' : ''}
           </div>
@@ -286,12 +286,21 @@
     
     // Toggle expand
     window.toggleExpand = function(idx) {
+      const card = document.querySelector(`[data-idx="${idx}"]`);
+      if (!card) return;
+      const textEl = card.querySelector('.result-text');
+      const btn = card.querySelector('.expand-btn');
       if (expandedCards.has(idx)) {
         expandedCards.delete(idx);
+        textEl.style.maxHeight = '100px';
+        textEl.style.overflow = 'hidden';
+        btn.textContent = 'Vis mere ▼';
       } else {
         expandedCards.add(idx);
+        textEl.style.maxHeight = 'none';
+        textEl.style.overflow = 'visible';
+        btn.textContent = 'Vis mindre ▲';
       }
-      doSearch();
     };
     
     // Event listeners
