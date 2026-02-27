@@ -616,6 +616,89 @@ async function autoDiscoverTemplates() {
   if (changed) saveTemplates(templates);
 }
 
+// ============================================================
+// SEARCH API ENDPOINT
+// ============================================================
+
+app.get('/api/search', (req, res) => {
+  const q = (req.query.q || '').toLowerCase().trim();
+  const source = (req.query.source || 'all').toLowerCase();
+  const tema = (req.query.tema || '').toLowerCase().trim();
+  
+  if (!q && !tema) {
+    return res.json({ results: [], total: 0 });
+  }
+  
+  const results = [];
+  
+  function matches(item, textFields) {
+    let matchesQuery = !q;
+    let matchesTema = !tema;
+    
+    if (q) {
+      for (const field of textFields) {
+        if (item[field] && item[field].toLowerCase().includes(q)) { matchesQuery = true; break; }
+      }
+      if (!matchesQuery && item.temaer) {
+        matchesQuery = item.temaer.some(t => t.toLowerCase().includes(q));
+      }
+      if (!matchesQuery && item.navn && item.navn.toLowerCase().includes(q)) {
+        matchesQuery = true;
+      }
+    }
+    
+    if (tema && item.temaer) {
+      matchesTema = item.temaer.some(t => t.toLowerCase().includes(tema));
+    }
+    
+    return matchesQuery && matchesTema;
+  }
+  
+  if (source === 'all' || source === 'tp') {
+    const tp = loadJSON(DATA_FILES.testimonials);
+    tp.forEach(item => {
+      if (matches(item, ['tekst'])) {
+        results.push({ ...item, _source: 'tp', _sourceLabel: 'Trustpilot', _preview: (item.tekst || '').substring(0, 200) });
+      }
+    });
+  }
+  
+  if (source === 'all' || source === 'vdo') {
+    const vdo = loadJSON(DATA_FILES.videos);
+    vdo.forEach(item => {
+      if (matches(item, ['transkription'])) {
+        results.push({ ...item, _source: 'vdo', _sourceLabel: 'Video', _preview: (item.transkription || '').substring(0, 200) });
+      }
+    });
+  }
+  
+  if (source === 'all' || source === 'meta') {
+    const meta = loadJSON(DATA_FILES.metacomments);
+    meta.forEach(item => {
+      if (matches(item, ['tekst'])) {
+        results.push({ ...item, _source: 'meta', _sourceLabel: 'Meta', _preview: (item.tekst || '').substring(0, 200) });
+      }
+    });
+  }
+  
+  res.json({ results, total: results.length, query: q, source, tema });
+});
+
+app.get('/api/temaer', (req, res) => {
+  const allTemaer = new Set();
+  const tp = loadJSON(DATA_FILES.testimonials);
+  const vdo = loadJSON(DATA_FILES.videos);
+  const meta = loadJSON(DATA_FILES.metacomments);
+  
+  [...tp, ...vdo, ...meta].forEach(item => {
+    if (item.temaer && Array.isArray(item.temaer)) {
+      item.temaer.forEach(t => allTemaer.add(t));
+    }
+  });
+  
+  res.json({ temaer: [...allTemaer].sort() });
+});
+
 app.listen(PORT, async () => {
   console.log(`\n  KJELDGAARD AD FACTORY`);
   console.log(`  Running on http://localhost:${PORT}`);
