@@ -486,7 +486,7 @@ Returner ALTID gyldig JSON i dette format:
   "temaer": ["tema1", "tema2"],
   "awareness": "product_aware"
 }
-Temaer skal vælges fra: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed
+Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed. KUN hvis indholdet tydeligt handler om noget INGEN af disse dækker, må du oprette ét nyt kort tema (2-3 ord, dansk, lowercase). Opret IKKE nye temaer der overlapper med eksisterende.
 Awareness skal være en af: problem_aware, solution_aware, product_aware, most_aware
 Hvis datoen er relativ (fx "for 3 dage siden"), beregn den faktiske dato baseret på dags dato.`;
       userPrompt = 'Læs denne Trustpilot anmeldelse og returner data som JSON:';
@@ -502,7 +502,7 @@ Returner ALTID gyldig JSON i dette format:
   "transkription": "den fulde tekst",
   "temaer": ["tema1", "tema2"]
 }
-Temaer skal vælges fra: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed
+Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed. KUN hvis indholdet tydeligt handler om noget INGEN af disse dækker, må du oprette ét nyt kort tema (2-3 ord, dansk, lowercase). Opret IKKE nye temaer der overlapper med eksisterende.
 Hvis alder ikke nævnes, sæt null.`;
       userPrompt = 'Læs denne video-transskription og returner data som JSON:';
 
@@ -518,7 +518,7 @@ Returner ALTID gyldig JSON i dette format:
 }
 Kilde skal være: facebook, instagram, eller messenger
 Sentiment skal være: positiv, neutral, eller negativ
-Temaer skal vælges fra: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed, spørgsmål, pris, levering, kritik, ros`;
+Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed, spørgsmål, pris, levering, kritik, ros. KUN hvis indholdet tydeligt handler om noget INGEN af disse dækker, må du oprette ét nyt kort tema (2-3 ord, dansk, lowercase). Opret IKKE nye temaer der overlapper med eksisterende.`;
       userPrompt = 'Læs denne social media kommentar og returner data som JSON:';
     }
 
