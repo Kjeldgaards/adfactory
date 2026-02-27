@@ -59,6 +59,7 @@
     .result-meta { display: flex; gap: 12px; color: #71717a; font-size: 12px; margin-bottom: 8px; flex-wrap: wrap; }
     
     .result-text { color: #a1a1aa; font-size: 14px; line-height: 1.6; }
+    .result-text.truncated { max-height: 100px; overflow: hidden; }
     .result-text mark { background: #3b82f633; color: #93c5fd; border-radius: 2px; padding: 0 2px; }
     
     .result-temaer { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
@@ -248,7 +249,7 @@
               <span class="result-source ${sourceClass}">${item._sourceLabel}</span>
             </div>
             ${metaParts.length ? '<div class="result-meta">' + metaParts.join(' · ') + '</div>' : ''}
-            <div class="result-text" style="${isLong && !isExpanded ? 'max-height:100px;overflow:hidden' : ''}">${highlight(displayText, query)}</div>
+            <div class="result-text${isLong && !isExpanded ? ' truncated' : ''}">${highlight(displayText, query)}</div>
             ${isLong ? '<button type="button" class="expand-btn" onclick="toggleExpand(' + idx + ')">' + (isExpanded ? 'Vis mindre ▲' : 'Vis mere ▼') + '</button>' : ''}
             ${temaerHtml ? '<div class="result-temaer">' + temaerHtml + '</div>' : ''}
           </div>
@@ -258,23 +259,23 @@
     
     // Toggle expand
     window.toggleExpand = function(idx) {
-      const scrollY = window.scrollY;
-      const card = document.querySelector(`[data-idx="${idx}"]`);
+      var scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
+      var card = document.querySelector('[data-idx="' + idx + '"]');
       if (!card) return;
-      const textEl = card.querySelector('.result-text');
-      const btn = card.querySelector('.expand-btn');
+      var textEl = card.querySelector('.result-text');
+      var btn = card.querySelector('.expand-btn');
       if (expandedCards.has(idx)) {
         expandedCards.delete(idx);
-        textEl.style.maxHeight = '100px';
-        textEl.style.overflow = 'hidden';
+        textEl.classList.add('truncated');
         btn.textContent = 'Vis mere ▼';
       } else {
         expandedCards.add(idx);
-        textEl.style.maxHeight = 'none';
-        textEl.style.overflow = 'visible';
+        textEl.classList.remove('truncated');
         btn.textContent = 'Vis mindre ▲';
       }
-      window.scrollTo(0, scrollY);
+      requestAnimationFrame(function() {
+        window.scrollTo(0, scrollPos);
+      });
     };
     
     // Event listeners
