@@ -189,7 +189,7 @@
         
         const res = await fetch(API + '/api/search?' + params.toString());
         const data = await res.json();
-        
+        lastResults = data;
         renderResults(data, q);
       } catch (e) {
         document.getElementById('results').innerHTML = '<div class="empty-state"><p>Fejl ved søgning: ' + e.message + '</p></div>';
@@ -258,13 +258,20 @@
     }
     
     // Toggle expand
+    var lastResults = null;
+    
     window.toggleExpand = function(idx) {
       if (expandedCards.has(idx)) {
         expandedCards.delete(idx);
       } else {
         expandedCards.add(idx);
       }
-      doSearch();
+      // Re-render from cached results without fetching
+      if (lastResults) {
+        var scrollBefore = window.pageYOffset;
+        renderResults(lastResults, document.getElementById('search-input').value.trim());
+        window.scrollTo(0, scrollBefore);
+      }
     };
     
     // Event listeners
