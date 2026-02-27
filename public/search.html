@@ -39,6 +39,7 @@
     .quick-tags { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
     .quick-tag { background: #1e1e24; border: 1px solid #27272a; border-radius: 16px; padding: 4px 12px; color: #71717a; font-size: 12px; cursor: pointer; transition: all 0.15s; }
     .quick-tag:hover { border-color: #3b82f6; color: #3b82f6; }
+    .quick-tag .count { color: #52525b; font-size: 11px; margin-left: 4px; }
     
     /* Results count */
     .results-info { color: #71717a; font-size: 13px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1e1e24; }
@@ -125,29 +126,9 @@
       </div>
     </div>
     
-    <!-- Quick search tags -->
+    <!-- Tema oversigt -->
     <div class="quick-tags" id="quick-tags">
-      <span class="quick-tag" data-q="rynker">rynker</span>
-      <span class="quick-tag" data-q="fugt">fugt</span>
-      <span class="quick-tag" data-q="glød">glød</span>
-      <span class="quick-tag" data-q="blød hud">blød hud</span>
-      <span class="quick-tag" data-q="fasthed">fasthed</span>
-      <span class="quick-tag" data-q="pigment">pigment</span>
-      <span class="quick-tag" data-q="rosacea">rosacea</span>
-      <span class="quick-tag" data-q="poser under øjne">poser under øjne</span>
-      <span class="quick-tag" data-q="mørke rande">mørke rande</span>
-      <span class="quick-tag" data-q="skeptiker">skeptiker</span>
-      <span class="quick-tag" data-q="afhængig">afhængig</span>
-      <span class="quick-tag" data-q="genbestilling">genbestilling</span>
-      <span class="quick-tag" data-q="anbefaling">anbefaling</span>
-      <span class="quick-tag" data-q="overgangsalder">overgangsalder</span>
-      <span class="quick-tag" data-q="resultat">resultat</span>
-      <span class="quick-tag" data-q="barriere">barriere</span>
-      <span class="quick-tag" data-q="tør hud">tør hud</span>
-      <span class="quick-tag" data-q="sensitiv">sensitiv</span>
-      <span class="quick-tag" data-q="rødme">rødme</span>
-      <span class="quick-tag" data-q="anti-aging">anti-aging</span>
-      <span class="quick-tag" data-q="enkelhed">enkelhed</span>
+      <span style="color:#52525b;font-size:12px;">Indlæser temaer...</span>
     </div>
     
     <!-- Results -->
@@ -318,14 +299,26 @@
       });
     });
     
-    // Quick tags
-    document.querySelectorAll('.quick-tag').forEach(tag => {
-      tag.addEventListener('click', () => {
-        document.getElementById('search-input').value = tag.dataset.q;
-        expandedCards.clear();
-        doSearch();
-      });
-    });
+    // Load temaer dynamically
+    async function loadTemaer() {
+      try {
+        const res = await fetch(API + '/api/temaer');
+        const data = await res.json();
+        const container = document.getElementById('quick-tags');
+        
+        container.innerHTML = data.temaer.map(t => 
+          `<span class="quick-tag" data-q="${t.tema}">${t.tema}<span class="count">${t.count}</span></span>`
+        ).join('');
+        
+        container.querySelectorAll('.quick-tag').forEach(tag => {
+          tag.addEventListener('click', () => {
+            document.getElementById('search-input').value = tag.dataset.q;
+            expandedCards.clear();
+            doSearch();
+          });
+        });
+      } catch (e) { console.error(e); }
+    }
     
     // Keyboard shortcut: / to focus search
     document.addEventListener('keydown', (e) => {
@@ -337,6 +330,7 @@
     
     // Init
     loadStats();
+    loadTemaer();
   </script>
 </body>
 </html>

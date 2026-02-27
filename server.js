@@ -616,18 +616,24 @@ app.get('/api/search', (req, res) => {
 });
 
 app.get('/api/temaer', (req, res) => {
-  const allTemaer = new Set();
+  const counts = {};
   const tp = loadJSON(DATA_FILES.testimonials);
   const vdo = loadJSON(DATA_FILES.videos);
   const meta = loadJSON(DATA_FILES.metacomments);
   
   [...tp, ...vdo, ...meta].forEach(item => {
     if (item.temaer && Array.isArray(item.temaer)) {
-      item.temaer.forEach(t => allTemaer.add(t));
+      item.temaer.forEach(t => {
+        counts[t] = (counts[t] || 0) + 1;
+      });
     }
   });
   
-  res.json({ temaer: [...allTemaer].sort() });
+  const temaer = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([tema, count]) => ({ tema, count }));
+  
+  res.json({ temaer });
 });
 
 // ============================================================
