@@ -548,6 +548,74 @@ Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fu
 });
 
 // ============================================================
+// DOCS API (for Claude Projects + external access)
+// ============================================================
+const DOCS_DIR = path.join(__dirname, 'docs');
+
+app.get('/api/docs', (req, res) => {
+  if (!fs.existsSync(DOCS_DIR)) return res.json({ docs: [] });
+  const files = fs.readdirSync(DOCS_DIR).filter(f => !f.startsWith('.'));
+  const docs = files.map(f => {
+    const stat = fs.statSync(path.join(DOCS_DIR, f));
+    return { filename: f, size: stat.size, modified: stat.mtime.toISOString() };
+  });
+  res.json({ docs, total: docs.length });
+});
+
+app.get('/api/docs/:filename', (req, res) => {
+  const filepath = path.join(DOCS_DIR, req.params.filename);
+  if (!fs.existsSync(filepath)) return res.status(404).json({ error: 'Document not found' });
+  // Prevent directory traversal
+  if (!filepath.startsWith(DOCS_DIR)) return res.status(403).json({ error: 'Forbidden' });
+  const content = fs.readFileSync(filepath, 'utf8');
+  const ext = path.extname(req.params.filename).toLowerCase();
+  if (ext === '.json') {
+    res.json(JSON.parse(content));
+  } else {
+    res.type('text/plain').send(content);
+  }
+});
+
+// ============================================================
+// MASTER INDEX (Claude Projects fetches this to get everything)
+// ============================================================
+app.get('/api/master', (req, res) => {
+  const tp = loadJSON(DATA_FILES.testimonials);
+  const vdo = loadJSON(DATA_FILES.videos);
+  const meta = loadJSON(DATA_FILES.metacomments);
+  const templates = loadTemplates();
+  
+  let docs = [];
+  if (fs.existsSync(DOCS_DIR)) {
+    docs = fs.readdirSync(DOCS_DIR)
+      .filter(f => !f.startsWith('.'))
+      .map(f => ({ filename: f, url: `/api/docs/${f}` }));
+  }
+
+  res.json({
+    updated: new Date().toISOString(),
+    counts: {
+      testimonials: tp.length,
+      videos: vdo.length,
+      metacomments: meta.length,
+      templates: templates.length,
+      docs: docs.length
+    },
+    endpoints: {
+      testimonials: '/api/testimonials',
+      videos: '/api/videos',
+      metacomments: '/api/metacomments',
+      templates: '/api/templates',
+      docs: '/api/docs',
+      search: '/api/search?q=keyword',
+      temaer: '/api/temaer',
+      stats: '/api/stats'
+    },
+    docs
+  });
+});
+
+// ============================================================
 // SEARCH API ENDPOINT
 // ============================================================
 
