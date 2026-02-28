@@ -716,6 +716,57 @@ app.get('/api/master', (req, res) => {
 // SEARCH API ENDPOINT
 // ============================================================
 
+// ============================================================
+// Concept/synonym map for smart search (Danish)
+// ============================================================
+const CONCEPT_MAP = {
+  'økonomi': ['penge', 'sparer', 'spar', 'pris', 'prisen', 'billig', 'billigere', 'dyr', 'dyrt', 'koster', 'koste', 'værd', 'investering', 'budget', 'råd til', 'lejer', 'pengene værd', 'økonomisk'],
+  'penge': ['sparer', 'spar', 'pris', 'prisen', 'billig', 'dyr', 'koster', 'værd', 'budget', 'økonomi', 'økonomisk', 'pengene værd', 'råd til'],
+  'overgangsalder': ['menopause', 'klimakteriet', 'hedeture', 'hormoner', 'hormon', 'østrogen'],
+  'alder': ['år', 'årene', 'alderen', 'ældre', 'aldring', 'aldersforandring', 'moden', 'modne'],
+  'rynker': ['linjer', 'furer', 'fine linjer', 'rynke', 'rynkerne', 'panderynker', 'øjenrynker', 'kragetæer'],
+  'tør hud': ['tørhed', 'tør', 'tørre', 'skæl', 'skaller', 'flager', 'plamager', 'sprukken', 'fugtig', 'fugt'],
+  'fugt': ['fugtig', 'fugtighed', 'hydrering', 'hydreret', 'tør', 'tørhed', 'fugter'],
+  'sensitiv': ['følsom', 'irriteret', 'irritation', 'reaktion', 'reagerer', 'overfølsom', 'ømfindtlig', 'sensitiv hud'],
+  'rødme': ['rød', 'røde', 'rosacea', 'irriteret', 'betændelse', 'pletter'],
+  'resultat': ['virker', 'virkning', 'effekt', 'forskel', 'forbedring', 'forandring', 'resultat', 'hjælper', 'hjulpet', 'gavner'],
+  'skeptiker': ['skeptisk', 'tvivl', 'tvivlede', 'troede ikke', 'tiltro', 'ikke tro', 'overrasket', 'overraskende'],
+  'anbefaling': ['anbefaler', 'anbefale', 'foreslår', 'prøv', 'køb', 'bestil', 'veninder', 'veninde', 'familie', 'datter', 'mor', 'søster'],
+  'prøvet alt': ['prøvet mange', 'prøvet alt muligt', 'andre cremer', 'andre produkter', 'ingenting hjulpet', 'intet virker', 'intet har virket', 'prøvet samtlige', 'prøvet alverdens'],
+  'hurtig': ['hurtigt', 'få dage', 'få uger', 'med det samme', 'straks', 'allerede', 'kort tid', 'første gang'],
+  'glød': ['glow', 'stråler', 'stråle', 'lysende', 'frisk', 'friskhed', 'udstråling'],
+  'fasthed': ['fast', 'stram', 'stramhed', 'strammere', 'elastisk', 'elasticitet', 'løs hud', 'slap'],
+  'enkelhed': ['enkel', 'simpel', 'simpelt', 'nemt', 'let', 'ukompliceret', 'en creme', 'ét produkt', 'rutine'],
+  'pigment': ['pigmentering', 'pigmentpletter', 'mørke pletter', 'solskader', 'alders pletter', 'misfarvning'],
+  'søvn': ['sover', 'nat', 'natcreme', 'nattevågen', 'søvnløs'],
+  'selvtillid': ['selvværd', 'tryg', 'selvsikker', 'glad', 'tilfreds', 'stolt', 'spejl', 'spejlet', 'tør gå ud'],
+  'mand': ['mænd', 'kæreste', 'manden', 'ham', 'hans', 'mandlig'],
+  'gave': ['julegave', 'fødselsdagsgave', 'gaveide', 'overraskelse'],
+  'genbestilling': ['bestilt igen', 'købt igen', 'genbestilt', 'anden gang', 'tredje gang', 'fjerde', 'abonnement'],
+};
+
+// Expand a query into multiple search terms using concept map
+function expandQuery(q) {
+  const lower = q.toLowerCase().trim();
+  const terms = [lower];
+  
+  // Direct concept match
+  if (CONCEPT_MAP[lower]) {
+    terms.push(...CONCEPT_MAP[lower]);
+  }
+  
+  // Also check if query is a synonym that maps to a concept
+  for (const [concept, synonyms] of Object.entries(CONCEPT_MAP)) {
+    if (synonyms.includes(lower) && !terms.includes(concept)) {
+      terms.push(concept);
+      // Also add sibling synonyms
+      synonyms.forEach(s => { if (!terms.includes(s)) terms.push(s); });
+    }
+  }
+  
+  return [...new Set(terms)];
+}
+
 app.get('/api/search', (req, res) => {
   const q = (req.query.q || '').toLowerCase().trim();
   const source = (req.query.source || 'all').toLowerCase();
@@ -725,21 +776,30 @@ app.get('/api/search', (req, res) => {
     return res.json({ results: [], total: 0 });
   }
   
+  // Expand query using concept map
+  const searchTerms = q ? expandQuery(q) : [];
+  const isExpanded = searchTerms.length > 1;
+  
   const results = [];
   
   function matches(item, textFields) {
     let matchesQuery = !q;
     let matchesTema = !tema;
     
-    if (q) {
-      for (const field of textFields) {
-        if (item[field] && item[field].toLowerCase().includes(q)) { matchesQuery = true; break; }
-      }
-      if (!matchesQuery && item.temaer) {
-        matchesQuery = item.temaer.some(t => t.toLowerCase().includes(q));
-      }
-      if (!matchesQuery && item.navn && item.navn.toLowerCase().includes(q)) {
-        matchesQuery = true;
+    if (q && searchTerms.length > 0) {
+      // Check all expanded terms against text fields
+      for (const term of searchTerms) {
+        for (const field of textFields) {
+          if (item[field] && item[field].toLowerCase().includes(term)) { matchesQuery = true; break; }
+        }
+        if (matchesQuery) break;
+        if (!matchesQuery && item.temaer) {
+          matchesQuery = item.temaer.some(t => t.toLowerCase().includes(term));
+        }
+        if (!matchesQuery && item.navn && item.navn.toLowerCase().includes(term)) {
+          matchesQuery = true;
+        }
+        if (matchesQuery) break;
       }
     }
     
@@ -777,7 +837,7 @@ app.get('/api/search', (req, res) => {
     });
   }
   
-  res.json({ results, total: results.length, query: q, source, tema });
+  res.json({ results, total: results.length, query: q, source, tema, expanded: isExpanded ? searchTerms : null });
 });
 
 app.get('/api/temaer', (req, res) => {

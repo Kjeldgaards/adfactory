@@ -124,7 +124,7 @@
       <div class="stat-mini"><div class="stat-mini-number" id="stat-meta">-</div><div class="stat-mini-label">Meta</div></div>
     </div>
     <div class="search-bar">
-      <input type="text" class="search-input" id="search-input" placeholder="Søg efter keyword, navn, tema..." autofocus>
+      <input type="text" class="search-input" id="search-input" placeholder="Søg keyword, navn, tema eller koncept (fx 'økonomi', 'skeptiker')..." autofocus>
       <button class="search-btn" id="search-btn">Søg</button>
     </div>
     <div class="filters">
@@ -304,7 +304,11 @@
       if (counts.vdo) parts.push(counts.vdo + ' VDO');
       if (counts.meta) parts.push(counts.meta + ' META');
       info.style.display = 'block';
-      info.innerHTML = '<strong>' + data.total + '</strong> resultater (' + parts.join(', ') + ')';
+      let infoHtml = '<strong>' + data.total + '</strong> resultater (' + parts.join(', ') + ')';
+      if (data.expanded && data.expanded.length > 1) {
+        infoHtml += ' · <span style="color:#B8943E;">Koncept-søgning:</span> <span style="color:#a1a1aa;">' + data.expanded.slice(0, 8).join(', ') + (data.expanded.length > 8 ? '...' : '') + '</span>';
+      }
+      info.innerHTML = infoHtml;
 
       container.innerHTML = data.results.map((item, idx) => {
         const key = itemKey(item);
