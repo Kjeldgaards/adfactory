@@ -573,6 +573,63 @@ Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fu
 });
 
 // ============================================================
+// TEXT EXTRACTION (Claude text analysis for .txt/.md uploads)
+// ============================================================
+app.post('/api/extract-from-text', async (req, res) => {
+  try {
+    const { text, type, filename } = req.body;
+    if (!text) return res.status(400).json({ error: 'No text provided' });
+
+    const temaList = 'rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed, prøvet alt';
+
+    let systemPrompt = '';
+    let userPrompt = '';
+
+    if (type === 'tp') {
+      systemPrompt = `Du er en data-ekstraktor. Du læser Trustpilot anmeldelser (tekst) og returnerer struktureret JSON.
+Returner ALTID gyldig JSON: {"navn":"","dato":"YYYY-MM-DD","rating":5,"tekst":"","temaer":[],"awareness":"product_aware"}
+Temaer: ${temaList}. "prøvet alt" bruges når kunden har prøvet mange andre produkter uden virkning.
+Awareness: problem_aware, solution_aware, product_aware, most_aware`;
+      userPrompt = 'Analysér denne Trustpilot anmeldelse og returner JSON:\n\n' + text;
+
+    } else if (type === 'vid') {
+      systemPrompt = `Du er en data-ekstraktor. Du analyserer video-transskriptioner og returnerer struktureret JSON.
+Returner ALTID gyldig JSON: {"navn":"","alder":null,"videoLængde":"","hudbekymring":"","transkription":"","temaer":[]}
+Temaer: ${temaList}. "prøvet alt" bruges når kunden har prøvet mange andre produkter uden virkning.
+Hvis alder/navn nævnes i teksten, ekstraher dem. Ellers brug filnavnet som hint for navn.
+For videoLængde: se efter timestamps i teksten.
+For hudbekymring: ekstraher de specifikke hudproblemer kunden nævner.
+Transkription: den rene danske tekst UDEN timestamps og UDEN engelsk oversættelse.`;
+      userPrompt = (filename ? 'Filnavn: ' + filename + '\n\n' : '') + 'Analysér denne video-transskription og returner JSON:\n\n' + text;
+
+    } else if (type === 'meta') {
+      systemPrompt = `Du er en data-ekstraktor. Du analyserer sociale medier kommentarer og returnerer struktureret JSON.
+Returner ALTID gyldig JSON: {"navn":"","tekst":"","kilde":"facebook","sentiment":"positiv","temaer":[]}
+Temaer: ${temaList}, spørgsmål, pris, levering, kritik, ros. "prøvet alt" bruges når kunden har prøvet mange andre produkter.
+Kilde: facebook, instagram, messenger. Sentiment: positiv, neutral, negativ.`;
+      userPrompt = 'Analysér denne kommentar og returner JSON:\n\n' + text;
+    }
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userPrompt }]
+    });
+
+    const responseText = response.content[0].text;
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return res.status(400).json({ error: 'Could not extract data from text' });
+
+    res.json(JSON.parse(jsonMatch[0]));
+
+  } catch (err) {
+    console.error('Text extraction error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
 // DOCS API (for Claude Projects + external access)
 // ============================================================
 const DOCS_DIR = path.join(__dirname, 'docs');

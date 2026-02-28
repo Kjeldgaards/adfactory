@@ -274,8 +274,8 @@
       <div class="drop-zone" id="drop-zone-tp">
         <div class="drop-zone-icon">📸</div>
         <div class="drop-zone-text">Drop screenshot her eller klik for at vælge</div>
-        <div class="drop-zone-hint">Trustpilot anmeldelse · PNG, JPG · Cmd+V virker også</div>
-        <input type="file" id="file-input-tp" accept="image/*">
+        <div class="drop-zone-hint">Trustpilot anmeldelse · PNG, JPG, TXT · Cmd+V virker også</div>
+        <input type="file" id="file-input-tp" accept="image/*,.txt,.md,text/*">
       </div>
       
       <!-- Processing -->
@@ -354,8 +354,8 @@
       <div class="drop-zone" id="drop-zone-vid">
         <div class="drop-zone-icon">🎬</div>
         <div class="drop-zone-text">Drop screenshot af video-transskription</div>
-        <div class="drop-zone-hint">Eller indsæt tekst direkte herunder</div>
-        <input type="file" id="file-input-vid" accept="image/*">
+        <div class="drop-zone-hint">Drop screenshot eller .txt fil · Eller indsæt tekst herunder</div>
+        <input type="file" id="file-input-vid" accept="image/*,.txt,.md,text/*">
       </div>
       
       <div class="processing" id="processing-vid">
@@ -419,8 +419,8 @@
       <div class="drop-zone" id="drop-zone-meta">
         <div class="drop-zone-icon">💬</div>
         <div class="drop-zone-text">Drop screenshot af Facebook/Instagram kommentar</div>
-        <div class="drop-zone-hint">PNG, JPG · Cmd+V virker også</div>
-        <input type="file" id="file-input-meta" accept="image/*">
+        <div class="drop-zone-hint">PNG, JPG, TXT · Cmd+V virker også</div>
+        <input type="file" id="file-input-meta" accept="image/*,.txt,.md,text/*">
       </div>
       
       <div class="processing" id="processing-meta">
@@ -563,13 +563,17 @@
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('image/')) {
           processImage(file, type);
+        } else if (file && (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.md'))) {
+          processTextFile(file, type);
         }
       });
       
       // File input change
       fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
-        if (file) processImage(file, type);
+        if (!file) return;
+        if (file.type.startsWith('image/')) processImage(file, type);
+        else if (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.md')) processTextFile(file, type);
       });
       
       // Paste
@@ -636,6 +640,49 @@
       }
     }
     
+    // Process text file with Claude
+    async function processTextFile(file, type) {
+      const processingId = 'processing-' + type;
+      const previewId = 'preview-' + type;
+      const dropZoneId = 'drop-zone-' + type;
+      const previewImgId = 'preview-img-' + type;
+      
+      document.getElementById(dropZoneId).style.display = 'none';
+      document.getElementById(processingId).classList.add('show');
+      
+      // Read text content
+      const text = await file.text();
+      
+      // Hide preview image (no image for text files)
+      document.getElementById(previewImgId).style.display = 'none';
+      
+      try {
+        const response = await fetch(API + '/api/extract-from-text', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: text, type: type, filename: file.name })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+          alert('Fejl: ' + data.error);
+          resetPanel(type);
+          return;
+        }
+        
+        populateFields(data, type);
+        
+        document.getElementById(processingId).classList.remove('show');
+        document.getElementById(previewId).classList.add('show');
+        
+      } catch (err) {
+        console.error(err);
+        alert('Fejl ved tekstanalyse: ' + err.message);
+        resetPanel(type);
+      }
+    }
+    
     function fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -677,10 +724,12 @@
       const processingId = 'processing-' + type;
       const previewId = 'preview-' + type;
       const dropZoneId = 'drop-zone-' + type;
+      const previewImgId = 'preview-img-' + type;
       
       document.getElementById(processingId).classList.remove('show');
       document.getElementById(previewId).classList.remove('show');
       document.getElementById(dropZoneId).style.display = 'block';
+      document.getElementById(previewImgId).style.display = '';
     }
     
     // Reset buttons
