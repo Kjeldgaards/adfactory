@@ -246,6 +246,24 @@
     .btn-edit-save:hover { background: #d4a843; }
     .btn-edit-cancel { flex: 0; background: none; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px 20px; color: #a1a1aa; font-size: 14px; cursor: pointer; }
     .btn-edit-cancel:hover { border-color: #71717a; color: #e4e4e7; }
+    /* Duplicate warning modal */
+    .dupe-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 300; display: none; align-items: center; justify-content: center; }
+    .dupe-overlay.visible { display: flex; }
+    .dupe-panel { background: #18181b; border: 1px solid #f59e0b; border-radius: 16px; padding: 28px; width: 600px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+    .dupe-panel h2 { font-size: 18px; color: #f59e0b; margin-bottom: 6px; }
+    .dupe-subtitle { color: #a1a1aa; font-size: 13px; margin-bottom: 20px; }
+    .dupe-match { background: #1c1c22; border: 1px solid #27272a; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+    .dupe-match-label { font-size: 11px; color: #f59e0b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .dupe-match-name { font-size: 14px; color: #fff; font-weight: 600; margin-bottom: 4px; }
+    .dupe-match-text { font-size: 13px; color: #a1a1aa; line-height: 1.5; max-height: 100px; overflow-y: auto; }
+    .dupe-match-score { display: inline-block; background: rgba(245,158,11,0.15); color: #f59e0b; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-top: 8px; }
+    .dupe-new { border-color: #3f3f46; }
+    .dupe-new .dupe-match-label { color: #71717a; }
+    .dupe-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .btn-dupe-cancel { flex: 1; background: none; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px; color: #a1a1aa; font-size: 14px; cursor: pointer; }
+    .btn-dupe-cancel:hover { border-color: #71717a; color: #e4e4e7; }
+    .btn-dupe-add { flex: 1; background: #f59e0b; color: #000; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-dupe-add:hover { background: #fbbf24; }
   </style>
 </head>
 <body>
@@ -530,12 +548,145 @@
     </div>
   </div>
 
+  <div class="dupe-overlay" id="dupe-overlay">
+    <div class="dupe-panel">
+      <h2>⚠️ Mulig duplikat fundet</h2>
+      <p class="dupe-subtitle" id="dupe-subtitle">Der findes allerede en lignende post i databasen.</p>
+      <div id="dupe-existing"></div>
+      <div id="dupe-new"></div>
+      <div class="dupe-actions">
+        <button class="btn-dupe-cancel" id="btn-dupe-cancel">✕ Annuller — tilføj ikke</button>
+        <button class="btn-dupe-add" id="btn-dupe-add">Tilføj alligevel</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API = window.location.origin;
     
     // Current state
     let currentRating = 5;
     let currentTemaer = { tp: [], vid: [], meta: [] };
+    let pendingSaveCallback = null;
+
+    // ============================================================
+    // DUPLICATE CHECKER
+    // ============================================================
+    function textSimilarity(a, b) {
+      if (!a || !b) return 0;
+      a = a.toLowerCase().trim();
+      b = b.toLowerCase().trim();
+      if (a === b) return 1;
+      if (a.length < 3 || b.length < 3) return 0;
+      // Bigram similarity (Dice coefficient) — fast and good for text comparison
+      function bigrams(str) {
+        const set = {};
+        for (let i = 0; i < str.length - 1; i++) {
+          const bg = str.substring(i, i + 2);
+          set[bg] = (set[bg] || 0) + 1;
+        }
+        return set;
+      }
+      const bg1 = bigrams(a), bg2 = bigrams(b);
+      let shared = 0;
+      for (const k in bg1) { if (bg2[k]) shared += Math.min(bg1[k], bg2[k]); }
+      const total = a.length - 1 + b.length - 1;
+      return total > 0 ? (2 * shared) / total : 0;
+    }
+
+    function nameSimilarity(a, b) {
+      if (!a || !b) return 0;
+      a = a.toLowerCase().trim().replace(/^-+/, '');
+      b = b.toLowerCase().trim().replace(/^-+/, '');
+      if (a === b) return 1;
+      // Check if first name matches (covers "Dorthe" vs "Dorthe S.")
+      const aFirst = a.split(/[\s.]+/)[0];
+      const bFirst = b.split(/[\s.]+/)[0];
+      if (aFirst === bFirst && aFirst.length > 2) return 0.85;
+      return textSimilarity(a, b);
+    }
+
+    async function checkDuplicate(type, newName, newText) {
+      try {
+        const endpoint = type === 'testimonials' ? 'testimonials' : type === 'videos' ? 'videos' : 'metacomments';
+        const res = await fetch(API + '/api/' + endpoint);
+        const existing = await res.json();
+        
+        let bestMatch = null;
+        let bestScore = 0;
+
+        existing.forEach(item => {
+          const itemText = item.tekst || item.transkription || '';
+          const itemName = item.navn || '';
+          
+          const txtScore = textSimilarity(newText, itemText);
+          const nameScore = nameSimilarity(newName, itemName);
+          
+          // Combined score: text is most important (80%), name is secondary (20%)
+          // But if name matches strongly AND text is above 80%, flag it
+          let combinedScore;
+          if (nameScore >= 0.8 && txtScore >= 0.8) {
+            combinedScore = Math.max(txtScore, 0.95); // High confidence duplicate
+          } else {
+            combinedScore = (txtScore * 0.8) + (nameScore * 0.2);
+          }
+          
+          if (combinedScore > bestScore) {
+            bestScore = combinedScore;
+            bestMatch = item;
+          }
+        });
+
+        if (bestScore >= 0.95 && bestMatch) {
+          return { isDuplicate: true, match: bestMatch, score: bestScore };
+        }
+        return { isDuplicate: false };
+      } catch (e) {
+        console.error('Duplicate check failed:', e);
+        return { isDuplicate: false }; // Don't block save if check fails
+      }
+    }
+
+    function showDuplicateWarning(match, score, newName, newText, onConfirm) {
+      const existingDiv = document.getElementById('dupe-existing');
+      const newDiv = document.getElementById('dupe-new');
+      
+      const matchText = match.tekst || match.transkription || '';
+      const matchName = match.navn || 'Anonym';
+      const pct = Math.round(score * 100);
+      
+      existingDiv.innerHTML = '<div class="dupe-match">' +
+        '<div class="dupe-match-label">Eksisterende i database (ID: ' + match.id + ')</div>' +
+        '<div class="dupe-match-name">' + matchName + (match.dato ? ' · ' + match.dato : '') + '</div>' +
+        '<div class="dupe-match-text">' + matchText + '</div>' +
+        '<div class="dupe-match-score">' + pct + '% match</div>' +
+        '</div>';
+      
+      newDiv.innerHTML = '<div class="dupe-match dupe-new">' +
+        '<div class="dupe-match-label">Ny post du prøver at tilføje</div>' +
+        '<div class="dupe-match-name">' + (newName || 'Anonym') + '</div>' +
+        '<div class="dupe-match-text">' + newText + '</div>' +
+        '</div>';
+
+      pendingSaveCallback = onConfirm;
+      document.getElementById('dupe-overlay').classList.add('visible');
+    }
+
+    document.getElementById('btn-dupe-cancel').addEventListener('click', () => {
+      document.getElementById('dupe-overlay').classList.remove('visible');
+      pendingSaveCallback = null;
+    });
+    document.getElementById('btn-dupe-add').addEventListener('click', () => {
+      document.getElementById('dupe-overlay').classList.remove('visible');
+      if (pendingSaveCallback) pendingSaveCallback();
+      pendingSaveCallback = null;
+    });
+    document.getElementById('dupe-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        e.currentTarget.classList.remove('visible');
+        pendingSaveCallback = null;
+      }
+    });
     
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
@@ -791,104 +942,137 @@
     // Save functions
     document.getElementById('save-tp').addEventListener('click', async () => {
       const btn = document.getElementById('save-tp');
+      const navn = document.getElementById('extracted-navn').value;
+      const tekst = document.getElementById('extracted-tekst').value;
+      
       btn.disabled = true;
-      btn.textContent = 'Gemmer...';
+      btn.textContent = 'Tjekker duplikater...';
       
-      try {
-        const res = await fetch(API + '/api/testimonials', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            navn: document.getElementById('extracted-navn').value,
-            dato: document.getElementById('extracted-dato').value,
-            alder: document.getElementById('extracted-alder').value ? parseInt(document.getElementById('extracted-alder').value) : null,
-            rating: currentRating,
-            tekst: document.getElementById('extracted-tekst').value,
-            temaer: currentTemaer.tp,
-            awareness: document.getElementById('extracted-awareness').value
-          })
-        });
-        
-        if (res.ok) {
-          showSuccess('Anmeldelse tilføjet!');
-          resetPanel('tp');
-          loadStats();
-          loadRecent('testimonials', 'recent-tp');
-        }
-      } catch (e) {
-        alert('Fejl: ' + e.message);
+      const doSave = async () => {
+        btn.textContent = 'Gemmer...';
+        try {
+          const res = await fetch(API + '/api/testimonials', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              navn: navn,
+              dato: document.getElementById('extracted-dato').value,
+              alder: document.getElementById('extracted-alder').value ? parseInt(document.getElementById('extracted-alder').value) : null,
+              rating: currentRating,
+              tekst: tekst,
+              temaer: currentTemaer.tp,
+              awareness: document.getElementById('extracted-awareness').value
+            })
+          });
+          if (res.ok) {
+            showSuccess('Anmeldelse tilføjet!');
+            resetPanel('tp');
+            loadStats();
+            loadRecent('testimonials', 'recent-tp');
+          }
+        } catch (e) { alert('Fejl: ' + e.message); }
+        btn.disabled = false;
+        btn.textContent = '✓ Gem anmeldelse';
+      };
+
+      const dupeCheck = await checkDuplicate('testimonials', navn, tekst);
+      if (dupeCheck.isDuplicate) {
+        btn.disabled = false;
+        btn.textContent = '✓ Gem anmeldelse';
+        showDuplicateWarning(dupeCheck.match, dupeCheck.score, navn, tekst, doSave);
+      } else {
+        await doSave();
       }
-      
-      btn.disabled = false;
-      btn.textContent = '✓ Gem anmeldelse';
     });
     
     document.getElementById('save-vid').addEventListener('click', async () => {
       const btn = document.getElementById('save-vid');
+      const navn = document.getElementById('vid-navn').value;
+      const tekst = document.getElementById('vid-transkription').value;
+      
       btn.disabled = true;
-      btn.textContent = 'Gemmer...';
+      btn.textContent = 'Tjekker duplikater...';
       
-      try {
-        const res = await fetch(API + '/api/videos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            navn: document.getElementById('vid-navn').value,
-            dato: document.getElementById('vid-dato').value || new Date().toISOString().split('T')[0],
-            alder: document.getElementById('vid-alder').value ? parseInt(document.getElementById('vid-alder').value) : null,
-            videoLængde: document.getElementById('vid-laengde').value,
-            hudbekymring: document.getElementById('vid-bekymring').value,
-            transkription: document.getElementById('vid-transkription').value,
-            temaer: currentTemaer.vid
-          })
-        });
-        
-        if (res.ok) {
-          showSuccess('Video tilføjet!');
-          resetPanel('vid');
-          loadStats();
-          loadRecent('videos', 'recent-vid');
-        }
-      } catch (e) {
-        alert('Fejl: ' + e.message);
+      const doSave = async () => {
+        btn.textContent = 'Gemmer...';
+        try {
+          const res = await fetch(API + '/api/videos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              navn: navn,
+              dato: document.getElementById('vid-dato').value || new Date().toISOString().split('T')[0],
+              alder: document.getElementById('vid-alder').value ? parseInt(document.getElementById('vid-alder').value) : null,
+              videoLængde: document.getElementById('vid-laengde').value,
+              hudbekymring: document.getElementById('vid-bekymring').value,
+              transkription: tekst,
+              temaer: currentTemaer.vid
+            })
+          });
+          if (res.ok) {
+            showSuccess('Video tilføjet!');
+            resetPanel('vid');
+            loadStats();
+            loadRecent('videos', 'recent-vid');
+          }
+        } catch (e) { alert('Fejl: ' + e.message); }
+        btn.disabled = false;
+        btn.textContent = '✓ Gem video';
+      };
+
+      const dupeCheck = await checkDuplicate('videos', navn, tekst);
+      if (dupeCheck.isDuplicate) {
+        btn.disabled = false;
+        btn.textContent = '✓ Gem video';
+        showDuplicateWarning(dupeCheck.match, dupeCheck.score, navn, tekst, doSave);
+      } else {
+        await doSave();
       }
-      
-      btn.disabled = false;
-      btn.textContent = '✓ Gem video';
     });
     
     document.getElementById('save-meta').addEventListener('click', async () => {
       const btn = document.getElementById('save-meta');
+      const navn = document.getElementById('meta-navn').value;
+      const tekst = document.getElementById('meta-tekst').value;
+      
       btn.disabled = true;
-      btn.textContent = 'Gemmer...';
+      btn.textContent = 'Tjekker duplikater...';
       
-      try {
-        const res = await fetch(API + '/api/metacomments', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            navn: document.getElementById('meta-navn').value,
-            tekst: document.getElementById('meta-tekst').value,
-            kilde: document.getElementById('meta-kilde').value,
-            sentiment: document.getElementById('meta-sentiment').value,
-            temaer: currentTemaer.meta,
-            dato: document.getElementById('meta-dato').value || new Date().toISOString().split('T')[0],
-            alder: document.getElementById('meta-alder').value ? parseInt(document.getElementById('meta-alder').value) : null
-          })
-        });
-        
-        if (res.ok) {
-          showSuccess('Kommentar tilføjet!');
-          resetPanel('meta');
-          loadStats();
-          loadRecent('metacomments', 'recent-meta');
-        }
-      } catch (e) {
-        alert('Fejl: ' + e.message);
+      const doSave = async () => {
+        btn.textContent = 'Gemmer...';
+        try {
+          const res = await fetch(API + '/api/metacomments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              navn: navn,
+              tekst: tekst,
+              kilde: document.getElementById('meta-kilde').value,
+              sentiment: document.getElementById('meta-sentiment').value,
+              temaer: currentTemaer.meta,
+              dato: document.getElementById('meta-dato').value || new Date().toISOString().split('T')[0],
+              alder: document.getElementById('meta-alder').value ? parseInt(document.getElementById('meta-alder').value) : null
+            })
+          });
+          if (res.ok) {
+            showSuccess('Kommentar tilføjet!');
+            resetPanel('meta');
+            loadStats();
+            loadRecent('metacomments', 'recent-meta');
+          }
+        } catch (e) { alert('Fejl: ' + e.message); }
+        btn.disabled = false;
+        btn.textContent = '✓ Gem kommentar';
+      };
+
+      const dupeCheck = await checkDuplicate('metacomments', navn, tekst);
+      if (dupeCheck.isDuplicate) {
+        btn.disabled = false;
+        btn.textContent = '✓ Gem kommentar';
+        showDuplicateWarning(dupeCheck.match, dupeCheck.score, navn, tekst, doSave);
+      } else {
+        await doSave();
       }
-      
-      btn.disabled = false;
-      btn.textContent = '✓ Gem kommentar';
     });
     
     // Show success
