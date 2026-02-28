@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Import</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0f1117; color: #e4e4e7; padding: 24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { margin-bottom: 8px; }
+    .sub { color: #71717a; font-size: 14px; margin-bottom: 24px; }
+    .stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .stat { background: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 16px 24px; min-width: 140px; }
+    .stat-num { font-size: 32px; font-weight: 700; color: #B8943E; }
+    .stat-num.green { color: #22c55e; }
+    .stat-num.red { color: #ef4444; }
+    .stat-label { color: #71717a; font-size: 12px; margin-top: 2px; }
+    .btn { padding: 12px 28px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-right: 12px; }
+    .btn-check { background: #3b82f6; color: #fff; }
+    .btn-import { background: #22c55e; color: #000; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .log { background: #18181b; border: 1px solid #27272a; border-radius: 8px; padding: 16px; margin-top: 20px; font-size: 13px; line-height: 1.8; max-height: 500px; overflow-y: auto; white-space: pre-wrap; }
+    .missing { color: #ef4444; }
+    .matched { color: #22c55e; }
+    .added { color: #B8943E; }
+    a { color: #B8943E; text-decoration: none; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/admin.html">← Admin</a> &nbsp; <a href="/search.html">Søg</a>
+    <h1>📥 Trustpilot CSV Import</h1>
+    <p class="sub">Sammenligner 150 femstjernede anmeldelser fra CSV med databasen og importerer manglende.</p>
+    
+    <div class="stats" id="stats" style="display:none;">
+      <div class="stat"><div class="stat-num" id="s-csv">-</div><div class="stat-label">I CSV</div></div>
+      <div class="stat"><div class="stat-num" id="s-db">-</div><div class="stat-label">I database</div></div>
+      <div class="stat"><div class="stat-num green" id="s-match">-</div><div class="stat-label">Allerede i DB</div></div>
+      <div class="stat"><div class="stat-num red" id="s-miss">-</div><div class="stat-label">Mangler</div></div>
+    </div>
+    
+    <button class="btn btn-check" id="btn-check" onclick="checkMissing()">1. Tjek manglende</button>
+    <button class="btn btn-import" id="btn-import" onclick="doImport()" disabled>2. Importér manglende</button>
+    
+    <div class="log" id="log">Klik "Tjek manglende" for at starte...</div>
+  </div>
+  <script>
+    const API = window.location.origin;
+    const log = document.getElementById('log');
+    
+    async function checkMissing() {
+      log.textContent = 'Tjekker...';
+      document.getElementById('btn-check').disabled = true;
+      try {
+        const res = await fetch(API + '/api/csv-import');
+        const data = await res.json();
+        
+        document.getElementById('stats').style.display = 'flex';
+        document.getElementById('s-csv').textContent = data.csvCount;
+        document.getElementById('s-db').textContent = data.dbCount;
+        document.getElementById('s-match').textContent = data.matchedCount;
+        document.getElementById('s-miss').textContent = data.missingCount;
+        
+        let txt = `✅ ${data.matchedCount} allerede i database\n❌ ${data.missingCount} mangler\n\n`;
+        txt += '--- MANGLER ---\n';
+        data.missing.forEach((m, i) => {
+          txt += `${i+1}. ${m.navn} (${m.dato}) — best match: ${m.score}%\n   "${m.tekst}..."\n\n`;
+        });
+        log.innerHTML = txt;
+        
+        if (data.missingCount > 0) {
+          document.getElementById('btn-import').disabled = false;
+        }
+      } catch(e) {
+        log.textContent = 'Fejl: ' + e.message;
+      }
+      document.getElementById('btn-check').disabled = false;
+    }
+    
+    async function doImport() {
+      document.getElementById('btn-import').disabled = true;
+      log.innerHTML += '\n\n⏳ Importerer...\n';
+      try {
+        const res = await fetch(API + '/api/csv-import', { method: 'POST' });
+        const data = await res.json();
+        log.innerHTML += `\n✅ DONE! Tilføjet ${data.added} anmeldelser.\nTotal i database nu: ${data.totalInDb}\n\n`;
+        data.entries.forEach(e => {
+          log.innerHTML += `  ✓ ${e.id}: ${e.navn}\n`;
+        });
+        // Refresh stats
+        document.getElementById('s-db').textContent = data.totalInDb;
+        document.getElementById('s-miss').textContent = '0';
+      } catch(e) {
+        log.innerHTML += '\n❌ Fejl: ' + e.message;
+      }
+    }
+  </script>
+</body>
+</html>

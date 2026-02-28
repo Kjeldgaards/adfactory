@@ -981,6 +981,97 @@ KUN JSON, intet andet.`,
 });
 
 // ============================================================
+// CSV IMPORT — compare & add missing Trustpilot reviews
+// ============================================================
+const csvImportData = require('./import-csv-data.js');
+
+function bigramSimilarity(a, b) {
+  if (!a || !b) return 0;
+  a = a.toLowerCase().replace(/\s+/g, ' ').trim();
+  b = b.toLowerCase().replace(/\s+/g, ' ').trim();
+  if (a === b) return 1;
+  if (a.length < 5 || b.length < 5) return a === b ? 1 : 0;
+  const bigrams = (str) => {
+    const m = {};
+    for (let i = 0; i < str.length - 1; i++) {
+      const bg = str.substring(i, i + 2);
+      m[bg] = (m[bg] || 0) + 1;
+    }
+    return m;
+  };
+  const bg1 = bigrams(a), bg2 = bigrams(b);
+  let shared = 0;
+  for (const k in bg1) { if (bg2[k]) shared += Math.min(bg1[k], bg2[k]); }
+  const total = a.length - 1 + b.length - 1;
+  return total > 0 ? (2 * shared) / total : 0;
+}
+
+// GET = dry run (show what's missing), POST = actually import
+app.get('/api/csv-import', (req, res) => {
+  const dbData = loadJSON(DATA_FILES.testimonials);
+  const missing = [];
+  const matched = [];
+  
+  csvImportData.forEach(csv => {
+    let bestScore = 0;
+    let bestMatch = null;
+    dbData.forEach(db => {
+      const score = bigramSimilarity(csv.tekst, db.tekst || '');
+      if (score > bestScore) { bestScore = score; bestMatch = db; }
+    });
+    if (bestScore >= 0.80) {
+      matched.push({ csv: csv.navn, db: bestMatch ? bestMatch.navn : '?', score: Math.round(bestScore * 100) });
+    } else {
+      missing.push({ navn: csv.navn, dato: csv.dato, tekst: csv.tekst.substring(0, 120), score: Math.round(bestScore * 100) });
+    }
+  });
+  
+  res.json({ csvCount: csvImportData.length, dbCount: dbData.length, matchedCount: matched.length, missingCount: missing.length, missing, matched });
+});
+
+app.post('/api/csv-import', (req, res) => {
+  const dbData = loadJSON(DATA_FILES.testimonials);
+  const missing = [];
+  
+  csvImportData.forEach(csv => {
+    let bestScore = 0;
+    dbData.forEach(db => {
+      const score = bigramSimilarity(csv.tekst, db.tekst || '');
+      if (score > bestScore) bestScore = score;
+    });
+    if (bestScore < 0.80) {
+      missing.push(csv);
+    }
+  });
+  
+  // Add missing entries
+  let maxId = 0;
+  dbData.forEach(d => { const n = parseInt((d.id || '').replace('tp-', '')); if (n > maxId) maxId = n; });
+  
+  const added = [];
+  missing.forEach(csv => {
+    maxId++;
+    const newEntry = {
+      id: 'tp-' + maxId,
+      navn: csv.navn,
+      dato: csv.dato,
+      rating: 5,
+      tekst: csv.tekst,
+      temaer: [],
+      awareness: 'product_aware'
+    };
+    dbData.push(newEntry);
+    added.push({ id: newEntry.id, navn: csv.navn });
+  });
+  
+  // Save
+  const fs = require('fs');
+  fs.writeFileSync(DATA_FILES.testimonials, JSON.stringify(dbData, null, 2));
+  
+  res.json({ added: added.length, entries: added, totalInDb: dbData.length });
+});
+
+// ============================================================
 // Serve frontend for all non-API routes
 // ============================================================
 app.get('*', (req, res) => {
