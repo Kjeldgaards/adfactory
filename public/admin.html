@@ -623,13 +623,15 @@
           const txtScore = textSimilarity(newText, itemText);
           const nameScore = nameSimilarity(newName, itemName);
           
-          // Combined score: text is most important (80%), name is secondary (20%)
-          // But if name matches strongly AND text is above 80%, flag it
+          // Text is the primary signal — if text is ≥95% similar, it's a duplicate
+          // regardless of whether names match (names can be missing/truncated)
           let combinedScore;
-          if (nameScore >= 0.8 && txtScore >= 0.8) {
-            combinedScore = Math.max(txtScore, 0.95); // High confidence duplicate
+          if (txtScore >= 0.95) {
+            combinedScore = txtScore; // Text alone is enough
+          } else if (nameScore >= 0.8 && txtScore >= 0.80) {
+            combinedScore = Math.max(txtScore, 0.95); // Name + decent text = duplicate
           } else {
-            combinedScore = (txtScore * 0.8) + (nameScore * 0.2);
+            combinedScore = txtScore; // Just use text score
           }
           
           if (combinedScore > bestScore) {
