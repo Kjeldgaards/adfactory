@@ -338,6 +338,7 @@ app.post('/api/testimonials', (req, res) => {
     id: getNextId(data),
     navn: req.body.navn || 'Anonym',
     dato: req.body.dato || new Date().toISOString().split('T')[0],
+    alder: req.body.alder || null,
     rating: req.body.rating || 5,
     tekst: req.body.tekst || '',
     temaer: req.body.temaer || [],
@@ -396,6 +397,7 @@ app.post('/api/videos', (req, res) => {
   const newItem = {
     id: getNextId(data),
     navn: req.body.navn || 'Ukendt',
+    dato: req.body.dato || new Date().toISOString().split('T')[0],
     alder: req.body.alder || null,
     hudbekymring: req.body.hudbekymring || null,
     videoLængde: req.body.videoLængde || null,
@@ -441,6 +443,7 @@ app.post('/api/metacomments', (req, res) => {
     id: getNextId(data),
     navn: req.body.navn || 'Anonym',
     dato: req.body.dato || new Date().toISOString().split('T')[0],
+    alder: req.body.alder || null,
     tekst: req.body.tekst || '',
     kilde: req.body.kilde || 'facebook',
     adId: req.body.adId || null,
@@ -506,11 +509,13 @@ Returner ALTID gyldig JSON i dette format:
 {
   "navn": "kundens navn",
   "dato": "YYYY-MM-DD",
+  "alder": null,
   "rating": 5,
   "tekst": "den fulde anmeldelsestekst",
   "temaer": ["tema1", "tema2"],
   "awareness": "product_aware"
 }
+Hvis alder nævnes i teksten (fx "jeg er 58 år"), ekstraher den som tal. Ellers null.
 Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed, prøvet alt. VIGTIGT: "prøvet alt" bruges når kunden fortæller at de har prøvet mange/andre produkter uden virkning, og at dette endelig virker. KUN hvis indholdet tydeligt handler om noget INGEN af disse dækker, må du oprette ét nyt kort tema (2-3 ord, dansk, lowercase). Opret IKKE nye temaer der overlapper med eksisterende.
 Awareness skal være en af: problem_aware, solution_aware, product_aware, most_aware
 Hvis datoen er relativ (fx "for 3 dage siden"), beregn den faktiske dato baseret på dags dato.`;
@@ -521,6 +526,7 @@ Hvis datoen er relativ (fx "for 3 dage siden"), beregn den faktiske dato baseret
 Returner ALTID gyldig JSON i dette format:
 {
   "navn": "personens navn hvis nævnt",
+  "dato": "${new Date().toISOString().split('T')[0]}",
   "alder": 64,
   "videoLængde": "~1:30",
   "hudbekymring": "rynker, tør hud",
@@ -528,7 +534,7 @@ Returner ALTID gyldig JSON i dette format:
   "temaer": ["tema1", "tema2"]
 }
 Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed, prøvet alt. VIGTIGT: "prøvet alt" bruges når kunden fortæller at de har prøvet mange/andre produkter uden virkning, og at dette endelig virker. KUN hvis indholdet tydeligt handler om noget INGEN af disse dækker, må du oprette ét nyt kort tema (2-3 ord, dansk, lowercase). Opret IKKE nye temaer der overlapper med eksisterende.
-Hvis alder ikke nævnes, sæt null.`;
+Hvis alder ikke nævnes, sæt null. Hvis dato ikke fremgår, brug dags dato.`;
       userPrompt = 'Læs denne video-transskription og returner data som JSON:';
 
     } else if (type === 'meta') {
@@ -536,6 +542,8 @@ Hvis alder ikke nævnes, sæt null.`;
 Returner ALTID gyldig JSON i dette format:
 {
   "navn": "personens navn",
+  "dato": "${new Date().toISOString().split('T')[0]}",
+  "alder": null,
   "tekst": "kommentarteksten",
   "kilde": "facebook",
   "sentiment": "positiv",
@@ -543,6 +551,8 @@ Returner ALTID gyldig JSON i dette format:
 }
 Kilde skal være: facebook, instagram, eller messenger
 Sentiment skal være: positiv, neutral, eller negativ
+Hvis alder nævnes i teksten, ekstraher den som tal. Ellers null.
+Hvis dato fremgår af screenshottet (fx "2 dage siden"), beregn faktisk dato. Ellers brug dags dato.
 Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fugt, glød, blød hud, fasthed, pigment, rosacea, poser under øjne, mørke rande, skeptiker, afhængig, genbestilling, anbefaling, overgangsalder, følelsesmæssig forandring, resultat, barriere, tør hud, sensitiv, rødme, anti-aging, enkelhed, prøvet alt, spørgsmål, pris, levering, kritik, ros. KUN hvis indholdet tydeligt handler om noget INGEN af disse dækker, må du oprette ét nyt kort tema (2-3 ord, dansk, lowercase). Opret IKKE nye temaer der overlapper med eksisterende.`;
       userPrompt = 'Læs denne social media kommentar og returner data som JSON:';
     }
@@ -587,26 +597,31 @@ app.post('/api/extract-from-text', async (req, res) => {
 
     if (type === 'tp') {
       systemPrompt = `Du er en data-ekstraktor. Du læser Trustpilot anmeldelser (tekst) og returnerer struktureret JSON.
-Returner ALTID gyldig JSON: {"navn":"","dato":"YYYY-MM-DD","rating":5,"tekst":"","temaer":[],"awareness":"product_aware"}
+Returner ALTID gyldig JSON: {"navn":"","dato":"YYYY-MM-DD","alder":null,"rating":5,"tekst":"","temaer":[],"awareness":"product_aware"}
 Temaer: ${temaList}. "prøvet alt" bruges når kunden har prøvet mange andre produkter uden virkning.
-Awareness: problem_aware, solution_aware, product_aware, most_aware`;
+Awareness: problem_aware, solution_aware, product_aware, most_aware
+Hvis alder nævnes i teksten (fx "jeg er 58 år"), ekstraher den. Ellers null.
+Hvis datoen er relativ (fx "for 3 dage siden"), beregn faktisk dato.`;
       userPrompt = 'Analysér denne Trustpilot anmeldelse og returner JSON:\n\n' + text;
 
     } else if (type === 'vid') {
       systemPrompt = `Du er en data-ekstraktor. Du analyserer video-transskriptioner og returnerer struktureret JSON.
-Returner ALTID gyldig JSON: {"navn":"","alder":null,"videoLængde":"","hudbekymring":"","transkription":"","temaer":[]}
+Returner ALTID gyldig JSON: {"navn":"","dato":"YYYY-MM-DD","alder":null,"videoLængde":"","hudbekymring":"","transkription":"","temaer":[]}
 Temaer: ${temaList}. "prøvet alt" bruges når kunden har prøvet mange andre produkter uden virkning.
 Hvis alder/navn nævnes i teksten, ekstraher dem. Ellers brug filnavnet som hint for navn.
-For videoLængde: se efter timestamps i teksten.
+For dato: brug dags dato hvis ikke angivet.
+For videoLængde: se efter timestamps i teksten for at beregne længden.
 For hudbekymring: ekstraher de specifikke hudproblemer kunden nævner.
 Transkription: den rene danske tekst UDEN timestamps og UDEN engelsk oversættelse.`;
       userPrompt = (filename ? 'Filnavn: ' + filename + '\n\n' : '') + 'Analysér denne video-transskription og returner JSON:\n\n' + text;
 
     } else if (type === 'meta') {
       systemPrompt = `Du er en data-ekstraktor. Du analyserer sociale medier kommentarer og returnerer struktureret JSON.
-Returner ALTID gyldig JSON: {"navn":"","tekst":"","kilde":"facebook","sentiment":"positiv","temaer":[]}
+Returner ALTID gyldig JSON: {"navn":"","dato":"YYYY-MM-DD","alder":null,"tekst":"","kilde":"facebook","sentiment":"positiv","temaer":[]}
 Temaer: ${temaList}, spørgsmål, pris, levering, kritik, ros. "prøvet alt" bruges når kunden har prøvet mange andre produkter.
-Kilde: facebook, instagram, messenger. Sentiment: positiv, neutral, negativ.`;
+Kilde: facebook, instagram, messenger. Sentiment: positiv, neutral, negativ.
+Hvis alder nævnes i teksten, ekstraher den. Ellers null.
+For dato: brug dags dato hvis ikke angivet i teksten.`;
       userPrompt = 'Analysér denne kommentar og returner JSON:\n\n' + text;
     }
 

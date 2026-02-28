@@ -304,6 +304,10 @@
               <div class="field-label">Dato</div>
               <input type="date" class="field-value" id="extracted-dato">
             </div>
+            <div style="flex: 0 0 80px;">
+              <div class="field-label">Alder</div>
+              <input type="number" class="field-value" id="extracted-alder" placeholder="—" min="18" max="120">
+            </div>
             <div style="flex: 1;">
               <div class="field-label">Rating</div>
               <div class="stars" id="extracted-rating">
@@ -378,6 +382,10 @@
               <input type="text" class="field-value" id="vid-navn">
             </div>
             <div style="flex: 1;">
+              <div class="field-label">Dato</div>
+              <input type="date" class="field-value" id="vid-dato">
+            </div>
+            <div style="flex: 0 0 70px;">
               <div class="field-label">Alder</div>
               <input type="number" class="field-value" id="vid-alder">
             </div>
@@ -457,6 +465,17 @@
                 <option value="neutral">😐 Neutral</option>
                 <option value="negativ">😞 Negativ</option>
               </select>
+            </div>
+          </div>
+          
+          <div class="field-row" style="display: flex; gap: 16px;">
+            <div style="flex: 1;">
+              <div class="field-label">Dato</div>
+              <input type="date" class="field-value" id="meta-dato">
+            </div>
+            <div style="flex: 0 0 80px;">
+              <div class="field-label">Alder</div>
+              <input type="number" class="field-value" id="meta-alder" placeholder="—" min="18" max="120">
             </div>
           </div>
           
@@ -696,6 +715,7 @@
       if (type === 'tp') {
         document.getElementById('extracted-navn').value = data.navn || '';
         document.getElementById('extracted-dato').value = data.dato || new Date().toISOString().split('T')[0];
+        document.getElementById('extracted-alder').value = data.alder || '';
         document.getElementById('extracted-tekst').value = data.tekst || '';
         document.getElementById('extracted-awareness').value = data.awareness || 'product_aware';
         currentRating = data.rating || 5;
@@ -704,6 +724,7 @@
         renderTags('extracted-temaer', currentTemaer.tp, 'tp');
       } else if (type === 'vid') {
         document.getElementById('vid-navn').value = data.navn || '';
+        document.getElementById('vid-dato').value = data.dato || new Date().toISOString().split('T')[0];
         document.getElementById('vid-alder').value = data.alder || '';
         document.getElementById('vid-laengde').value = data.videoLængde || '';
         document.getElementById('vid-bekymring').value = data.hudbekymring || '';
@@ -712,6 +733,8 @@
         renderTags('vid-temaer', currentTemaer.vid, 'vid');
       } else if (type === 'meta') {
         document.getElementById('meta-navn').value = data.navn || '';
+        document.getElementById('meta-dato').value = data.dato || new Date().toISOString().split('T')[0];
+        document.getElementById('meta-alder').value = data.alder || '';
         document.getElementById('meta-tekst').value = data.tekst || '';
         document.getElementById('meta-kilde').value = data.kilde || 'facebook';
         document.getElementById('meta-sentiment').value = data.sentiment || 'positiv';
@@ -750,6 +773,7 @@
           body: JSON.stringify({
             navn: document.getElementById('extracted-navn').value,
             dato: document.getElementById('extracted-dato').value,
+            alder: document.getElementById('extracted-alder').value ? parseInt(document.getElementById('extracted-alder').value) : null,
             rating: currentRating,
             tekst: document.getElementById('extracted-tekst').value,
             temaer: currentTemaer.tp,
@@ -782,6 +806,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             navn: document.getElementById('vid-navn').value,
+            dato: document.getElementById('vid-dato').value || new Date().toISOString().split('T')[0],
             alder: document.getElementById('vid-alder').value ? parseInt(document.getElementById('vid-alder').value) : null,
             videoLængde: document.getElementById('vid-laengde').value,
             hudbekymring: document.getElementById('vid-bekymring').value,
@@ -819,7 +844,8 @@
             kilde: document.getElementById('meta-kilde').value,
             sentiment: document.getElementById('meta-sentiment').value,
             temaer: currentTemaer.meta,
-            dato: new Date().toISOString().split('T')[0]
+            dato: document.getElementById('meta-dato').value || new Date().toISOString().split('T')[0],
+            alder: document.getElementById('meta-alder').value ? parseInt(document.getElementById('meta-alder').value) : null
           })
         });
         
