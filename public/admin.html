@@ -555,8 +555,8 @@
       <div id="dupe-existing"></div>
       <div id="dupe-new"></div>
       <div class="dupe-actions">
-        <button class="btn-dupe-cancel" id="btn-dupe-cancel">✕ Annuller — tilføj ikke</button>
-        <button class="btn-dupe-add" id="btn-dupe-add">Tilføj alligevel</button>
+        <button class="btn-dupe-cancel" id="btn-dupe-cancel">✕ Annuller — spring over</button>
+        <button class="btn-dupe-add" id="btn-dupe-add">Fortsæt alligevel →</button>
       </div>
     </div>
   </div>
@@ -568,6 +568,7 @@
     let currentRating = 5;
     let currentTemaer = { tp: [], vid: [], meta: [] };
     let pendingSaveCallback = null;
+    let pendingCancelCallback = null;
 
     // ============================================================
     // DUPLICATE CHECKER
@@ -647,7 +648,7 @@
       }
     }
 
-    function showDuplicateWarning(match, score, newName, newText, onConfirm) {
+    function showDuplicateWarning(match, score, newName, newText, onConfirm, onCancel) {
       const existingDiv = document.getElementById('dupe-existing');
       const newDiv = document.getElementById('dupe-new');
       
@@ -669,22 +670,28 @@
         '</div>';
 
       pendingSaveCallback = onConfirm;
+      pendingCancelCallback = onCancel || null;
       document.getElementById('dupe-overlay').classList.add('visible');
     }
 
     document.getElementById('btn-dupe-cancel').addEventListener('click', () => {
       document.getElementById('dupe-overlay').classList.remove('visible');
+      if (pendingCancelCallback) pendingCancelCallback();
       pendingSaveCallback = null;
+      pendingCancelCallback = null;
     });
     document.getElementById('btn-dupe-add').addEventListener('click', () => {
       document.getElementById('dupe-overlay').classList.remove('visible');
       if (pendingSaveCallback) pendingSaveCallback();
       pendingSaveCallback = null;
+      pendingCancelCallback = null;
     });
     document.getElementById('dupe-overlay').addEventListener('click', (e) => {
       if (e.target === e.currentTarget) {
         e.currentTarget.classList.remove('visible');
+        if (pendingCancelCallback) pendingCancelCallback();
         pendingSaveCallback = null;
+        pendingCancelCallback = null;
       }
     });
     
@@ -827,9 +834,26 @@
         // Populate fields
         populateFields(data, type);
         
-        // Show preview
-        document.getElementById(processingId).classList.remove('show');
-        document.getElementById(previewId).classList.add('show');
+        // Check for duplicates before showing preview
+        const apiType = type === 'tp' ? 'testimonials' : type === 'vid' ? 'videos' : 'metacomments';
+        const newName = data.navn || '';
+        const newText = data.tekst || data.transkription || '';
+        const dupeCheck = await checkDuplicate(apiType, newName, newText);
+        
+        if (dupeCheck.isDuplicate) {
+          document.getElementById(processingId).classList.remove('show');
+          showDuplicateWarning(dupeCheck.match, dupeCheck.score, newName, newText, () => {
+            // User chose to continue — show the preview form
+            document.getElementById(previewId).classList.add('show');
+          }, () => {
+            // User chose to cancel — reset
+            resetPanel(type);
+          });
+        } else {
+          // No duplicate — show preview normally
+          document.getElementById(processingId).classList.remove('show');
+          document.getElementById(previewId).classList.add('show');
+        }
         
       } catch (err) {
         console.error(err);
@@ -871,8 +895,23 @@
         
         populateFields(data, type);
         
-        document.getElementById(processingId).classList.remove('show');
-        document.getElementById(previewId).classList.add('show');
+        // Check for duplicates before showing preview
+        const apiType2 = type === 'tp' ? 'testimonials' : type === 'vid' ? 'videos' : 'metacomments';
+        const newName2 = data.navn || '';
+        const newText2 = data.tekst || data.transkription || '';
+        const dupeCheck2 = await checkDuplicate(apiType2, newName2, newText2);
+        
+        if (dupeCheck2.isDuplicate) {
+          document.getElementById(processingId).classList.remove('show');
+          showDuplicateWarning(dupeCheck2.match, dupeCheck2.score, newName2, newText2, () => {
+            document.getElementById(previewId).classList.add('show');
+          }, () => {
+            resetPanel(type);
+          });
+        } else {
+          document.getElementById(processingId).classList.remove('show');
+          document.getElementById(previewId).classList.add('show');
+        }
         
       } catch (err) {
         console.error(err);
@@ -942,137 +981,95 @@
     // Save functions
     document.getElementById('save-tp').addEventListener('click', async () => {
       const btn = document.getElementById('save-tp');
-      const navn = document.getElementById('extracted-navn').value;
-      const tekst = document.getElementById('extracted-tekst').value;
-      
       btn.disabled = true;
-      btn.textContent = 'Tjekker duplikater...';
+      btn.textContent = 'Gemmer...';
       
-      const doSave = async () => {
-        btn.textContent = 'Gemmer...';
-        try {
-          const res = await fetch(API + '/api/testimonials', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              navn: navn,
-              dato: document.getElementById('extracted-dato').value,
-              alder: document.getElementById('extracted-alder').value ? parseInt(document.getElementById('extracted-alder').value) : null,
-              rating: currentRating,
-              tekst: tekst,
-              temaer: currentTemaer.tp,
-              awareness: document.getElementById('extracted-awareness').value
-            })
-          });
-          if (res.ok) {
-            showSuccess('Anmeldelse tilføjet!');
-            resetPanel('tp');
-            loadStats();
-            loadRecent('testimonials', 'recent-tp');
-          }
-        } catch (e) { alert('Fejl: ' + e.message); }
-        btn.disabled = false;
-        btn.textContent = '✓ Gem anmeldelse';
-      };
-
-      const dupeCheck = await checkDuplicate('testimonials', navn, tekst);
-      if (dupeCheck.isDuplicate) {
-        btn.disabled = false;
-        btn.textContent = '✓ Gem anmeldelse';
-        showDuplicateWarning(dupeCheck.match, dupeCheck.score, navn, tekst, doSave);
-      } else {
-        await doSave();
-      }
+      try {
+        const res = await fetch(API + '/api/testimonials', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            navn: document.getElementById('extracted-navn').value,
+            dato: document.getElementById('extracted-dato').value,
+            alder: document.getElementById('extracted-alder').value ? parseInt(document.getElementById('extracted-alder').value) : null,
+            rating: currentRating,
+            tekst: document.getElementById('extracted-tekst').value,
+            temaer: currentTemaer.tp,
+            awareness: document.getElementById('extracted-awareness').value
+          })
+        });
+        if (res.ok) {
+          showSuccess('Anmeldelse tilføjet!');
+          resetPanel('tp');
+          loadStats();
+          loadRecent('testimonials', 'recent-tp');
+        }
+      } catch (e) { alert('Fejl: ' + e.message); }
+      
+      btn.disabled = false;
+      btn.textContent = '✓ Gem anmeldelse';
     });
     
     document.getElementById('save-vid').addEventListener('click', async () => {
       const btn = document.getElementById('save-vid');
-      const navn = document.getElementById('vid-navn').value;
-      const tekst = document.getElementById('vid-transkription').value;
-      
       btn.disabled = true;
-      btn.textContent = 'Tjekker duplikater...';
+      btn.textContent = 'Gemmer...';
       
-      const doSave = async () => {
-        btn.textContent = 'Gemmer...';
-        try {
-          const res = await fetch(API + '/api/videos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              navn: navn,
-              dato: document.getElementById('vid-dato').value || new Date().toISOString().split('T')[0],
-              alder: document.getElementById('vid-alder').value ? parseInt(document.getElementById('vid-alder').value) : null,
-              videoLængde: document.getElementById('vid-laengde').value,
-              hudbekymring: document.getElementById('vid-bekymring').value,
-              transkription: tekst,
-              temaer: currentTemaer.vid
-            })
-          });
-          if (res.ok) {
-            showSuccess('Video tilføjet!');
-            resetPanel('vid');
-            loadStats();
-            loadRecent('videos', 'recent-vid');
-          }
-        } catch (e) { alert('Fejl: ' + e.message); }
-        btn.disabled = false;
-        btn.textContent = '✓ Gem video';
-      };
-
-      const dupeCheck = await checkDuplicate('videos', navn, tekst);
-      if (dupeCheck.isDuplicate) {
-        btn.disabled = false;
-        btn.textContent = '✓ Gem video';
-        showDuplicateWarning(dupeCheck.match, dupeCheck.score, navn, tekst, doSave);
-      } else {
-        await doSave();
-      }
+      try {
+        const res = await fetch(API + '/api/videos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            navn: document.getElementById('vid-navn').value,
+            dato: document.getElementById('vid-dato').value || new Date().toISOString().split('T')[0],
+            alder: document.getElementById('vid-alder').value ? parseInt(document.getElementById('vid-alder').value) : null,
+            videoLængde: document.getElementById('vid-laengde').value,
+            hudbekymring: document.getElementById('vid-bekymring').value,
+            transkription: document.getElementById('vid-transkription').value,
+            temaer: currentTemaer.vid
+          })
+        });
+        if (res.ok) {
+          showSuccess('Video tilføjet!');
+          resetPanel('vid');
+          loadStats();
+          loadRecent('videos', 'recent-vid');
+        }
+      } catch (e) { alert('Fejl: ' + e.message); }
+      
+      btn.disabled = false;
+      btn.textContent = '✓ Gem video';
     });
     
     document.getElementById('save-meta').addEventListener('click', async () => {
       const btn = document.getElementById('save-meta');
-      const navn = document.getElementById('meta-navn').value;
-      const tekst = document.getElementById('meta-tekst').value;
-      
       btn.disabled = true;
-      btn.textContent = 'Tjekker duplikater...';
+      btn.textContent = 'Gemmer...';
       
-      const doSave = async () => {
-        btn.textContent = 'Gemmer...';
-        try {
-          const res = await fetch(API + '/api/metacomments', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              navn: navn,
-              tekst: tekst,
-              kilde: document.getElementById('meta-kilde').value,
-              sentiment: document.getElementById('meta-sentiment').value,
-              temaer: currentTemaer.meta,
-              dato: document.getElementById('meta-dato').value || new Date().toISOString().split('T')[0],
-              alder: document.getElementById('meta-alder').value ? parseInt(document.getElementById('meta-alder').value) : null
-            })
-          });
-          if (res.ok) {
-            showSuccess('Kommentar tilføjet!');
-            resetPanel('meta');
-            loadStats();
-            loadRecent('metacomments', 'recent-meta');
-          }
-        } catch (e) { alert('Fejl: ' + e.message); }
-        btn.disabled = false;
-        btn.textContent = '✓ Gem kommentar';
-      };
-
-      const dupeCheck = await checkDuplicate('metacomments', navn, tekst);
-      if (dupeCheck.isDuplicate) {
-        btn.disabled = false;
-        btn.textContent = '✓ Gem kommentar';
-        showDuplicateWarning(dupeCheck.match, dupeCheck.score, navn, tekst, doSave);
-      } else {
-        await doSave();
-      }
+      try {
+        const res = await fetch(API + '/api/metacomments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            navn: document.getElementById('meta-navn').value,
+            tekst: document.getElementById('meta-tekst').value,
+            kilde: document.getElementById('meta-kilde').value,
+            sentiment: document.getElementById('meta-sentiment').value,
+            temaer: currentTemaer.meta,
+            dato: document.getElementById('meta-dato').value || new Date().toISOString().split('T')[0],
+            alder: document.getElementById('meta-alder').value ? parseInt(document.getElementById('meta-alder').value) : null
+          })
+        });
+        if (res.ok) {
+          showSuccess('Kommentar tilføjet!');
+          resetPanel('meta');
+          loadStats();
+          loadRecent('metacomments', 'recent-meta');
+        }
+      } catch (e) { alert('Fejl: ' + e.message); }
+      
+      btn.disabled = false;
+      btn.textContent = '✓ Gem kommentar';
     });
     
     // Show success
