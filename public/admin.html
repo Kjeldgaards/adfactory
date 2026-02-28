@@ -183,11 +183,9 @@
       border-left: 3px solid #B8943E;
       position: relative;
     }
-    .recent-item-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; padding-right: 60px; }
-    .recent-item-delete {
-      position: absolute;
-      top: 12px;
-      right: 12px;
+    .recent-item-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; padding-right: 120px; }
+    .recent-item-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; }
+    .recent-item-edit, .recent-item-delete {
       background: transparent;
       border: 1px solid #3f3f46;
       color: #71717a;
@@ -197,6 +195,7 @@
       cursor: pointer;
       transition: all 0.2s;
     }
+    .recent-item-edit:hover { background: #1e2a3e; border-color: #3b82f6; color: #60a5fa; }
     .recent-item-delete:hover {
       background: #7f1d1d;
       border-color: #991b1b;
@@ -230,6 +229,23 @@
     .star { font-size: 18px; cursor: pointer; }
     .star.filled { color: #fbbf24; }
     .star.empty { color: #3f3f46; }
+    /* Edit modal */
+    .edit-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; }
+    .edit-overlay.visible { display: flex; }
+    .edit-panel { background: #18181b; border: 1px solid #27272a; border-radius: 16px; padding: 28px; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+    .edit-panel h2 { font-size: 18px; color: #fff; margin-bottom: 20px; }
+    .edit-row { margin-bottom: 14px; }
+    .edit-row label { display: block; color: #a1a1aa; font-size: 12px; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .edit-row input, .edit-row textarea { width: 100%; background: #0a0a0f; border: 1px solid #27272a; border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 14px; outline: none; font-family: inherit; }
+    .edit-row input:focus, .edit-row textarea:focus { border-color: #B8943E; }
+    .edit-row textarea { min-height: 120px; resize: vertical; }
+    .edit-row-inline { display: flex; gap: 12px; }
+    .edit-row-inline .edit-row { flex: 1; }
+    .edit-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .btn-edit-save { flex: 1; background: #B8943E; color: #000; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-edit-save:hover { background: #d4a843; }
+    .btn-edit-cancel { flex: 0; background: none; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px 20px; color: #a1a1aa; font-size: 14px; cursor: pointer; }
+    .btn-edit-cancel:hover { border-color: #71717a; color: #e4e4e7; }
   </style>
 </head>
 <body>
@@ -498,6 +514,18 @@
       <div class="recent-section">
         <div class="recent-title">Senest tilføjede</div>
         <div id="recent-meta"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit modal -->
+  <div class="edit-overlay" id="edit-overlay">
+    <div class="edit-panel">
+      <h2 id="edit-title">Rediger</h2>
+      <div id="edit-fields"></div>
+      <div class="edit-actions">
+        <button class="btn-edit-cancel" id="btn-edit-cancel">Annuller</button>
+        <button class="btn-edit-save" id="btn-edit-save">💾 Gem ændringer</button>
       </div>
     </div>
   </div>
@@ -897,7 +925,10 @@
         
         container.innerHTML = '<div class="recent-title">Alle (' + items.length + ')</div>' + items.map(item => `
           <div class="recent-item" data-id="${item.id}">
-            <button class="recent-item-delete" onclick="deleteItem('${type}', ${item.id})">Slet</button>
+            <div class="recent-item-actions">
+              <button class="recent-item-edit" onclick="editItem('${type}', ${item.id})">Rediger</button>
+              <button class="recent-item-delete" onclick="deleteItem('${type}', ${item.id})">Slet</button>
+            </div>
             <div class="recent-item-name">${item.navn || 'Anonym'}${item.alder ? ', ' + item.alder + ' år' : ''}</div>
             <div class="recent-item-text">${item.tekst || item.transkription || ''}</div>
             <div class="recent-item-meta">${item.dato || ''} · ${(item.temaer || []).join(', ')}</div>
@@ -922,6 +953,110 @@
         alert('Fejl ved sletning: ' + e.message);
       }
     };
+
+    // Edit item
+    let editingType = null;
+    let editingId = null;
+    let editingItem = null;
+
+    const EDIT_FIELDS = {
+      testimonials: [
+        { key: 'navn', label: 'Navn', type: 'text' },
+        { key: 'alder', label: 'Alder', type: 'text' },
+        { key: 'dato', label: 'Dato', type: 'text' },
+        { key: 'hudbekymring', label: 'Hudbekymring', type: 'text' },
+        { key: 'tekst', label: 'Tekst', type: 'textarea' },
+        { key: 'temaer', label: 'Temaer (kommasepareret)', type: 'text', isArray: true },
+      ],
+      videos: [
+        { key: 'navn', label: 'Navn', type: 'text' },
+        { key: 'alder', label: 'Alder', type: 'text' },
+        { key: 'dato', label: 'Dato', type: 'text' },
+        { key: 'hudbekymring', label: 'Hudbekymring', type: 'text' },
+        { key: 'awareness', label: 'Awareness', type: 'text' },
+        { key: 'kilde', label: 'Kilde', type: 'text' },
+        { key: 'transkription', label: 'Transkription', type: 'textarea' },
+        { key: 'temaer', label: 'Temaer (kommasepareret)', type: 'text', isArray: true },
+      ],
+      metacomments: [
+        { key: 'navn', label: 'Navn', type: 'text' },
+        { key: 'dato', label: 'Dato', type: 'text' },
+        { key: 'tekst', label: 'Tekst', type: 'textarea' },
+        { key: 'temaer', label: 'Temaer (kommasepareret)', type: 'text', isArray: true },
+      ]
+    };
+
+    window.editItem = async function(type, id) {
+      try {
+        const res = await fetch(API + '/api/' + type);
+        const data = await res.json();
+        const item = data.find(i => i.id === id);
+        if (!item) { alert('Kunne ikke finde item'); return; }
+
+        editingType = type;
+        editingId = id;
+        editingItem = item;
+
+        const typeLabel = type === 'testimonials' ? 'Trustpilot' : type === 'videos' ? 'Video' : 'Meta kommentar';
+        document.getElementById('edit-title').textContent = 'Rediger ' + typeLabel + ': ' + (item.navn || 'Anonym');
+
+        const fields = EDIT_FIELDS[type] || [];
+        const fieldsHtml = fields.map(f => {
+          const val = f.isArray ? (item[f.key] || []).join(', ') : (item[f.key] || '');
+          if (f.type === 'textarea') {
+            return '<div class="edit-row"><label>' + f.label + '</label><textarea id="edit-' + f.key + '">' + val + '</textarea></div>';
+          }
+          return '<div class="edit-row"><label>' + f.label + '</label><input type="text" id="edit-' + f.key + '" value="' + val.replace(/"/g, '&quot;') + '"></div>';
+        }).join('');
+
+        document.getElementById('edit-fields').innerHTML = fieldsHtml;
+        document.getElementById('edit-overlay').classList.add('visible');
+      } catch (e) {
+        alert('Fejl: ' + e.message);
+      }
+    };
+
+    document.getElementById('btn-edit-save').addEventListener('click', async () => {
+      if (!editingType || !editingId) return;
+
+      const fields = EDIT_FIELDS[editingType] || [];
+      const updates = {};
+      fields.forEach(f => {
+        const el = document.getElementById('edit-' + f.key);
+        if (!el) return;
+        const val = el.value.trim();
+        if (f.isArray) {
+          updates[f.key] = val ? val.split(',').map(s => s.trim()).filter(Boolean) : [];
+        } else {
+          updates[f.key] = val;
+        }
+      });
+
+      try {
+        const res = await fetch(API + '/api/' + editingType + '/' + editingId, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+        if (res.ok) {
+          document.getElementById('edit-overlay').classList.remove('visible');
+          showSuccess('Gemt!');
+          const containerId = editingType === 'testimonials' ? 'recent-tp' : editingType === 'videos' ? 'recent-vid' : 'recent-meta';
+          loadRecent(editingType, containerId);
+        } else {
+          alert('Fejl ved gemning');
+        }
+      } catch (e) {
+        alert('Fejl: ' + e.message);
+      }
+    });
+
+    document.getElementById('btn-edit-cancel').addEventListener('click', () => {
+      document.getElementById('edit-overlay').classList.remove('visible');
+    });
+    document.getElementById('edit-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('visible');
+    });
     
     // Init
     setupDropZone('drop-zone-tp', 'file-input-tp', 'processing-tp', 'preview-tp', 'tp');
