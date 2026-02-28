@@ -19,6 +19,10 @@
     .search-input::placeholder { color: #52525b; }
     .search-btn { background: #3b82f6; color: #fff; border: none; border-radius: 8px; padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .search-btn:hover { background: #2563eb; }
+    .search-mode { display: flex; background: #18181b; border: 1px solid #27272a; border-radius: 8px; overflow: hidden; }
+    .mode-btn { background: none; border: none; padding: 10px 14px; color: #71717a; font-size: 13px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .mode-btn:hover { color: #e4e4e7; }
+    .mode-btn.active { background: #B8943E; color: #000; font-weight: 600; }
     .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
     .filter-group { display: flex; gap: 4px; }
     .filter-btn { background: #18181b; border: 1px solid #27272a; border-radius: 6px; padding: 6px 14px; color: #a1a1aa; font-size: 13px; cursor: pointer; transition: all 0.15s; }
@@ -124,7 +128,11 @@
       <div class="stat-mini"><div class="stat-mini-number" id="stat-meta">-</div><div class="stat-mini-label">Meta</div></div>
     </div>
     <div class="search-bar">
-      <input type="text" class="search-input" id="search-input" placeholder="Søg keyword, navn, tema eller koncept (fx 'økonomi', 'skeptiker')..." autofocus>
+      <input type="text" class="search-input" id="search-input" placeholder="Søg keyword, navn, tema..." autofocus>
+      <div class="search-mode">
+        <button class="mode-btn active" data-mode="exact">Eksakt</button>
+        <button class="mode-btn" data-mode="concept">Koncept</button>
+      </div>
       <button class="search-btn" id="search-btn">Søg</button>
     </div>
     <div class="filters">
@@ -207,6 +215,7 @@
   <script>
     const API = window.location.origin;
     let currentSource = 'all';
+    let searchMode = 'exact';
     let expandedCards = new Set();
     let selectedItems = new Map();
     let lastResults = null;
@@ -279,6 +288,7 @@
         const params = new URLSearchParams();
         params.set('q', q);
         params.set('source', currentSource);
+        params.set('mode', searchMode);
         const res = await fetch(API + '/api/search?' + params.toString());
         const data = await res.json();
         lastResults = data;
@@ -383,6 +393,21 @@
         currentSource = btn.dataset.source;
         expandedCards.clear();
         doSearch();
+      });
+    });
+
+    // Search mode toggle (Eksakt / Koncept)
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        searchMode = btn.dataset.mode;
+        // Update placeholder
+        const input = document.getElementById('search-input');
+        input.placeholder = searchMode === 'concept'
+          ? "Koncept-søgning: fx 'økonomi', 'skeptiker', 'selvtillid'..."
+          : "Søg keyword, navn, tema...";
+        if (input.value.trim()) { expandedCards.clear(); doSearch(); }
       });
     });
 

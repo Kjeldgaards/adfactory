@@ -720,8 +720,8 @@ app.get('/api/master', (req, res) => {
 // Concept/synonym map for smart search (Danish)
 // ============================================================
 const CONCEPT_MAP = {
-  'økonomi': ['penge', 'sparer', 'spar', 'spare', 'pris', 'prisen', 'billig', 'billigere', 'dyr', 'dyrt', 'koster', 'koste', 'værd', 'investering', 'budget', 'råd til', 'lejer', 'pengene værd', 'økonomisk', 'erstattet', 'erstatter', 'erstatning', 'ét produkt', 'et produkt', 'kun én', 'kun en', 'slipper for', 'tre cremer', 'flere produkter', 'mange produkter', 'behøver ikke', 'undvære'],
-  'penge': ['sparer', 'spar', 'spare', 'pris', 'prisen', 'billig', 'dyr', 'koster', 'værd', 'budget', 'økonomi', 'økonomisk', 'pengene værd', 'råd til', 'erstattet', 'erstatter', 'erstatning'],
+  'økonomi': ['penge', 'sparer', 'spar', 'spare', 'pris', 'prisen', 'billig', 'billigere', 'dyr', 'dyrt', 'koster', 'koste', 'investering', 'budget', 'råd til', 'pengene værd', 'økonomisk', 'erstattet', 'erstatter', 'erstatning', 'ét produkt', 'et produkt', 'kun én', 'kun en', 'slipper for', 'tre cremer', 'flere produkter', 'mange produkter', 'behøver ikke', 'undvære'],
+  'penge': ['sparer', 'spar', 'spare', 'pris', 'prisen', 'billig', 'dyr', 'koster', 'budget', 'økonomi', 'økonomisk', 'pengene værd', 'råd til', 'erstattet', 'erstatter', 'erstatning'],
   'overgangsalder': ['menopause', 'klimakteriet', 'hedeture', 'hormoner', 'hormon', 'østrogen'],
   'alder': ['år', 'årene', 'alderen', 'ældre', 'aldring', 'aldersforandring', 'moden', 'modne'],
   'rynker': ['linjer', 'furer', 'fine linjer', 'rynke', 'rynkerne', 'panderynker', 'øjenrynker', 'kragetæer'],
@@ -771,13 +771,14 @@ app.get('/api/search', (req, res) => {
   const q = (req.query.q || '').toLowerCase().trim();
   const source = (req.query.source || 'all').toLowerCase();
   const tema = (req.query.tema || '').toLowerCase().trim();
+  const mode = (req.query.mode || 'exact').toLowerCase();
   
   if (!q && !tema) {
     return res.json({ results: [], total: 0 });
   }
   
-  // Expand query using concept map
-  const searchTerms = q ? expandQuery(q) : [];
+  // Expand query using concept map only in concept mode
+  const searchTerms = q ? (mode === 'concept' ? expandQuery(q) : [q]) : [];
   const isExpanded = searchTerms.length > 1;
   
   const results = [];
