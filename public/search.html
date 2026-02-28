@@ -283,14 +283,17 @@
         return;
       }
       document.getElementById('empty-state').style.display = 'none';
-      document.getElementById('results').innerHTML = '<div class="loading">Søger...</div>';
+      document.getElementById('results').innerHTML = searchMode === 'concept'
+        ? '<div class="loading">🧠 Claude analyserer relevans...</div>'
+        : '<div class="loading">Søger...</div>';
       try {
         const params = new URLSearchParams();
         params.set('q', q);
         params.set('source', currentSource);
-        params.set('mode', searchMode);
-        const res = await fetch(API + '/api/search?' + params.toString());
+        const endpoint = searchMode === 'concept' ? '/api/search-concept' : '/api/search';
+        const res = await fetch(API + endpoint + '?' + params.toString());
         const data = await res.json();
+        if (data.error) throw new Error(data.error);
         lastResults = data;
         allVisibleItems = data.results || [];
         renderResults(data, q);
@@ -315,8 +318,8 @@
       if (counts.meta) parts.push(counts.meta + ' META');
       info.style.display = 'block';
       let infoHtml = '<strong>' + data.total + '</strong> resultater (' + parts.join(', ') + ')';
-      if (data.expanded && data.expanded.length > 1) {
-        infoHtml += ' · <span style="color:#B8943E;">Koncept-søgning:</span> <span style="color:#a1a1aa;">' + data.expanded.slice(0, 8).join(', ') + (data.expanded.length > 8 ? '...' : '') + '</span>';
+      if (data.conceptSearch) {
+        infoHtml += ' · <span style="color:#B8943E;">🧠 Claude koncept-søgning</span> <span style="color:#71717a;">(' + data.totalSearched + ' gennemgået)</span>';
       }
       info.innerHTML = infoHtml;
 

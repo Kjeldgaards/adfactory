@@ -863,6 +863,122 @@ app.get('/api/temaer', (req, res) => {
 });
 
 // ============================================================
+// CONCEPT SEARCH (Claude-powered semantic search)
+// ============================================================
+app.get('/api/search-concept', async (req, res) => {
+  const q = (req.query.q || '').trim();
+  const source = (req.query.source || 'all').toLowerCase();
+  
+  if (!q) return res.json({ results: [], total: 0 });
+  
+  try {
+    // Load all entries
+    const allEntries = [];
+    
+    if (source === 'all' || source === 'tp') {
+      const tp = loadJSON(DATA_FILES.testimonials);
+      tp.forEach(item => allEntries.push({
+        id: item.id, src: 'tp', srcLabel: 'Trustpilot',
+        navn: item.navn || '', tekst: item.tekst || '',
+        temaer: item.temaer || [], dato: item.dato || '',
+        alder: item.alder, rating: item.rating,
+        awareness: item.awareness, _full: item
+      }));
+    }
+    
+    if (source === 'all' || source === 'vdo') {
+      const vdo = loadJSON(DATA_FILES.videos);
+      vdo.forEach(item => allEntries.push({
+        id: item.id, src: 'vdo', srcLabel: 'Video',
+        navn: item.navn || '', tekst: item.transkription || '',
+        temaer: item.temaer || [], dato: item.dato || '',
+        alder: item.alder, _full: item
+      }));
+    }
+    
+    if (source === 'all' || source === 'meta') {
+      const meta = loadJSON(DATA_FILES.metacomments);
+      meta.forEach(item => allEntries.push({
+        id: item.id, src: 'meta', srcLabel: 'Meta',
+        navn: item.navn || '', tekst: item.tekst || '',
+        temaer: item.temaer || [], dato: item.dato || '',
+        alder: item.alder, _full: item
+      }));
+    }
+    
+    // Build compact list for Claude (truncate text to save tokens)
+    const compactList = allEntries.map((e, idx) => {
+      const shortText = e.tekst.substring(0, 200).replace(/\n/g, ' ');
+      const themes = (e.temaer || []).join(', ');
+      return `[${idx}] ${e.src.toUpperCase()} | ${e.navn || 'Anonym'} | ${themes ? 'Temaer: ' + themes + ' | ' : ''}${shortText}`;
+    }).join('\n');
+    
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: `Du er en søgemaskine for KJELDGAARD's testimonial-database. Du modtager en søgeforespørgsel og en liste af testimonials. 
+
+Din opgave: Find KUN de testimonials der er DIREKTE RELEVANTE for søgeforespørgslen. Vær STRENG — kun inkluder resultater der faktisk handler om det søgte emne/koncept.
+
+Eksempler på hvad "økonomi" matcher: nogen der nævner pris, at spare penge, at produktet erstatter flere produkter (billigere), at det er pengene værd i en økonomisk kontekst.
+Eksempler på hvad "økonomi" IKKE matcher: nogen der bare siger "det er det værd" uden økonomisk kontekst, eller "sparer tid" (ikke penge).
+
+Returner UDELUKKENDE en JSON array med index-numre på relevante resultater, sorteret efter relevans (mest relevant først). Returner en tom array [] hvis intet er relevant.
+
+Format: [3, 17, 42, 8]
+
+VIGTIGT: Returner KUN JSON arrayet, intet andet. Ingen forklaring, ingen markdown.`,
+      messages: [{
+        role: 'user',
+        content: `Søgeforespørgsel: "${q}"\n\nTestimonials (${allEntries.length} stk):\n${compactList}`
+      }]
+    });
+    
+    // Parse Claude's response
+    const responseText = response.content[0].text.trim();
+    let matchedIndices = [];
+    try {
+      matchedIndices = JSON.parse(responseText);
+      if (!Array.isArray(matchedIndices)) matchedIndices = [];
+    } catch (parseErr) {
+      // Try to extract array from response
+      const arrayMatch = responseText.match(/\[[\d,\s]*\]/);
+      if (arrayMatch) {
+        matchedIndices = JSON.parse(arrayMatch[0]);
+      }
+    }
+    
+    // Build results from matched indices
+    const results = matchedIndices
+      .filter(idx => idx >= 0 && idx < allEntries.length)
+      .map(idx => {
+        const entry = allEntries[idx];
+        const fullItem = entry._full;
+        return {
+          ...fullItem,
+          _source: entry.src,
+          _sourceLabel: entry.srcLabel,
+          _preview: entry.tekst.substring(0, 200)
+        };
+      });
+    
+    res.json({
+      results,
+      total: results.length,
+      query: q,
+      source,
+      conceptSearch: true,
+      matchedCount: matchedIndices.length,
+      totalSearched: allEntries.length
+    });
+    
+  } catch (e) {
+    console.error('Concept search error:', e);
+    res.status(500).json({ error: 'Concept search failed: ' + e.message });
+  }
+});
+
+// ============================================================
 // Serve frontend for all non-API routes
 // ============================================================
 app.get('*', (req, res) => {
