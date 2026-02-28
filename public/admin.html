@@ -1002,7 +1002,7 @@
 
         const fields = EDIT_FIELDS[type] || [];
         const fieldsHtml = fields.map(f => {
-          const val = f.isArray ? (item[f.key] || []).join(', ') : (item[f.key] || '');
+          const val = f.isArray ? (item[f.key] || []).join(', ') : String(item[f.key] || '');
           if (f.type === 'textarea') {
             return '<div class="edit-row"><label>' + f.label + '</label><textarea id="edit-' + f.key + '">' + val + '</textarea></div>';
           }

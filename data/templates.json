@@ -1,1 +1,87 @@
-[]
+[
+  {
+    "id": "dark-blue",
+    "name": "Dark-Blue",
+    "backgrounds": {
+      "square": "templates/Dark-Blue-1080.png",
+      "story": "templates/Dark-Blue-1920.png"
+    },
+    "references": {
+      "square": "templates/Dark-Blue-1080-ref.png",
+      "story": "templates/Dark-Blue-1920-ref.png"
+    },
+    "configs": {
+      "square": {
+        "dimensions": {
+          "width": 1080,
+          "height": 1080
+        },
+        "fields": [
+          {
+            "label": "headline",
+            "x": 156,
+            "y": 111,
+            "width": 766,
+            "height": 112,
+            "color": "#cff5ff",
+            "estimatedFontSize": 78
+          },
+          {
+            "label": "testimonial",
+            "x": 541,
+            "y": 413,
+            "width": 456,
+            "height": 310,
+            "color": "#dadee6",
+            "estimatedFontSize": 31
+          },
+          {
+            "label": "name",
+            "x": 541,
+            "y": 743,
+            "width": 63,
+            "height": 19,
+            "color": "#eff0f4",
+            "estimatedFontSize": 15
+          }
+        ]
+      },
+      "story": {
+        "dimensions": {
+          "width": 1080,
+          "height": 1920
+        },
+        "fields": [
+          {
+            "label": "headline",
+            "x": 156,
+            "y": 129,
+            "width": 766,
+            "height": 112,
+            "color": "#cff5ff",
+            "estimatedFontSize": 78
+          },
+          {
+            "label": "name",
+            "x": 452,
+            "y": 928,
+            "width": 141,
+            "height": 24,
+            "color": "#f4f5f8",
+            "estimatedFontSize": 19
+          },
+          {
+            "label": "testimonial",
+            "x": 451,
+            "y": 405,
+            "width": 606,
+            "height": 482,
+            "color": "#ffffff",
+            "estimatedFontSize": 41
+          }
+        ]
+      }
+    },
+    "createdAt": "2026-02-28T05:14:49.113Z"
+  }
+]
