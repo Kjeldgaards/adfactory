@@ -720,8 +720,8 @@ app.get('/api/master', (req, res) => {
 // Concept/synonym map for smart search (Danish)
 // ============================================================
 const CONCEPT_MAP = {
-  'økonomi': ['penge', 'sparer', 'spar', 'pris', 'prisen', 'billig', 'billigere', 'dyr', 'dyrt', 'koster', 'koste', 'værd', 'investering', 'budget', 'råd til', 'lejer', 'pengene værd', 'økonomisk'],
-  'penge': ['sparer', 'spar', 'pris', 'prisen', 'billig', 'dyr', 'koster', 'værd', 'budget', 'økonomi', 'økonomisk', 'pengene værd', 'råd til'],
+  'økonomi': ['penge', 'sparer', 'spar', 'spare', 'pris', 'prisen', 'billig', 'billigere', 'dyr', 'dyrt', 'koster', 'koste', 'værd', 'investering', 'budget', 'råd til', 'lejer', 'pengene værd', 'økonomisk', 'erstattet', 'erstatter', 'erstatning', 'ét produkt', 'et produkt', 'kun én', 'kun en', 'slipper for', 'tre cremer', 'flere produkter', 'mange produkter', 'behøver ikke', 'undvære'],
+  'penge': ['sparer', 'spar', 'spare', 'pris', 'prisen', 'billig', 'dyr', 'koster', 'værd', 'budget', 'økonomi', 'økonomisk', 'pengene værd', 'råd til', 'erstattet', 'erstatter', 'erstatning'],
   'overgangsalder': ['menopause', 'klimakteriet', 'hedeture', 'hormoner', 'hormon', 'østrogen'],
   'alder': ['år', 'årene', 'alderen', 'ældre', 'aldring', 'aldersforandring', 'moden', 'modne'],
   'rynker': ['linjer', 'furer', 'fine linjer', 'rynke', 'rynkerne', 'panderynker', 'øjenrynker', 'kragetæer'],
@@ -736,7 +736,7 @@ const CONCEPT_MAP = {
   'hurtig': ['hurtigt', 'få dage', 'få uger', 'med det samme', 'straks', 'allerede', 'kort tid', 'første gang'],
   'glød': ['glow', 'stråler', 'stråle', 'lysende', 'frisk', 'friskhed', 'udstråling'],
   'fasthed': ['fast', 'stram', 'stramhed', 'strammere', 'elastisk', 'elasticitet', 'løs hud', 'slap'],
-  'enkelhed': ['enkel', 'simpel', 'simpelt', 'nemt', 'let', 'ukompliceret', 'en creme', 'ét produkt', 'rutine'],
+  'enkelhed': ['enkel', 'simpel', 'simpelt', 'nemt', 'let', 'ukompliceret', 'en creme', 'ét produkt', 'et produkt', 'rutine', 'erstattet', 'erstatter', 'bare et', 'kun én', 'slipper for', 'behøver ikke'],
   'pigment': ['pigmentering', 'pigmentpletter', 'mørke pletter', 'solskader', 'alders pletter', 'misfarvning'],
   'søvn': ['sover', 'nat', 'natcreme', 'nattevågen', 'søvnløs'],
   'selvtillid': ['selvværd', 'tryg', 'selvsikker', 'glad', 'tilfreds', 'stolt', 'spejl', 'spejlet', 'tør gå ud'],
