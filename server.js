@@ -916,18 +916,20 @@ app.get('/api/search-concept', async (req, res) => {
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
-      system: `Du er en søgemaskine for KJELDGAARD's testimonial-database. Du modtager en søgeforespørgsel og en liste af testimonials. 
+      system: `Du er en STRENG relevansvurderer for en testimonial-database. Du modtager et søgeord og en liste testimonials.
 
-Din opgave: Find KUN de testimonials der er DIREKTE RELEVANTE for søgeforespørgslen. Vær STRENG — kun inkluder resultater der faktisk handler om det søgte emne/koncept.
+REGLER:
+- Returner KUN testimonials hvor søgeemnet er et CENTRALT TEMA — ikke bare nævnt i forbifarten
+- Maksimum 20 resultater. Hellere 5 præcise end 20 løse
+- "det er det værd" / "guld værd" som generel ros er IKKE økonomi-relateret
+- "sparer tid" er IKKE økonomi-relateret
+- En testimonial handler om "pris/økonomi" KUN hvis den eksplicit nævner: penge, kroner, billig/billigere, dyr, pris, spare penge, erstatter andre produkter (økonomisk vinkel), budget, eller konkret sammenligner omkostninger
+- En testimonial handler om "skeptiker" KUN hvis personen udtrykker tvivl/skepsis FØR de prøvede produktet
+- Vær lige så streng for alle andre søgeord
 
-Eksempler på hvad "økonomi" matcher: nogen der nævner pris, at spare penge, at produktet erstatter flere produkter (billigere), at det er pengene værd i en økonomisk kontekst.
-Eksempler på hvad "økonomi" IKKE matcher: nogen der bare siger "det er det værd" uden økonomisk kontekst, eller "sparer tid" (ikke penge).
-
-Returner UDELUKKENDE en JSON array med index-numre på relevante resultater, sorteret efter relevans (mest relevant først). Returner en tom array [] hvis intet er relevant.
-
-Format: [3, 17, 42, 8]
-
-VIGTIGT: Returner KUN JSON arrayet, intet andet. Ingen forklaring, ingen markdown.`,
+Returner JSON array med index-numre sorteret efter relevans. Tom array [] hvis intet matcher.
+Format: [3, 17, 42]
+KUN JSON, intet andet.`,
       messages: [{
         role: 'user',
         content: `Søgeforespørgsel: "${q}"\n\nTestimonials (${allEntries.length} stk):\n${compactList}`
