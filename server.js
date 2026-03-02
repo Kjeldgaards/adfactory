@@ -986,6 +986,16 @@ KUN JSON, intet andet.`,
 const ORSHOT_API_KEY = process.env.ORSHOT_API_KEY || '';
 const ORSHOT_BASE = 'https://api.orshot.com/v1';
 
+// Debug: check if env var is loaded
+app.get('/api/orshot/debug', (req, res) => {
+  res.json({
+    keySet: !!ORSHOT_API_KEY,
+    keyLength: ORSHOT_API_KEY.length,
+    keyPrefix: ORSHOT_API_KEY.substring(0, 5),
+    allEnvKeys: Object.keys(process.env).filter(k => k.includes('ORSHOT') || k.includes('API_KEY'))
+  });
+});
+
 // List all studio templates (try multiple endpoints)
 app.get('/api/orshot/templates', async (req, res) => {
   try {
