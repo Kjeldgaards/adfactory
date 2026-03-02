@@ -633,10 +633,12 @@
         container.innerHTML = orshotTemplates.map(t => {
           const id = t.id || t.templateId;
           const name = t.name || t.title || 'Template ' + id;
-          const thumb = t.thumbnail || t.thumbnailUrl || t.thumbnail_url || t.preview || '';
+          const thumb = t.thumbnail_url || t.thumbnail || (t.pages_data && t.pages_data[0] && t.pages_data[0].thumbnail_url) || '';
+          const dims = (t.canvas_width && t.canvas_height) ? t.canvas_width + '×' + t.canvas_height : '';
           return '<div class="template-card" data-id="' + id + '">' +
-            (thumb ? '<img src="' + thumb + '" alt="' + name + '" onerror="this.style.display=\'none\'">' : '<div style="height:160px;background:#18181b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#52525b;font-size:32px;">🖼️</div>') +
+            (thumb ? '<img src="' + thumb + '" alt="' + name + '" onerror="this.parentNode.querySelector(\'.tpl-placeholder\') && (this.style.display=\'none\')">' : '<div class="tpl-placeholder" style="height:160px;background:#18181b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#52525b;font-size:32px;">🖼️</div>') +
             '<div class="tpl-name">' + name + '</div>' +
+            (dims ? '<div style="color:#52525b;font-size:10px;">' + dims + '</div>' : '') +
           '</div>';
         }).join('');
 
@@ -703,46 +705,56 @@
         const tplName = tplData.name || tplData.title || 'Template ' + selectedOrshotTemplate;
         infoContainer.innerHTML = '<div style="color:#B8943E;font-weight:600;font-size:14px;">📋 ' + tplName + '</div>';
 
-        // Extract modification fields
-        const mods = tplData.modifications || tplData.params || tplData.fields || {};
-        const modKeys = Object.keys(mods);
+        // Extract modification fields — Orshot returns array of {key, id, type, example, helpText}
+        let modFields = tplData.modifications || tplData.params || tplData.fields || [];
+        // Handle both array and object formats
+        if (!Array.isArray(modFields)) {
+          modFields = Object.entries(modFields).map(([key, val]) => ({ key, id: key, type: typeof val === 'string' && val.startsWith('http') ? 'imageUrl' : 'text', example: val }));
+        }
 
-        if (!modKeys.length) {
-          fieldsContainer.innerHTML = '<div class="field-hint">Ingen parameteriserede felter fundet i dette template. Du kan stadig rendere det.</div>';
+        if (!modFields.length) {
+          fieldsContainer.innerHTML = '<div class="field-hint">Ingen parameteriserede felter fundet. Du kan stadig rendere.</div>';
         } else {
-          fieldsContainer.innerHTML = modKeys.map(key => {
-            const val = mods[key] || '';
-            const isLong = typeof val === 'string' && val.length > 80;
-            // Try to auto-fill from selected testimonials
-            let autoVal = val;
+          fieldsContainer.innerHTML = modFields.map(field => {
+            const key = field.key || field.id;
+            const fieldType = field.type || 'text';
+            const example = field.example || '';
+            
+            // Auto-fill from selected testimonials
+            let autoVal = example;
             if (selectedItems.size > 0) {
               const firstItem = selectedItems.values().next().value;
               const lk = key.toLowerCase();
-              if (lk.includes('navn') || lk.includes('name')) {
-                autoVal = firstItem.navn || val;
-              } else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('quote') || lk.includes('tekst') || lk.includes('text')) {
-                autoVal = firstItem.tekst || firstItem.transkription || val;
+              if (lk.includes('navn') || lk === 'name') {
+                autoVal = firstItem.navn || example;
+              } else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('quote') || lk.includes('tekst') || lk.includes('status')) {
+                autoVal = firstItem.tekst || firstItem.transkription || example;
               } else if (lk.includes('rating') || lk.includes('star')) {
-                autoVal = (firstItem.rating ? firstItem.rating + '/5 Stars' : val);
+                autoVal = (firstItem.rating ? firstItem.rating + '/5 Stars' : example);
               }
             }
 
-            if (isLong || key.toLowerCase().includes('anmeldelse') || key.toLowerCase().includes('review') || key.toLowerCase().includes('tekst') || key.toLowerCase().includes('citat')) {
+            const typeLabel = fieldType === 'imageUrl' ? ' <span class="field-hint">(billed-URL)</span>' : '';
+            
+            if (fieldType === 'imageUrl') {
+              return '<div class="orshot-field">' +
+                '<label>' + key + typeLabel + '</label>' +
+                '<input type="text" data-key="' + key + '" value="' + (autoVal || '') + '" placeholder="https://...">' +
+              '</div>';
+            }
+            
+            // Use textarea for long text fields
+            const isLongText = lk.includes('anmeldelse') || lk.includes('review') || lk.includes('tekst') || lk.includes('citat') || (typeof autoVal === 'string' && autoVal.length > 80);
+            if (isLongText) {
               return '<div class="orshot-field">' +
                 '<label>' + key + '</label>' +
                 '<textarea data-key="' + key + '" rows="3">' + (autoVal || '') + '</textarea>' +
               '</div>';
             }
-            // Check if it looks like an image URL
-            if (typeof val === 'string' && (val.startsWith('http') || key.toLowerCase().includes('image') || key.toLowerCase().includes('background') || key.toLowerCase().includes('foto') || key.toLowerCase().includes('photo'))) {
-              return '<div class="orshot-field">' +
-                '<label>' + key + ' <span class="field-hint">(billed-URL)</span></label>' +
-                '<input type="text" data-key="' + key + '" value="' + (autoVal || '') + '" placeholder="https://...">' +
-              '</div>';
-            }
+            
             return '<div class="orshot-field">' +
               '<label>' + key + '</label>' +
-              '<input type="text" data-key="' + key + '" value="' + (autoVal || '') + '">' +
+              '<input type="text" data-key="' + key + '" value="' + (autoVal || '').replace(/"/g, '&quot;') + '">' +
             '</div>';
           }).join('');
         }
