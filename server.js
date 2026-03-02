@@ -1050,6 +1050,77 @@ async function autoDiscoverTemplates() {
 }
 
 // ============================================================
+// ORSHOT IMAGE GENERATION API
+// ============================================================
+const ORSHOT_API_KEY = process.env.ORSHOT_API_KEY || '';
+const ORSHOT_BASE = 'https://api.orshot.com/v1';
+
+// List all studio templates
+app.get('/api/orshot/templates', async (req, res) => {
+  try {
+    if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
+    const response = await fetch(`${ORSHOT_BASE}/studio/templates`, {
+      headers: { 'Authorization': `Bearer ${ORSHOT_API_KEY}` }
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error('Orshot list templates error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get single template details (includes modifications/parameters)
+app.get('/api/orshot/templates/:id', async (req, res) => {
+  try {
+    if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
+    const response = await fetch(`${ORSHOT_BASE}/studio/templates/${req.params.id}`, {
+      headers: { 'Authorization': `Bearer ${ORSHOT_API_KEY}` }
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error('Orshot get template error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Render image from studio template
+app.post('/api/orshot/render', async (req, res) => {
+  try {
+    if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
+    const { templateId, modifications } = req.body;
+    if (!templateId) return res.status(400).json({ error: 'templateId required' });
+
+    console.log(`  Orshot render: template=${templateId}, mods=${JSON.stringify(modifications).substring(0, 200)}`);
+
+    const response = await fetch(`${ORSHOT_BASE}/studio/render`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${ORSHOT_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        templateId: parseInt(templateId) || templateId,
+        modifications: modifications || {},
+        response: {
+          type: 'url',
+          format: 'png',
+          scale: 1
+        }
+      })
+    });
+
+    const data = await response.json();
+    console.log(`  Orshot render result: ${data.data?.content ? 'SUCCESS' : 'FAILED'} (${data.data?.responseTime || '?'}ms)`);
+    res.json(data);
+  } catch (err) {
+    console.error('Orshot render error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
 // GENERATE CONTENT FROM SELECTED TESTIMONIALS
 // ============================================================
 
@@ -1217,5 +1288,6 @@ app.listen(PORT, async () => {
   console.log(`  Running on http://localhost:${PORT}`);
   await autoDiscoverTemplates();
   console.log(`  Templates: ${loadTemplates().length}`);
-  console.log(`  Testimonials: ${loadTestimonials().length}\n`);
+  console.log(`  Testimonials: ${loadTestimonials().length}`);
+  console.log(`  Orshot API: ${ORSHOT_API_KEY ? '✅ configured' : '❌ ORSHOT_API_KEY not set'}\n`);
 });

@@ -112,6 +112,41 @@
     .gen-avg strong { color: #B8943E; font-size: 18px; }
     .btn-copy-all { display: block; margin: 0 auto 16px; background: none; border: 1px solid #B8943E; border-radius: 8px; padding: 8px 20px; color: #B8943E; font-size: 13px; font-weight: 600; cursor: pointer; }
     .btn-copy-all:hover { background: #B8943E; color: #000; }
+    /* ORSHOT IMAGE GENERATION */
+    .orshot-section { margin-top: 24px; border-top: 1px solid #27272a; padding-top: 20px; }
+    .orshot-section h3 { font-size: 16px; color: #fff; margin-bottom: 4px; }
+    .orshot-section .sub { color: #71717a; font-size: 12px; margin-bottom: 16px; }
+    .template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .template-card { background: #0a0a0f; border: 2px solid #27272a; border-radius: 10px; padding: 8px; cursor: pointer; transition: all 0.15s; text-align: center; }
+    .template-card:hover { border-color: #3f3f46; }
+    .template-card.selected { border-color: #B8943E; background: #18170f; }
+    .template-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 6px; margin-bottom: 6px; background: #18181b; }
+    .template-card .tpl-name { font-size: 12px; color: #a1a1aa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .template-card.selected .tpl-name { color: #B8943E; font-weight: 600; }
+    .template-loading { text-align: center; padding: 20px; color: #52525b; font-size: 13px; }
+    .template-empty { text-align: center; padding: 20px; color: #52525b; font-size: 13px; }
+    .orshot-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .orshot-field { display: flex; flex-direction: column; gap: 4px; }
+    .orshot-field label { color: #71717a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .orshot-field input, .orshot-field textarea { background: #0a0a0f; border: 1px solid #27272a; border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px; outline: none; font-family: inherit; }
+    .orshot-field input:focus, .orshot-field textarea:focus { border-color: #B8943E; }
+    .orshot-field textarea { min-height: 60px; resize: vertical; }
+    .btn-render { background: #10b981; color: #fff; border: none; border-radius: 8px; padding: 12px 28px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-render:hover { background: #059669; }
+    .btn-render:disabled { opacity: 0.5; cursor: not-allowed; }
+    .render-result { margin-top: 16px; text-align: center; }
+    .render-result img { max-width: 100%; max-height: 500px; border-radius: 10px; border: 1px solid #27272a; }
+    .render-meta { color: #71717a; font-size: 12px; margin-top: 8px; }
+    .render-actions { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
+    .btn-download { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-download:hover { background: #2563eb; }
+    .btn-render-again { background: none; border: 1px solid #3f3f46; border-radius: 6px; padding: 8px 16px; color: #a1a1aa; font-size: 13px; cursor: pointer; }
+    .btn-render-again:hover { border-color: #B8943E; color: #B8943E; }
+    .orshot-tabs { display: flex; gap: 0; margin-bottom: 16px; background: #0a0a0f; border: 1px solid #27272a; border-radius: 8px; overflow: hidden; }
+    .orshot-tab { flex: 1; padding: 8px 12px; text-align: center; color: #71717a; font-size: 13px; cursor: pointer; border: none; background: none; transition: all 0.15s; }
+    .orshot-tab:hover { color: #e4e4e7; }
+    .orshot-tab.active { background: #10b981; color: #fff; font-weight: 600; }
+    .field-hint { color: #52525b; font-size: 11px; font-style: italic; }
   </style>
 </head>
 <body>
@@ -166,6 +201,7 @@
       <div class="action-buttons">
         <button class="btn-clear" id="btn-clear-selection">Ryd valg</button>
         <button class="btn-generate" id="btn-open-generate">✨ Generér indhold</button>
+        <button class="btn-generate" id="btn-open-orshot" style="background:#10b981;">🖼️ Generér billede</button>
       </div>
     </div>
   </div>
@@ -209,6 +245,39 @@
       </div>
       <button class="btn-run" id="btn-run-generate">✨ Generér</button>
       <div class="gen-results" id="gen-results"></div>
+    </div>
+  </div>
+
+  <!-- ORSHOT IMAGE GENERATION OVERLAY -->
+  <div class="generate-overlay" id="orshot-overlay">
+    <div class="generate-panel" style="width:680px;">
+      <button class="btn-close-panel" id="btn-close-orshot">✕</button>
+      <h2>🖼️ Generér ad-billede</h2>
+      <p class="sub" id="orshot-sub">Vælg template → udfyld felter → generér PNG</p>
+
+      <!-- Step 1: Template selector -->
+      <div id="orshot-step-1">
+        <div class="form-group">
+          <label class="form-label">Vælg Orshot template</label>
+          <div id="orshot-templates" class="template-loading">Indlæser templates fra Orshot...</div>
+        </div>
+        <button class="btn-run" id="btn-orshot-next" disabled style="background:#10b981;">Næste: Udfyld felter →</button>
+      </div>
+
+      <!-- Step 2: Fill fields & render -->
+      <div id="orshot-step-2" style="display:none;">
+        <button class="btn-render-again" id="btn-orshot-back" style="margin-bottom:16px;">← Vælg andet template</button>
+        <div id="orshot-template-info" style="margin-bottom:16px;"></div>
+        <div class="form-group">
+          <label class="form-label">Felter i template</label>
+          <div id="orshot-fields" class="orshot-fields"></div>
+        </div>
+        <div class="form-group" id="orshot-autofill-group" style="display:none;">
+          <p class="field-hint">💡 Felterne er udfyldt fra valgte testimonials. Rediger efter behov.</p>
+        </div>
+        <button class="btn-render" id="btn-orshot-render">🖼️ Generér billede</button>
+        <div id="orshot-result" class="render-result" style="display:none;"></div>
+      </div>
     </div>
   </div>
 
@@ -510,6 +579,206 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) { e.preventDefault(); document.getElementById('search-input').focus(); }
       if (e.key === 'Escape') document.getElementById('generate-overlay').classList.remove('visible');
+    });
+
+    // ============================================================
+    // ORSHOT IMAGE GENERATION
+    // ============================================================
+    let orshotTemplates = [];
+    let selectedOrshotTemplate = null;
+    let orshotTemplateDetails = {};
+
+    // Open/close Orshot overlay
+    document.getElementById('btn-open-orshot').addEventListener('click', () => {
+      document.getElementById('orshot-overlay').classList.add('visible');
+      document.getElementById('orshot-step-1').style.display = 'block';
+      document.getElementById('orshot-step-2').style.display = 'none';
+      document.getElementById('orshot-result').style.display = 'none';
+      loadOrshotTemplates();
+    });
+    document.getElementById('btn-close-orshot').addEventListener('click', () => {
+      document.getElementById('orshot-overlay').classList.remove('visible');
+    });
+    document.getElementById('orshot-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('visible');
+    });
+
+    async function loadOrshotTemplates() {
+      const container = document.getElementById('orshot-templates');
+      container.innerHTML = '<div class="template-loading">⏳ Indlæser templates fra Orshot...</div>';
+      try {
+        const res = await fetch(API + '/api/orshot/templates');
+        const data = await res.json();
+        // Handle various response shapes
+        const templates = data.data || data.templates || data || [];
+        orshotTemplates = Array.isArray(templates) ? templates : [];
+        
+        if (!orshotTemplates.length) {
+          container.innerHTML = '<div class="template-empty">Ingen templates fundet. Opret templates i <a href="https://orshot.com/studio" target="_blank" style="color:#B8943E;">Orshot Studio</a></div>';
+          return;
+        }
+
+        container.className = 'template-grid';
+        container.innerHTML = orshotTemplates.map(t => {
+          const id = t.id || t.templateId;
+          const name = t.name || t.title || 'Template ' + id;
+          const thumb = t.thumbnail || t.thumbnailUrl || t.preview || '';
+          return '<div class="template-card" data-id="' + id + '">' +
+            (thumb ? '<img src="' + thumb + '" alt="' + name + '" onerror="this.style.display=\'none\'">' : '<div style="height:160px;background:#18181b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#52525b;font-size:32px;">🖼️</div>') +
+            '<div class="tpl-name">' + name + '</div>' +
+          '</div>';
+        }).join('');
+
+        container.querySelectorAll('.template-card').forEach(card => {
+          card.addEventListener('click', () => {
+            container.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedOrshotTemplate = card.dataset.id;
+            document.getElementById('btn-orshot-next').disabled = false;
+          });
+        });
+
+        // Re-select if previously selected
+        if (selectedOrshotTemplate) {
+          const prev = container.querySelector('[data-id="' + selectedOrshotTemplate + '"]');
+          if (prev) { prev.classList.add('selected'); document.getElementById('btn-orshot-next').disabled = false; }
+        }
+
+      } catch (e) {
+        container.innerHTML = '<div class="template-empty">Fejl ved indlæsning: ' + e.message + '</div>';
+      }
+    }
+
+    // Step 1 → Step 2
+    document.getElementById('btn-orshot-next').addEventListener('click', async () => {
+      if (!selectedOrshotTemplate) return;
+      document.getElementById('orshot-step-1').style.display = 'none';
+      document.getElementById('orshot-step-2').style.display = 'block';
+      document.getElementById('orshot-result').style.display = 'none';
+
+      // Load template details to get dynamic fields
+      const fieldsContainer = document.getElementById('orshot-fields');
+      const infoContainer = document.getElementById('orshot-template-info');
+      fieldsContainer.innerHTML = '<div class="template-loading">Indlæser felter...</div>';
+
+      try {
+        const res = await fetch(API + '/api/orshot/templates/' + selectedOrshotTemplate);
+        const data = await res.json();
+        const tplData = data.data || data;
+        orshotTemplateDetails = tplData;
+
+        const tplName = tplData.name || tplData.title || 'Template ' + selectedOrshotTemplate;
+        infoContainer.innerHTML = '<div style="color:#B8943E;font-weight:600;font-size:14px;">📋 ' + tplName + '</div>';
+
+        // Extract modification fields
+        const mods = tplData.modifications || tplData.params || tplData.fields || {};
+        const modKeys = Object.keys(mods);
+
+        if (!modKeys.length) {
+          fieldsContainer.innerHTML = '<div class="field-hint">Ingen parameteriserede felter fundet i dette template. Du kan stadig rendere det.</div>';
+        } else {
+          fieldsContainer.innerHTML = modKeys.map(key => {
+            const val = mods[key] || '';
+            const isLong = typeof val === 'string' && val.length > 80;
+            // Try to auto-fill from selected testimonials
+            let autoVal = val;
+            if (selectedItems.size > 0) {
+              const firstItem = selectedItems.values().next().value;
+              const lk = key.toLowerCase();
+              if (lk.includes('navn') || lk.includes('name')) {
+                autoVal = firstItem.navn || val;
+              } else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('quote') || lk.includes('tekst') || lk.includes('text')) {
+                autoVal = firstItem.tekst || firstItem.transkription || val;
+              } else if (lk.includes('rating') || lk.includes('star')) {
+                autoVal = (firstItem.rating ? firstItem.rating + '/5 Stars' : val);
+              }
+            }
+
+            if (isLong || key.toLowerCase().includes('anmeldelse') || key.toLowerCase().includes('review') || key.toLowerCase().includes('tekst') || key.toLowerCase().includes('citat')) {
+              return '<div class="orshot-field">' +
+                '<label>' + key + '</label>' +
+                '<textarea data-key="' + key + '" rows="3">' + (autoVal || '') + '</textarea>' +
+              '</div>';
+            }
+            // Check if it looks like an image URL
+            if (typeof val === 'string' && (val.startsWith('http') || key.toLowerCase().includes('image') || key.toLowerCase().includes('background') || key.toLowerCase().includes('foto') || key.toLowerCase().includes('photo'))) {
+              return '<div class="orshot-field">' +
+                '<label>' + key + ' <span class="field-hint">(billed-URL)</span></label>' +
+                '<input type="text" data-key="' + key + '" value="' + (autoVal || '') + '" placeholder="https://...">' +
+              '</div>';
+            }
+            return '<div class="orshot-field">' +
+              '<label>' + key + '</label>' +
+              '<input type="text" data-key="' + key + '" value="' + (autoVal || '') + '">' +
+            '</div>';
+          }).join('');
+        }
+
+        // Show autofill hint if testimonials are selected
+        if (selectedItems.size > 0) {
+          document.getElementById('orshot-autofill-group').style.display = 'block';
+        } else {
+          document.getElementById('orshot-autofill-group').style.display = 'none';
+        }
+
+      } catch (e) {
+        fieldsContainer.innerHTML = '<div class="template-empty">Fejl: ' + e.message + '</div>';
+      }
+    });
+
+    // Back to step 1
+    document.getElementById('btn-orshot-back').addEventListener('click', () => {
+      document.getElementById('orshot-step-1').style.display = 'block';
+      document.getElementById('orshot-step-2').style.display = 'none';
+    });
+
+    // Render image
+    document.getElementById('btn-orshot-render').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-orshot-render');
+      const resultDiv = document.getElementById('orshot-result');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Orshot renderer...';
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = '<div class="template-loading">🎨 Genererer billede (~2 sek)...</div>';
+
+      // Collect field values
+      const modifications = {};
+      document.querySelectorAll('#orshot-fields [data-key]').forEach(el => {
+        modifications[el.dataset.key] = el.value;
+      });
+
+      try {
+        const res = await fetch(API + '/api/orshot/render', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            templateId: selectedOrshotTemplate,
+            modifications
+          })
+        });
+        const data = await res.json();
+        
+        if (data.error) throw new Error(data.error);
+        
+        const imageUrl = data.data?.content || data.content || data.url;
+        if (!imageUrl) throw new Error('Ingen billed-URL returneret fra Orshot');
+
+        const renderTime = data.data?.responseTime ? (data.data.responseTime / 1000).toFixed(1) : '?';
+        
+        resultDiv.innerHTML = 
+          '<img src="' + imageUrl + '" alt="Genereret ad">' +
+          '<div class="render-meta">✅ Renderet på ' + renderTime + ' sekunder</div>' +
+          '<div class="render-actions">' +
+            '<a href="' + imageUrl + '" download="kjeldgaard-ad-' + Date.now() + '.png" target="_blank" class="btn-download">💾 Download PNG</a>' +
+            '<button class="btn-render-again" onclick="document.getElementById(\'btn-orshot-render\').click()">🔄 Render igen</button>' +
+          '</div>';
+
+      } catch (e) {
+        resultDiv.innerHTML = '<div class="template-empty">❌ Fejl: ' + e.message + '</div>';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🖼️ Generér billede';
+      }
     });
 
     loadStats();
