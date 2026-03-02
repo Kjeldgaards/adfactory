@@ -719,12 +719,12 @@
             const key = field.key || field.id;
             const fieldType = field.type || 'text';
             const example = field.example || '';
+            const lk = key.toLowerCase();
             
             // Auto-fill from selected testimonials
             let autoVal = example;
             if (selectedItems.size > 0) {
               const firstItem = selectedItems.values().next().value;
-              const lk = key.toLowerCase();
               if (lk.includes('navn') || lk === 'name') {
                 autoVal = firstItem.navn || example;
               } else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('quote') || lk.includes('tekst') || lk.includes('status')) {
