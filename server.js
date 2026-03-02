@@ -983,22 +983,47 @@ KUN JSON, intet andet.`,
 // ============================================================
 // ORSHOT IMAGE GENERATION API
 // ============================================================
-const ORSHOT_API_KEY = process.env.ORSHOT_API_KEY || '';
 const ORSHOT_BASE = 'https://api.orshot.com/v1';
+
+// Read key at request time (Railway may inject late) + config file fallback
+function getOrshotKey() {
+  if (process.env.ORSHOT_API_KEY) return process.env.ORSHOT_API_KEY;
+  // Fallback: read from config file on volume
+  const configPath = path.join(__dirname, 'data', 'orshot-config.json');
+  try {
+    if (fs.existsSync(configPath)) {
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      return config.apiKey || '';
+    }
+  } catch (e) {}
+  return '';
+}
+
+// Set Orshot API key via config file (backup for when Railway env vars don't work)
+app.post('/api/orshot/set-key', (req, res) => {
+  const { apiKey } = req.body;
+  if (!apiKey) return res.status(400).json({ error: 'apiKey required' });
+  const configPath = path.join(__dirname, 'data', 'orshot-config.json');
+  fs.writeFileSync(configPath, JSON.stringify({ apiKey }, null, 2));
+  res.json({ success: true, keyLength: apiKey.length, keyPrefix: apiKey.substring(0, 5) });
+});
 
 // Debug: check if env var is loaded
 app.get('/api/orshot/debug', (req, res) => {
+  const key = getOrshotKey();
   res.json({
-    keySet: !!ORSHOT_API_KEY,
-    keyLength: ORSHOT_API_KEY.length,
-    keyPrefix: ORSHOT_API_KEY.substring(0, 5),
-    allEnvKeys: Object.keys(process.env).filter(k => k.includes('ORSHOT') || k.includes('API_KEY'))
+    keySet: !!key,
+    keyLength: key.length,
+    keyPrefix: key.substring(0, 5),
+    source: process.env.ORSHOT_API_KEY ? 'env' : (key ? 'config-file' : 'none'),
+    allEnvKeys: Object.keys(process.env).filter(k => k.includes('ORSHOT') || k.includes('API'))
   });
 });
 
 // List all studio templates (try multiple endpoints)
 app.get('/api/orshot/templates', async (req, res) => {
   try {
+    const ORSHOT_API_KEY = getOrshotKey();
     if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
     
     const endpoints = [
@@ -1033,6 +1058,7 @@ app.get('/api/orshot/templates', async (req, res) => {
 // Get single template details (includes modifications/parameters)
 app.get('/api/orshot/templates/:id', async (req, res) => {
   try {
+    const ORSHOT_API_KEY = getOrshotKey();
     if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
     const response = await fetch(`${ORSHOT_BASE}/studio/templates/${req.params.id}`, {
       headers: { 'Authorization': `Bearer ${ORSHOT_API_KEY}` }
@@ -1052,6 +1078,7 @@ app.get('/api/orshot/templates/:id', async (req, res) => {
 // Render image from studio template
 app.post('/api/orshot/render', async (req, res) => {
   try {
+    const ORSHOT_API_KEY = getOrshotKey();
     if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
     const { templateId, modifications } = req.body;
     if (!templateId) return res.status(400).json({ error: 'templateId required' });
@@ -1328,5 +1355,5 @@ app.listen(PORT, async () => {
   await autoDiscoverTemplates();
   console.log(`  Templates: ${loadTemplates().length}`);
   console.log(`  Testimonials: ${loadTestimonials().length}`);
-  console.log(`  Orshot API: ${ORSHOT_API_KEY ? '✅ configured' : '❌ ORSHOT_API_KEY not set'}\n`);
+  console.log(`  Orshot API: ${getOrshotKey() ? '✅ configured' : '❌ ORSHOT_API_KEY not set'}\n`);
 });
