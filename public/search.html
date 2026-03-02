@@ -609,6 +609,10 @@
       try {
         const res = await fetch(API + '/api/orshot/templates');
         const data = await res.json();
+        if (data.error) {
+          container.innerHTML = '<div class="template-empty">⚠️ ' + data.error + (data.detail ? '<br><small style="color:#52525b;">' + data.detail + '</small>' : '') + '</div>';
+          return;
+        }
         // Handle various response shapes
         const templates = data.data || data.templates || data || [];
         orshotTemplates = Array.isArray(templates) ? templates : [];

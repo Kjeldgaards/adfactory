@@ -1059,9 +1059,14 @@ const ORSHOT_BASE = 'https://api.orshot.com/v1';
 app.get('/api/orshot/templates', async (req, res) => {
   try {
     if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
-    const response = await fetch(`${ORSHOT_BASE}/studio/templates`, {
+    const response = await fetch(`${ORSHOT_BASE}/studio/templates/all`, {
       headers: { 'Authorization': `Bearer ${ORSHOT_API_KEY}` }
     });
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('Orshot API error:', response.status, text.substring(0, 200));
+      return res.status(response.status).json({ error: `Orshot API: ${response.status} ${response.statusText}`, detail: text.substring(0, 200) });
+    }
     const data = await response.json();
     res.json(data);
   } catch (err) {
@@ -1077,6 +1082,10 @@ app.get('/api/orshot/templates/:id', async (req, res) => {
     const response = await fetch(`${ORSHOT_BASE}/studio/templates/${req.params.id}`, {
       headers: { 'Authorization': `Bearer ${ORSHOT_API_KEY}` }
     });
+    if (!response.ok) {
+      const text = await response.text();
+      return res.status(response.status).json({ error: `Orshot API: ${response.status}`, detail: text.substring(0, 200) });
+    }
     const data = await response.json();
     res.json(data);
   } catch (err) {
@@ -1110,6 +1119,12 @@ app.post('/api/orshot/render', async (req, res) => {
         }
       })
     });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('Orshot render API error:', response.status, text.substring(0, 300));
+      return res.status(response.status).json({ error: `Orshot render: ${response.status}`, detail: text.substring(0, 300) });
+    }
 
     const data = await response.json();
     console.log(`  Orshot render result: ${data.data?.content ? 'SUCCESS' : 'FAILED'} (${data.data?.responseTime || '?'}ms)`);
