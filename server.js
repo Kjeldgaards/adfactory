@@ -1055,20 +1055,35 @@ async function autoDiscoverTemplates() {
 const ORSHOT_API_KEY = process.env.ORSHOT_API_KEY || '';
 const ORSHOT_BASE = 'https://api.orshot.com/v1';
 
-// List all studio templates
+// List all studio templates (try multiple endpoints)
 app.get('/api/orshot/templates', async (req, res) => {
   try {
     if (!ORSHOT_API_KEY) return res.status(500).json({ error: 'ORSHOT_API_KEY not configured' });
-    const response = await fetch(`${ORSHOT_BASE}/studio/templates/all`, {
-      headers: { 'Authorization': `Bearer ${ORSHOT_API_KEY}` }
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      console.error('Orshot API error:', response.status, text.substring(0, 200));
-      return res.status(response.status).json({ error: `Orshot API: ${response.status} ${response.statusText}`, detail: text.substring(0, 200) });
+    
+    // Try /all first, then without /all
+    const endpoints = [
+      `${ORSHOT_BASE}/studio/templates/all`,
+      `${ORSHOT_BASE}/studio/templates`
+    ];
+    
+    for (const url of endpoints) {
+      try {
+        console.log(`  Orshot: trying ${url}`);
+        const response = await fetch(url, {
+          headers: { 'Authorization': `Bearer ${ORSHOT_API_KEY}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`  Orshot: ${url} returned OK`);
+          return res.json(data);
+        }
+        console.log(`  Orshot: ${url} returned ${response.status}`);
+      } catch (e) {
+        console.log(`  Orshot: ${url} failed: ${e.message}`);
+      }
     }
-    const data = await response.json();
-    res.json(data);
+    
+    res.json({ data: [], error: 'Could not list templates from Orshot API' });
   } catch (err) {
     console.error('Orshot list templates error:', err);
     res.status(500).json({ error: err.message });
