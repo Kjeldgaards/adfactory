@@ -1227,14 +1227,124 @@ async function autoDiscoverTemplates() {
 }
 
 // ============================================================
-// GENERATE CONTENT FROM SELECTED TESTIMONIALS
+// CHAT — Interactive Claude conversation with KJELDGAARD context
 // ============================================================
 
 function loadDoc(filename) {
-  const filepath = path.join(__dirname, 'docs', filename);
+  const filepath = path.join(DOCS_DIR, filename);
   if (!fs.existsSync(filepath)) return '';
   return fs.readFileSync(filepath, 'utf8');
 }
+
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message, selectedIds, history, templateInfo } = req.body;
+    if (!message) return res.status(400).json({ error: 'message required' });
+
+    // Build testimonial context if any selected
+    let testimonialsContext = '';
+    if (selectedIds && selectedIds.length > 0) {
+      const tp = loadJSON(DATA_FILES.testimonials);
+      const vdo = loadJSON(DATA_FILES.videos);
+      const meta = loadJSON(DATA_FILES.metacomments);
+      const allItems = [
+        ...tp.map(t => ({ ...t, _source: 'tp' })),
+        ...vdo.map(v => ({ ...v, _source: 'vdo' })),
+        ...meta.map(m => ({ ...m, _source: 'meta' }))
+      ];
+      const selected = allItems.filter(item => selectedIds.includes(item._source + '-' + item.id));
+      if (selected.length > 0) {
+        testimonialsContext = '\n\n=== VALGTE KUNDECITATER (' + selected.length + ' stk) ===\n' +
+          selected.map(t => {
+            const src = t._source === 'tp' ? 'Trustpilot' : t._source === 'vdo' ? 'Video' : 'Meta';
+            const text = t.tekst || t.transkription || '';
+            return '[' + src + '] ' + (t.navn || 'Anonym') + ':\n"' + text + '"';
+          }).join('\n\n');
+      }
+    }
+
+    // Template context
+    let templateContext = '';
+    if (templateInfo) {
+      templateContext = '\n\n=== VALGT TEMPLATE ===\nTemplate: ' + (templateInfo.name || templateInfo.id) + 
+        (templateInfo.dims ? ' (' + templateInfo.dims + ')' : '') +
+        '\nTemplate ID: ' + templateInfo.id;
+    }
+
+    // Load core docs for context (abbreviated to fit in context window)
+    const doRegler = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
+    const dontRegler = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+    const ordbank = loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
+    const efficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
+    const hooks = loadDoc('SWIPE_KJELDGAARD_HOOKS_BEST.txt');
+    const benefits = loadDoc('SWIPE_KJELDGAARD_BENEFITS_BEST.txt');
+    const benson = loadDoc('jon-benson-copychief-master-system_v3.md');
+
+    const systemPrompt = `Du er KJELDGAARD's kreative AI-assistent integreret i Ad Factory.
+Du hjælper med at skabe ads, copy, headlines og kreativt indhold til KJELDGAARD Barrier Defense Serum.
+Du skriver på dansk til danske kvinder 40-65 med mindre du bliver bedt om andet.
+Du har adgang til kundens egne ord og testimonials.
+Du scorer output med Benson 12-factor systemet når relevant.
+
+BRAND: KJELDGAARD — dansk premium skincare. Hero product: Barrier Defense Serum.
+Klinisk testet: 27% reduktion af fine linjer, 100% forbedring, 0% bivirkninger.
+14.000+ kunder, 4.7/5 Trustpilot, ~70 ordrer/dag.
+
+=== DO REGLER ===
+${doRegler.substring(0, 3000)}
+
+=== DON'T REGLER ===
+${dontRegler.substring(0, 2000)}
+
+=== ORDBANK (Kundesprog) ===
+${ordbank.substring(0, 4000)}
+
+=== HOOKS EKSEMPLER ===
+${hooks.substring(0, 2000)}
+
+=== BENEFITS EKSEMPLER ===
+${benefits.substring(0, 2000)}
+
+=== EFFICACY FACTS ===
+${efficacy.substring(0, 2000)}
+
+=== BENSON SCORING (kort) ===
+${benson.substring(0, 3000)}
+${testimonialsContext}${templateContext}
+
+Svar klart og direkte. Når du genererer copy/tekst, giv det som færdige varianter der kan bruges med det samme.
+Brug kundeord fra testimonials når de er tilgængelige.`;
+
+    // Build messages array with history
+    const messages = [];
+    if (history && history.length > 0) {
+      for (const msg of history.slice(-10)) {  // Keep last 10 messages
+        messages.push({ role: msg.role, content: msg.content });
+      }
+    }
+    messages.push({ role: 'user', content: message });
+
+    console.log(`  Chat: msg="${message.substring(0, 80)}...", selected=${selectedIds?.length || 0}, history=${history?.length || 0}`);
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      messages,
+      system: systemPrompt
+    });
+
+    const responseText = response.content[0].text;
+    res.json({ response: responseText });
+
+  } catch (err) {
+    console.error('Chat error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
+// GENERATE CONTENT FROM SELECTED TESTIMONIALS
+// ============================================================
 
 const GENERATION_TYPES = {
   headlines: {
