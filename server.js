@@ -1284,6 +1284,22 @@ app.post('/api/chat', async (req, res) => {
       templateContext = '\n\n=== VALGT TEMPLATE ===\nTemplate: ' + (templateInfo.name || templateInfo.id) + 
         (templateInfo.dims ? ' (' + templateInfo.dims + ')' : '') +
         '\nTemplate ID: ' + templateInfo.id;
+      
+      if (templateInfo.fields && templateInfo.fields.length > 0) {
+        const textFields = templateInfo.fields.filter(f => f.type !== 'image');
+        if (textFields.length > 0) {
+          templateContext += '\n\nDYNAMISKE TEKSTFELTER I TEMPLATE:';
+          textFields.forEach(f => {
+            templateContext += '\n- "' + f.key + '": maks ' + f.maxChars + ' tegn';
+          });
+          
+          if (templateInfo.charLimitsEnabled) {
+            templateContext += '\n\n⚠️ TEGNGRÆNSER ER AKTIVERET: Når du genererer tekst til dette template, SKAL hver tekst overholde feltets tegngrænse. Angiv altid antal tegn brugt.';
+          } else {
+            templateContext += '\n\n(Tegngrænser er DEAKTIVERET — brugeren ønsker frit tekstformat uden begrænsning)';
+          }
+        }
+      }
     }
 
     // Load core docs for context (abbreviated to fit in context window)

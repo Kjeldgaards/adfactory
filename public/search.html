@@ -180,6 +180,21 @@
     .template-bar-placeholder { color: #71717a; font-size: 13px; flex: 1; }
     .btn-change-template { background: none; border: 1px solid #3f3f46; border-radius: 6px; padding: 5px 12px; color: #a1a1aa; font-size: 12px; cursor: pointer; white-space: nowrap; }
     .btn-change-template:hover { border-color: #B8943E; color: #B8943E; }
+    /* CHAR LIMIT TOGGLE */
+    .char-limit-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; flex-shrink: 0; }
+    .char-limit-toggle input { display: none; }
+    .toggle-slider { position: relative; width: 36px; height: 20px; background: #3f3f46; border-radius: 10px; transition: background 0.2s; flex-shrink: 0; }
+    .toggle-slider::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
+    .char-limit-toggle input:checked + .toggle-slider { background: #B8943E; }
+    .char-limit-toggle input:checked + .toggle-slider::after { transform: translateX(16px); }
+    .toggle-label { font-size: 11px; color: #71717a; white-space: nowrap; }
+    .char-limit-toggle input:checked ~ .toggle-label { color: #B8943E; }
+    /* TEMPLATE FIELDS BAR */
+    .template-fields-bar { margin-top: -12px; margin-bottom: 20px; padding: 10px 16px; background: #0f1117; border: 1px solid #27272a; border-top: none; border-radius: 0 0 10px 10px; }
+    .tpl-field-pill { display: inline-flex; align-items: center; gap: 4px; background: #18181b; border: 1px solid #27272a; border-radius: 6px; padding: 4px 10px; font-size: 11px; color: #a1a1aa; margin: 2px 4px 2px 0; }
+    .tpl-field-pill .field-name { color: #e4e4e7; font-weight: 600; }
+    .tpl-field-pill .field-chars { color: #B8943E; }
+    .tpl-fields-loading { color: #52525b; font-size: 11px; }
     /* TEMPLATE PICKER MODAL */
     .tpl-picker-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; display: none; align-items: center; justify-content: center; }
     .tpl-picker-overlay.visible { display: flex; }
@@ -249,8 +264,17 @@
           <div class="template-bar-name" id="tpl-bar-name"></div>
           <div class="template-bar-dims" id="tpl-bar-dims"></div>
         </div>
+        <label class="char-limit-toggle" id="char-limit-toggle" style="display:none;" title="Begræns tekst til template-felternes max tegn">
+          <input type="checkbox" id="char-limit-enabled" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Tegngrænse</span>
+        </label>
         <button class="btn-change-template" id="btn-change-template">Skift</button>
       </div>
+    </div>
+    <!-- Template field details (shown when template loaded) -->
+    <div class="template-fields-bar" id="tpl-fields-bar" style="display:none;">
+      <div id="tpl-fields-list"></div>
     </div>
 
     <!-- TEMPLATE PICKER MODAL -->
@@ -1210,7 +1234,10 @@
       const tplPill = document.getElementById('chat-pill-tpl');
       const selPill = document.getElementById('chat-pill-sel');
       if (globalSelectedTemplate) {
-        tplPill.textContent = '🖼️ ' + (globalSelectedTemplate.name || globalSelectedTemplate.id).substring(0, 15);
+        const tplName = (globalSelectedTemplate.name || globalSelectedTemplate.id).substring(0, 15);
+        const fieldCount = globalSelectedTemplate.fields ? globalSelectedTemplate.fields.filter(f => f.type !== 'image').length : 0;
+        const limitsOn = globalSelectedTemplate.charLimitsEnabled;
+        tplPill.textContent = '🖼️ ' + tplName + (fieldCount ? ' · ' + fieldCount + ' felter' : '') + (limitsOn && fieldCount ? ' · ✂️' : '');
         tplPill.classList.add('active');
       } else {
         tplPill.textContent = '🖼️ Ingen tpl';
@@ -1298,7 +1325,13 @@
           message: msg,
           selectedIds: Array.from(selectedItems.keys()),
           history: chatHistory,
-          templateInfo: globalSelectedTemplate || null
+          templateInfo: globalSelectedTemplate ? {
+            id: globalSelectedTemplate.id,
+            name: globalSelectedTemplate.name,
+            dims: globalSelectedTemplate.dims,
+            fields: globalSelectedTemplate.fields || null,
+            charLimitsEnabled: globalSelectedTemplate.charLimitsEnabled || false
+          } : null
         };
 
         const res = await fetch(API + '/api/chat', {
@@ -1358,7 +1391,7 @@
     }
 
     function selectTemplateGlobal(id, name, thumb, dims) {
-      globalSelectedTemplate = { id, name, thumb, dims };
+      globalSelectedTemplate = { id, name, thumb, dims, fields: null, charLimitsEnabled: true };
       // Update bar UI
       const bar = document.getElementById('template-bar');
       bar.classList.add('has-template');
@@ -1370,11 +1403,96 @@
       const thumbEl = document.getElementById('tpl-bar-thumb');
       if (thumb) { thumbEl.src = thumb; thumbEl.style.display = 'block'; }
       else { thumbEl.style.display = 'none'; }
+      document.getElementById('char-limit-toggle').style.display = 'flex';
       // Also sync with ad creator
       adSelectedTemplate = id;
       updateChatPills();
       closeTemplatePicker();
+      // Fetch template field details async
+      loadTemplateFields(id);
     }
+
+    async function loadTemplateFields(templateId) {
+      const fieldsBar = document.getElementById('tpl-fields-bar');
+      const fieldsList = document.getElementById('tpl-fields-list');
+      fieldsBar.style.display = 'block';
+      fieldsList.innerHTML = '<span class="tpl-fields-loading">⏳ Henter template-felter...</span>';
+
+      try {
+        // Fetch Orshot template details
+        const res = await fetch(API + '/api/orshot/templates/' + templateId);
+        const data = await res.json();
+        const tplData = data.data || data;
+
+        // Extract fields
+        let modFields = tplData.modifications || tplData.params || tplData.fields || [];
+        if (!Array.isArray(modFields)) {
+          modFields = Object.entries(modFields).map(([key, val]) => ({
+            key, id: key,
+            type: typeof val === 'string' && val.startsWith('http') ? 'imageUrl' : 'text',
+            example: val
+          }));
+        }
+
+        // Fetch char limit config
+        let templateConfig = null;
+        try {
+          const cfgRes = await fetch(API + '/api/template-configs/' + templateId);
+          templateConfig = await cfgRes.json();
+        } catch (e) {}
+
+        const defaultFields = adDefaultConfigs?.fields || {};
+
+        // Build field info
+        const fields = modFields.map(field => {
+          const key = field.key || field.id;
+          const lk = key.toLowerCase();
+          const isImage = (field.type || '').toLowerCase() === 'imageurl' || (typeof field.example === 'string' && field.example.startsWith('http'));
+          
+          let maxChars = null;
+          if (templateConfig?.fields?.[key]?.maxChars) {
+            maxChars = templateConfig.fields[key].maxChars;
+          } else {
+            for (const [dk, dv] of Object.entries(defaultFields)) {
+              if (lk.includes(dk) || dk.includes(lk)) { maxChars = dv.maxChars; break; }
+            }
+          }
+          if (!maxChars) {
+            if (lk.includes('navn') || lk === 'name') maxChars = 25;
+            else if (lk.includes('rating') || lk.includes('star')) maxChars = 15;
+            else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('tekst') || lk.includes('quote')) maxChars = 180;
+            else maxChars = 100;
+          }
+
+          return { key, maxChars, type: isImage ? 'image' : 'text', example: field.example || '' };
+        });
+
+        globalSelectedTemplate.fields = fields;
+
+        // Render field pills
+        const textFields = fields.filter(f => f.type !== 'image');
+        if (textFields.length === 0) {
+          fieldsList.innerHTML = '<span class="tpl-fields-loading">Ingen tekstfelter i dette template</span>';
+        } else {
+          fieldsList.innerHTML = textFields.map(f =>
+            '<span class="tpl-field-pill"><span class="field-name">' + f.key + '</span> <span class="field-chars">' + f.maxChars + ' tegn</span></span>'
+          ).join('');
+        }
+
+        updateChatPills();
+
+      } catch (e) {
+        fieldsList.innerHTML = '<span class="tpl-fields-loading">Kunne ikke hente felter: ' + e.message + '</span>';
+      }
+    }
+
+    // Char limit toggle
+    document.getElementById('char-limit-enabled').addEventListener('change', function() {
+      if (globalSelectedTemplate) {
+        globalSelectedTemplate.charLimitsEnabled = this.checked;
+      }
+      updateChatPills();
+    });
 
     async function loadPickerTemplates() {
       const container = document.getElementById('tpl-picker-grid');
