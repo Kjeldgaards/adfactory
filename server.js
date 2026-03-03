@@ -981,6 +981,46 @@ KUN JSON, intet andet.`,
 });
 
 // ============================================================
+// TEMPLATE CONFIG — Character limits per Orshot template field
+// ============================================================
+const TEMPLATE_CONFIG_PATH = path.join(__dirname, 'data', 'template-configs.json');
+
+function loadTemplateConfigs() {
+  if (fs.existsSync(TEMPLATE_CONFIG_PATH)) {
+    try { return JSON.parse(fs.readFileSync(TEMPLATE_CONFIG_PATH, 'utf8')); } catch (e) {}
+  }
+  return {};
+}
+
+function saveTemplateConfigs(configs) {
+  fs.writeFileSync(TEMPLATE_CONFIG_PATH, JSON.stringify(configs, null, 2));
+}
+
+// GET all template configs
+app.get('/api/template-configs', (req, res) => {
+  res.json(loadTemplateConfigs());
+});
+
+// GET single template config
+app.get('/api/template-configs/:id', (req, res) => {
+  const configs = loadTemplateConfigs();
+  const config = configs[req.params.id];
+  if (!config) return res.json({ fields: {}, note: 'No config for this template — using defaults' });
+  res.json(config);
+});
+
+// PUT/create template config (for when Upwork freelancer data comes in)
+app.put('/api/template-configs/:id', (req, res) => {
+  const configs = loadTemplateConfigs();
+  configs[req.params.id] = {
+    ...req.body,
+    updatedAt: new Date().toISOString()
+  };
+  saveTemplateConfigs(configs);
+  res.json({ success: true, config: configs[req.params.id] });
+});
+
+// ============================================================
 // ORSHOT IMAGE GENERATION API
 // ============================================================
 const ORSHOT_BASE = 'https://api.orshot.com/v1';
@@ -1226,12 +1266,44 @@ Hver ad copy skal scores med Benson 12-factor systemet og have minimum {{minScor
     label: 'Frit prompt',
     docs: ['SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt'],
     instruction: `{{customPrompt}}`
+  },
+  template_ad: {
+    label: 'Ad-tekst til template',
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
+    instruction: `Du skal generere tekst til et ad-billede (Orshot template) for KJELDGAARD Barrier Defense Serum.
+
+VIGTIGT: Du har strenge tegngrænser per felt. Teksten SKAL passe inden for disse grænser.
+
+{{fieldLimits}}
+
+OPGAVE:
+- Kondensér de valgte kundecitater til den stærkeste, mest overbevisende version for hvert felt
+- Bevar kundens egne ord og vendinger så meget som muligt
+- Hvert felt SKAL overholde sin tegngrænse — tæl tegnene nøje
+- "anmeldelse"/"review" feltet skal lyde som en ægte kunde, ikke som markedsføring
+- "navn"/"name" feltet er kundens navn — brug det direkte
+- "ratingtext" er typisk "X/5 Stars" eller lignende
+
+Returner PRÆCIS ét JSON objekt (ikke array) med felt-navne som keys og den optimerede tekst som values.
+Tilføj også en _meta key med scoring info.
+
+Eksempel format:
+{
+  "anmeldelse": "Min hud har aldrig følt sig så blød og beskyttet...",
+  "navn": "Gitte M.",
+  "ratingtext": "5/5 Stars",
+  "_meta": {
+    "score": 9.2,
+    "scoring_notes": "Stærkt customer language, autentisk tone",
+    "chars_used": { "anmeldelse": 145, "navn": 9, "ratingtext": 11 }
+  }
+}`
   }
 };
 
 app.post('/api/generate', async (req, res) => {
   try {
-    const { type, count = 3, minScore = 9.0, customPrompt, selectedIds } = req.body;
+    const { type, count = 3, minScore = 9.0, customPrompt, selectedIds, fieldLimits } = req.body;
     
     if (!type || !GENERATION_TYPES[type]) {
       return res.status(400).json({ error: 'Invalid type. Options: ' + Object.keys(GENERATION_TYPES).join(', ') });
@@ -1279,11 +1351,21 @@ app.post('/api/generate', async (req, res) => {
       return `[${src}] ${t.navn || 'Anonym'}${temaer ? ` (${temaer})` : ''}:\n"${text}"`;
     }).join('\n\n');
 
+    // Build field limits string for template_ad type
+    let fieldLimitsStr = '';
+    if (type === 'template_ad' && fieldLimits) {
+      fieldLimitsStr = 'TEGNGRÆNSER PER FELT:\n' + 
+        Object.entries(fieldLimits)
+          .map(([key, max]) => `- "${key}": maks ${max} tegn`)
+          .join('\n');
+    }
+
     // Build instruction
     let instruction = config.instruction
       .replace('{{count}}', count)
       .replace('{{minScore}}', minScore)
-      .replace('{{customPrompt}}', customPrompt || '');
+      .replace('{{customPrompt}}', customPrompt || '')
+      .replace('{{fieldLimits}}', fieldLimitsStr);
 
     const systemPrompt = `Du er KJELDGAARD's senior copywriter. Du skriver på dansk til danske kvinder 40-65.
 Du scorer ALT output med Benson 12-factor systemet. Minimum score: ${minScore}/10.
@@ -1294,7 +1376,16 @@ ${benson ? '=== BENSON SCORING SYSTEM ===\n' + benson.substring(0, 8000) : ''}
 
 ${docsContent}`;
 
-    const userPrompt = `${instruction}
+    let userPrompt;
+    if (type === 'template_ad') {
+      userPrompt = `${instruction}
+
+=== VALGTE KUNDECITATER (${selected.length} stk) ===
+${testimonialsText}
+
+Returner KUN ét JSON objekt (IKKE array), intet andet.`;
+    } else {
+      userPrompt = `${instruction}
 
 === VALGTE KUNDECITATER (${selected.length} stk) ===
 ${testimonialsText}
@@ -1310,8 +1401,9 @@ Returner output som JSON array:
 ]
 
 Returner KUN JSON array, intet andet.`;
+    }
 
-    console.log(`  Generate: type=${type}, count=${count}, minScore=${minScore}, selected=${selected.length}`);
+    console.log(`  Generate: type=${type}, count=${count}, minScore=${minScore}, selected=${selected.length}${type === 'template_ad' ? ', fields=' + Object.keys(fieldLimits || {}).join(',') : ''}`);
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
@@ -1324,24 +1416,31 @@ Returner KUN JSON array, intet andet.`;
 
     const responseText = response.content[0].text;
     
-    // Parse JSON from response
-    const jsonMatch = responseText.match(/\[[\s\S]*\]/);
-    if (!jsonMatch) {
-      return res.json({ results: [], raw: responseText, error: 'Could not parse JSON from response' });
-    }
-
-    const results = JSON.parse(jsonMatch[0]);
-    
-    res.json({ 
-      results,
-      meta: {
-        type: config.label,
-        count: results.length,
-        selectedTestimonials: selected.length,
-        minScore,
-        averageScore: results.length ? (results.reduce((s, r) => s + (r.score || 0), 0) / results.length).toFixed(1) : 0
+    // Parse response based on type
+    if (type === 'template_ad') {
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        return res.json({ result: null, raw: responseText, error: 'Could not parse JSON from response' });
       }
-    });
+      const result = JSON.parse(jsonMatch[0]);
+      res.json({ result, type: 'template_ad' });
+    } else {
+      const jsonMatch = responseText.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) {
+        return res.json({ results: [], raw: responseText, error: 'Could not parse JSON from response' });
+      }
+      const results = JSON.parse(jsonMatch[0]);
+      res.json({ 
+        results,
+        meta: {
+          type: config.label,
+          count: results.length,
+          selectedTestimonials: selected.length,
+          minScore,
+          averageScore: results.length ? (results.reduce((s, r) => s + (r.score || 0), 0) / results.length).toFixed(1) : 0
+        }
+      });
+    }
 
   } catch (err) {
     console.error('Generate error:', err);

@@ -147,6 +147,26 @@
     .orshot-tab:hover { color: #e4e4e7; }
     .orshot-tab.active { background: #10b981; color: #fff; font-weight: 600; }
     .field-hint { color: #52525b; font-size: 11px; font-style: italic; }
+    /* AD CREATOR STEPS */
+    .ad-steps { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; padding: 12px 16px; background: #0f1117; border-radius: 10px; }
+    .ad-step { display: flex; align-items: center; gap: 6px; color: #52525b; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .ad-step.active { color: #B8943E; }
+    .ad-step.done { color: #4ade80; }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; border: 2px solid currentColor; font-size: 11px; font-weight: 700; }
+    .ad-step.active .step-num { background: #B8943E; color: #000; border-color: #B8943E; }
+    .ad-step.done .step-num { background: #4ade80; color: #000; border-color: #4ade80; }
+    .ad-step-arrow { color: #3f3f46; font-size: 14px; }
+    /* CHAR COUNTER */
+    .char-counter-wrap { position: relative; }
+    .char-counter-wrap textarea, .char-counter-wrap input[type="text"] { padding-right: 80px; }
+    .char-counter { position: absolute; right: 10px; bottom: 8px; font-size: 11px; font-weight: 600; color: #52525b; pointer-events: none; font-variant-numeric: tabular-nums; }
+    .char-counter.warn { color: #fbbf24; }
+    .char-counter.over { color: #ef4444; }
+    .char-counter.ok { color: #4ade80; }
+    .field-over { border-color: #ef4444 !important; background: #1a0f0f !important; }
+    .validation-ok { background: #0f1a0f; border: 1px solid #1e3a2f; color: #4ade80; }
+    .validation-warn { background: #1a170f; border: 1px solid #3a2e1e; color: #fbbf24; }
+    .validation-error { background: #1a0f0f; border: 1px solid #3a1e1e; color: #ef4444; }
   </style>
 </head>
 <body>
@@ -200,8 +220,8 @@
       </div>
       <div class="action-buttons">
         <button class="btn-clear" id="btn-clear-selection">Ryd valg</button>
-        <button class="btn-generate" id="btn-open-generate">✨ Generér indhold</button>
-        <button class="btn-generate" id="btn-open-orshot" style="background:#10b981;">🖼️ Generér billede</button>
+        <button class="btn-generate" id="btn-open-generate">✨ Generér tekst</button>
+        <button class="btn-generate" id="btn-open-adcreator" style="background:#10b981;">🖼️ Opret Ad</button>
       </div>
     </div>
   </div>
@@ -248,35 +268,76 @@
     </div>
   </div>
 
-  <!-- ORSHOT IMAGE GENERATION OVERLAY -->
-  <div class="generate-overlay" id="orshot-overlay">
-    <div class="generate-panel" style="width:680px;">
-      <button class="btn-close-panel" id="btn-close-orshot">✕</button>
-      <h2>🖼️ Generér ad-billede</h2>
-      <p class="sub" id="orshot-sub">Vælg template → udfyld felter → generér PNG</p>
-
-      <!-- Step 1: Template selector -->
-      <div id="orshot-step-1">
-        <div class="form-group">
-          <label class="form-label">Vælg Orshot template</label>
-          <div id="orshot-templates" class="template-loading">Indlæser templates fra Orshot...</div>
-        </div>
-        <button class="btn-run" id="btn-orshot-next" disabled style="background:#10b981;">Næste: Udfyld felter →</button>
+  <!-- UNIFIED AD CREATOR OVERLAY -->
+  <div class="generate-overlay" id="adcreator-overlay">
+    <div class="generate-panel" style="width:720px;">
+      <button class="btn-close-panel" id="btn-close-adcreator">✕</button>
+      
+      <!-- STEP INDICATOR -->
+      <div class="ad-steps">
+        <div class="ad-step active" data-step="1"><span class="step-num">1</span> Vælg template</div>
+        <div class="ad-step-arrow">→</div>
+        <div class="ad-step" data-step="2"><span class="step-num">2</span> Tekst & redigér</div>
+        <div class="ad-step-arrow">→</div>
+        <div class="ad-step" data-step="3"><span class="step-num">3</span> Render</div>
       </div>
 
-      <!-- Step 2: Fill fields & render -->
-      <div id="orshot-step-2" style="display:none;">
-        <button class="btn-render-again" id="btn-orshot-back" style="margin-bottom:16px;">← Vælg andet template</button>
-        <div id="orshot-template-info" style="margin-bottom:16px;"></div>
-        <div class="form-group">
-          <label class="form-label">Felter i template</label>
-          <div id="orshot-fields" class="orshot-fields"></div>
+      <!-- STEP 1: Template selection -->
+      <div id="ad-step-1">
+        <h2>🖼️ Vælg template</h2>
+        <p class="sub">Vælg Orshot template til din ad. Tegngrænser vises automatisk.</p>
+        <div id="ad-templates" class="template-loading">Indlæser templates fra Orshot...</div>
+        <div id="ad-manual-id" style="margin-top:12px; display:none;">
+          <input type="text" id="ad-manual-template-id" class="search-input" style="max-width:300px;" placeholder="Orshot template ID (f.eks. 4709)">
+          <p style="color:#52525b; font-size:11px; margin-top:4px;">Find template ID i Orshot Studio → Integrate → Playground</p>
         </div>
-        <div class="form-group" id="orshot-autofill-group" style="display:none;">
-          <p class="field-hint">💡 Felterne er udfyldt fra valgte testimonials. Rediger efter behov.</p>
+        <button class="btn-run" id="btn-ad-step1-next" disabled style="background:#10b981; margin-top:16px;">Næste: Tekst & redigér →</button>
+      </div>
+
+      <!-- STEP 2: Text fields with char counters + Claude generate -->
+      <div id="ad-step-2" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <h2>✏️ Ad-tekst</h2>
+          <button class="btn-render-again" id="btn-ad-back-to-1">← Skift template</button>
         </div>
-        <button class="btn-render" id="btn-orshot-render">🖼️ Generér billede</button>
-        <div id="orshot-result" class="render-result" style="display:none;"></div>
+        <p class="sub" id="ad-step2-sub">Redigér teksten eller lad Claude optimere den fra dine testimonials</p>
+        
+        <div id="ad-template-name" style="color:#B8943E; font-weight:600; font-size:14px; margin-bottom:16px;"></div>
+        
+        <!-- Claude generate bar -->
+        <div id="ad-generate-bar" style="background:#0f1117; border:1px solid #27272a; border-radius:10px; padding:16px; margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="color:#e4e4e7; font-size:14px; font-weight:600;">✨ Claude optimering</div>
+              <div style="color:#71717a; font-size:12px;" id="ad-gen-info">Kondenserer testimonials til template-tilpasset tekst</div>
+            </div>
+            <button class="btn-generate" id="btn-ad-claude-generate" style="white-space:nowrap;">✨ Generér</button>
+          </div>
+          <div id="ad-gen-status" style="display:none; margin-top:12px;"></div>
+        </div>
+
+        <!-- Editable fields with char counters -->
+        <div id="ad-fields" class="orshot-fields"></div>
+
+        <!-- Validation status -->
+        <div id="ad-validation" style="margin-top:12px; padding:10px 14px; border-radius:8px; font-size:13px; display:none;"></div>
+
+        <button class="btn-run" id="btn-ad-step2-next" style="background:#10b981; margin-top:16px;">Næste: Render →</button>
+      </div>
+
+      <!-- STEP 3: Render -->
+      <div id="ad-step-3" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <h2>🎨 Render</h2>
+          <button class="btn-render-again" id="btn-ad-back-to-2">← Redigér tekst</button>
+        </div>
+        <p class="sub">Tjek preview og render dit ad-billede</p>
+        
+        <!-- Text summary before render -->
+        <div id="ad-render-summary" style="background:#0f1117; border:1px solid #27272a; border-radius:10px; padding:16px; margin-bottom:16px;"></div>
+        
+        <button class="btn-render" id="btn-ad-render">🖼️ Render billede via Orshot</button>
+        <div id="ad-render-result" class="render-result" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -578,71 +639,88 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) { e.preventDefault(); document.getElementById('search-input').focus(); }
-      if (e.key === 'Escape') document.getElementById('generate-overlay').classList.remove('visible');
+      if (e.key === 'Escape') {
+        document.getElementById('generate-overlay').classList.remove('visible');
+        document.getElementById('adcreator-overlay').classList.remove('visible');
+      }
     });
 
     // ============================================================
-    // ORSHOT IMAGE GENERATION
+    // UNIFIED AD CREATOR
     // ============================================================
-    let orshotTemplates = [];
-    let selectedOrshotTemplate = null;
-    let orshotTemplateDetails = {};
+    let adSelectedTemplate = null;
+    let adTemplateDetails = {};
+    let adFieldConfigs = {};  // { fieldKey: { maxChars, label, type } }
+    let adDefaultConfigs = null;
 
-    // Open/close Orshot overlay
-    document.getElementById('btn-open-orshot').addEventListener('click', () => {
-      document.getElementById('orshot-overlay').classList.add('visible');
-      document.getElementById('orshot-step-1').style.display = 'block';
-      document.getElementById('orshot-step-2').style.display = 'none';
-      document.getElementById('orshot-result').style.display = 'none';
-      loadOrshotTemplates();
+    // Load default field configs once
+    async function loadDefaultFieldConfigs() {
+      try {
+        const res = await fetch(API + '/api/template-configs');
+        const data = await res.json();
+        adDefaultConfigs = data._defaults || { fields: { anmeldelse: { maxChars: 180 }, navn: { maxChars: 25 }, ratingtext: { maxChars: 15 } } };
+      } catch (e) {
+        adDefaultConfigs = { fields: { anmeldelse: { maxChars: 180 }, navn: { maxChars: 25 }, ratingtext: { maxChars: 15 } } };
+      }
+    }
+    loadDefaultFieldConfigs();
+
+    function setAdStep(step) {
+      document.querySelectorAll('.ad-step').forEach(s => {
+        const n = parseInt(s.dataset.step);
+        s.classList.toggle('active', n === step);
+        s.classList.toggle('done', n < step);
+      });
+      document.getElementById('ad-step-1').style.display = step === 1 ? 'block' : 'none';
+      document.getElementById('ad-step-2').style.display = step === 2 ? 'block' : 'none';
+      document.getElementById('ad-step-3').style.display = step === 3 ? 'block' : 'none';
+    }
+
+    // Open ad creator
+    document.getElementById('btn-open-adcreator').addEventListener('click', () => {
+      document.getElementById('adcreator-overlay').classList.add('visible');
+      setAdStep(1);
+      loadAdTemplates();
     });
-    document.getElementById('btn-close-orshot').addEventListener('click', () => {
-      document.getElementById('orshot-overlay').classList.remove('visible');
+    document.getElementById('btn-close-adcreator').addEventListener('click', () => {
+      document.getElementById('adcreator-overlay').classList.remove('visible');
     });
-    document.getElementById('orshot-overlay').addEventListener('click', (e) => {
+    document.getElementById('adcreator-overlay').addEventListener('click', (e) => {
       if (e.target === e.currentTarget) e.currentTarget.classList.remove('visible');
     });
 
-    async function loadOrshotTemplates() {
-      const container = document.getElementById('orshot-templates');
+    // ---- STEP 1: Template selection ----
+    async function loadAdTemplates() {
+      const container = document.getElementById('ad-templates');
       container.innerHTML = '<div class="template-loading">⏳ Indlæser templates fra Orshot...</div>';
+      document.getElementById('ad-manual-id').style.display = 'none';
       try {
         const res = await fetch(API + '/api/orshot/templates');
         const text = await res.text();
         let data;
         try { data = JSON.parse(text); } catch(e) {
-          // Server returned non-JSON (likely HTML = route not found / old deploy)
-          console.error('Non-JSON response:', text.substring(0, 100));
-          showManualTemplateInput(container, 'Serveren er ikke opdateret endnu. Indtast template ID manuelt:');
+          showAdManualInput('Serveren er ikke opdateret. Indtast template ID manuelt:');
           return;
         }
-        if (data.error) {
-          showManualTemplateInput(container, data.error + (data.detail ? ' — ' + data.detail : ''));
-          return;
-        }
-        // Handle various response shapes
+        if (data.error) { showAdManualInput(data.error); return; }
         const templates = data.data || data.templates || data || [];
-        orshotTemplates = Array.isArray(templates) ? templates : [];
-        
-        if (!orshotTemplates.length) {
-          showManualTemplateInput(container, 'Ingen templates fundet via API. Indtast template ID manuelt:');
-          return;
-        }
+        const tplList = Array.isArray(templates) ? templates : [];
+        if (!tplList.length) { showAdManualInput('Ingen templates fundet. Indtast ID manuelt:'); return; }
 
         container.className = 'template-grid';
-        container.innerHTML = orshotTemplates.map(t => {
+        container.innerHTML = tplList.map(t => {
           const id = t.id || t.templateId;
           const name = t.name || t.title || 'Template ' + id;
           const thumb = t.thumbnail_url || t.thumbnail || (t.pages_data && t.pages_data[0] && t.pages_data[0].thumbnail_url) || '';
           const dims = (t.canvas_width && t.canvas_height) ? t.canvas_width + '×' + t.canvas_height : '';
           return '<div class="template-card" data-id="' + id + '">' +
-            (thumb ? '<img src="' + thumb + '" alt="' + name + '" onerror="this.parentNode.querySelector(\'.tpl-placeholder\') && (this.style.display=\'none\')">' : '<div class="tpl-placeholder" style="height:160px;background:#18181b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#52525b;font-size:32px;">🖼️</div>') +
+            (thumb ? '<img src="' + thumb + '" alt="' + name + '" onerror="this.style.display=\'none\'">' : '<div style="height:160px;background:#18181b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#52525b;font-size:32px;">🖼️</div>') +
             '<div class="tpl-name">' + name + '</div>' +
             (dims ? '<div style="color:#52525b;font-size:10px;">' + dims + '</div>' : '') +
           '</div>';
         }).join('');
 
-        // Add manual ID option at bottom
+        // Manual ID option
         container.innerHTML += '<div class="template-card" data-id="manual" style="border-style:dashed;"><div style="height:160px;background:#18181b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#52525b;font-size:14px;">✏️ Manuelt ID</div><div class="tpl-name">Indtast template ID</div></div>';
 
         container.querySelectorAll('.template-card').forEach(card => {
@@ -650,137 +728,331 @@
             container.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             if (card.dataset.id === 'manual') {
-              const id = prompt('Indtast Orshot template ID (f.eks. 4709):');
-              if (id) { selectedOrshotTemplate = id.trim(); document.getElementById('btn-orshot-next').disabled = false; }
+              document.getElementById('ad-manual-id').style.display = 'block';
+              const inp = document.getElementById('ad-manual-template-id');
+              inp.focus();
+              adSelectedTemplate = inp.value.trim() || null;
+              document.getElementById('btn-ad-step1-next').disabled = !adSelectedTemplate;
             } else {
-              selectedOrshotTemplate = card.dataset.id;
-              document.getElementById('btn-orshot-next').disabled = false;
+              document.getElementById('ad-manual-id').style.display = 'none';
+              adSelectedTemplate = card.dataset.id;
+              document.getElementById('btn-ad-step1-next').disabled = false;
             }
           });
         });
 
-        if (selectedOrshotTemplate) {
-          const prev = container.querySelector('[data-id="' + selectedOrshotTemplate + '"]');
-          if (prev) { prev.classList.add('selected'); document.getElementById('btn-orshot-next').disabled = false; }
+        // Restore previous selection
+        if (adSelectedTemplate) {
+          const prev = container.querySelector('[data-id="' + adSelectedTemplate + '"]');
+          if (prev) { prev.classList.add('selected'); document.getElementById('btn-ad-step1-next').disabled = false; }
         }
 
       } catch (e) {
-        showManualTemplateInput(container, 'Fejl: ' + e.message);
+        showAdManualInput('Fejl: ' + e.message);
       }
     }
 
-    function showManualTemplateInput(container, message) {
+    function showAdManualInput(msg) {
+      const container = document.getElementById('ad-templates');
       container.className = '';
-      container.innerHTML = 
-        '<div style="text-align:center;padding:16px;">' +
-          '<p style="color:#71717a;font-size:13px;margin-bottom:12px;">' + message + '</p>' +
-          '<input type="text" id="manual-template-id" class="search-input" style="max-width:300px;margin:0 auto 8px;display:block;text-align:center;" placeholder="Template ID (f.eks. 4709)" value="">' +
-          '<p style="color:#52525b;font-size:11px;">Find template ID i Orshot Studio → Integrate → Playground</p>' +
-        '</div>';
-      const input = document.getElementById('manual-template-id');
-      input.addEventListener('input', () => {
-        selectedOrshotTemplate = input.value.trim();
-        document.getElementById('btn-orshot-next').disabled = !selectedOrshotTemplate;
-      });
+      container.innerHTML = '<div style="text-align:center;padding:16px;color:#71717a;font-size:13px;">' + msg + '</div>';
+      document.getElementById('ad-manual-id').style.display = 'block';
     }
 
-    // Step 1 → Step 2
-    document.getElementById('btn-orshot-next').addEventListener('click', async () => {
-      if (!selectedOrshotTemplate) return;
-      document.getElementById('orshot-step-1').style.display = 'none';
-      document.getElementById('orshot-step-2').style.display = 'block';
-      document.getElementById('orshot-result').style.display = 'none';
+    document.getElementById('ad-manual-template-id').addEventListener('input', (e) => {
+      adSelectedTemplate = e.target.value.trim() || null;
+      document.getElementById('btn-ad-step1-next').disabled = !adSelectedTemplate;
+    });
 
-      // Load template details to get dynamic fields
-      const fieldsContainer = document.getElementById('orshot-fields');
-      const infoContainer = document.getElementById('orshot-template-info');
+    // STEP 1 → STEP 2
+    document.getElementById('btn-ad-step1-next').addEventListener('click', async () => {
+      if (!adSelectedTemplate) return;
+      setAdStep(2);
+      await loadAdFields();
+    });
+
+    document.getElementById('btn-ad-back-to-1').addEventListener('click', () => setAdStep(1));
+
+    // ---- STEP 2: Text fields with char counters ----
+    async function loadAdFields() {
+      const fieldsContainer = document.getElementById('ad-fields');
+      const nameEl = document.getElementById('ad-template-name');
       fieldsContainer.innerHTML = '<div class="template-loading">Indlæser felter...</div>';
+      document.getElementById('ad-gen-status').style.display = 'none';
+      document.getElementById('ad-validation').style.display = 'none';
 
       try {
-        const res = await fetch(API + '/api/orshot/templates/' + selectedOrshotTemplate);
+        // Load template details from Orshot
+        const res = await fetch(API + '/api/orshot/templates/' + adSelectedTemplate);
         const data = await res.json();
         const tplData = data.data || data;
-        orshotTemplateDetails = tplData;
+        adTemplateDetails = tplData;
 
-        const tplName = tplData.name || tplData.title || 'Template ' + selectedOrshotTemplate;
-        infoContainer.innerHTML = '<div style="color:#B8943E;font-weight:600;font-size:14px;">📋 ' + tplName + '</div>';
+        const tplName = tplData.name || tplData.title || 'Template ' + adSelectedTemplate;
+        nameEl.innerHTML = '📋 ' + tplName;
 
-        // Extract modification fields — Orshot returns array of {key, id, type, example, helpText}
+        // Load template-specific config (char limits)
+        let templateConfig = null;
+        try {
+          const cfgRes = await fetch(API + '/api/template-configs/' + adSelectedTemplate);
+          templateConfig = await cfgRes.json();
+        } catch (e) {}
+
+        // Extract modification fields from Orshot
         let modFields = tplData.modifications || tplData.params || tplData.fields || [];
-        // Handle both array and object formats
         if (!Array.isArray(modFields)) {
-          modFields = Object.entries(modFields).map(([key, val]) => ({ key, id: key, type: typeof val === 'string' && val.startsWith('http') ? 'imageUrl' : 'text', example: val }));
+          modFields = Object.entries(modFields).map(([key, val]) => ({
+            key, id: key,
+            type: typeof val === 'string' && val.startsWith('http') ? 'imageUrl' : 'text',
+            example: val
+          }));
         }
 
+        // Build field configs with char limits
+        adFieldConfigs = {};
+        const defaultFields = adDefaultConfigs?.fields || {};
+
+        modFields.forEach(field => {
+          const key = field.key || field.id;
+          const lk = key.toLowerCase();
+          
+          // Get maxChars: template-specific > defaults > generous fallback
+          let maxChars = null;
+          if (templateConfig?.fields?.[key]?.maxChars) {
+            maxChars = templateConfig.fields[key].maxChars;
+          } else {
+            // Match against defaults by keyword
+            for (const [dk, dv] of Object.entries(defaultFields)) {
+              if (lk.includes(dk) || dk.includes(lk)) {
+                maxChars = dv.maxChars;
+                break;
+              }
+            }
+          }
+          // Fallback based on field type guess
+          if (!maxChars) {
+            if (lk.includes('navn') || lk === 'name') maxChars = 25;
+            else if (lk.includes('rating') || lk.includes('star')) maxChars = 15;
+            else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('tekst') || lk.includes('quote')) maxChars = 180;
+            else maxChars = 100;
+          }
+
+          adFieldConfigs[key] = {
+            maxChars,
+            type: field.type || 'text',
+            example: field.example || ''
+          };
+        });
+
+        // Auto-fill from selected testimonials
+        const firstItem = selectedItems.size > 0 ? selectedItems.values().next().value : null;
+
         if (!modFields.length) {
-          fieldsContainer.innerHTML = '<div class="field-hint">Ingen parameteriserede felter fundet. Du kan stadig rendere.</div>';
+          fieldsContainer.innerHTML = '<div class="field-hint">Ingen felter fundet i template. Du kan stadig rendere.</div>';
         } else {
           fieldsContainer.innerHTML = modFields.map(field => {
             const key = field.key || field.id;
-            const fieldType = field.type || 'text';
-            const example = field.example || '';
             const lk = key.toLowerCase();
-            
-            // Auto-fill from selected testimonials
-            let autoVal = example;
-            if (selectedItems.size > 0) {
-              const firstItem = selectedItems.values().next().value;
-              if (lk.includes('navn') || lk === 'name') {
-                autoVal = firstItem.navn || example;
-              } else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('quote') || lk.includes('tekst') || lk.includes('status')) {
-                autoVal = firstItem.tekst || firstItem.transkription || example;
-              } else if (lk.includes('rating') || lk.includes('star')) {
-                autoVal = (firstItem.rating ? firstItem.rating + '/5 Stars' : example);
-              }
+            const cfg = adFieldConfigs[key];
+            const isImage = cfg.type === 'imageUrl';
+
+            // Auto-fill logic
+            let autoVal = cfg.example || '';
+            if (firstItem) {
+              if (lk.includes('navn') || lk === 'name') autoVal = firstItem.navn || autoVal;
+              else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('quote') || lk.includes('tekst') || lk.includes('status'))
+                autoVal = firstItem.tekst || firstItem.transkription || autoVal;
+              else if (lk.includes('rating') || lk.includes('star'))
+                autoVal = (firstItem.rating ? firstItem.rating + '/5 Stars' : autoVal);
             }
 
-            const typeLabel = fieldType === 'imageUrl' ? ' <span class="field-hint">(billed-URL)</span>' : '';
-            
-            if (fieldType === 'imageUrl') {
+            if (isImage) {
               return '<div class="orshot-field">' +
-                '<label>' + key + typeLabel + '</label>' +
-                '<input type="text" data-key="' + key + '" value="' + (autoVal || '') + '" placeholder="https://...">' +
+                '<label>' + key + ' <span class="field-hint">(billed-URL)</span></label>' +
+                '<input type="text" data-key="' + key + '" data-image="true" value="' + (autoVal || '').replace(/"/g, '&quot;') + '" placeholder="https://...">' +
               '</div>';
             }
-            
-            // Use textarea for long text fields
-            const isLongText = lk.includes('anmeldelse') || lk.includes('review') || lk.includes('tekst') || lk.includes('citat') || (typeof autoVal === 'string' && autoVal.length > 80);
-            if (isLongText) {
+
+            const isLong = lk.includes('anmeldelse') || lk.includes('review') || lk.includes('tekst') || lk.includes('citat') || cfg.maxChars > 50;
+            const currentLen = autoVal.length;
+            const counterClass = currentLen > cfg.maxChars ? 'over' : (currentLen > cfg.maxChars * 0.85 ? 'warn' : 'ok');
+            const fieldClass = currentLen > cfg.maxChars ? ' field-over' : '';
+
+            if (isLong) {
               return '<div class="orshot-field">' +
-                '<label>' + key + '</label>' +
-                '<textarea data-key="' + key + '" rows="3">' + (autoVal || '') + '</textarea>' +
+                '<label>' + key + ' <span class="field-hint">(maks ' + cfg.maxChars + ' tegn)</span></label>' +
+                '<div class="char-counter-wrap">' +
+                  '<textarea data-key="' + key + '" data-max="' + cfg.maxChars + '" rows="3" class="' + fieldClass + '">' + (autoVal || '') + '</textarea>' +
+                  '<span class="char-counter ' + counterClass + '">' + currentLen + '/' + cfg.maxChars + '</span>' +
+                '</div>' +
               '</div>';
             }
-            
+
             return '<div class="orshot-field">' +
-              '<label>' + key + '</label>' +
-              '<input type="text" data-key="' + key + '" value="' + (autoVal || '').replace(/"/g, '&quot;') + '">' +
+              '<label>' + key + ' <span class="field-hint">(maks ' + cfg.maxChars + ' tegn)</span></label>' +
+              '<div class="char-counter-wrap">' +
+                '<input type="text" data-key="' + key + '" data-max="' + cfg.maxChars + '" value="' + (autoVal || '').replace(/"/g, '&quot;') + '" class="' + fieldClass + '">' +
+                '<span class="char-counter ' + counterClass + '">' + currentLen + '/' + cfg.maxChars + '</span>' +
+              '</div>' +
             '</div>';
           }).join('');
+
+          // Attach live char counter listeners
+          attachCharCounters();
         }
 
-        // Show autofill hint if testimonials are selected
-        if (selectedItems.size > 0) {
-          document.getElementById('orshot-autofill-group').style.display = 'block';
-        } else {
-          document.getElementById('orshot-autofill-group').style.display = 'none';
-        }
+        // Update generate info
+        document.getElementById('ad-gen-info').textContent = selectedItems.size > 0
+          ? selectedItems.size + ' testimonials valgt — Claude kondenserer til template-format'
+          : 'Ingen testimonials valgt — vælg testimonials først for at bruge Claude';
+        document.getElementById('btn-ad-claude-generate').disabled = selectedItems.size === 0;
+
+        validateAdFields();
 
       } catch (e) {
         fieldsContainer.innerHTML = '<div class="template-empty">Fejl: ' + e.message + '</div>';
       }
+    }
+
+    function attachCharCounters() {
+      document.querySelectorAll('#ad-fields [data-max]').forEach(el => {
+        el.addEventListener('input', () => {
+          const max = parseInt(el.dataset.max);
+          const len = el.value.length;
+          const counter = el.parentNode.querySelector('.char-counter');
+          if (counter) {
+            counter.textContent = len + '/' + max;
+            counter.className = 'char-counter ' + (len > max ? 'over' : (len > max * 0.85 ? 'warn' : 'ok'));
+          }
+          el.classList.toggle('field-over', len > max);
+          validateAdFields();
+        });
+      });
+    }
+
+    function validateAdFields() {
+      const validationEl = document.getElementById('ad-validation');
+      const nextBtn = document.getElementById('btn-ad-step2-next');
+      let allOk = true;
+      let overFields = [];
+
+      document.querySelectorAll('#ad-fields [data-max]').forEach(el => {
+        const max = parseInt(el.dataset.max);
+        const len = el.value.length;
+        if (len > max) {
+          allOk = false;
+          overFields.push(el.dataset.key + ' (' + len + '/' + max + ')');
+        }
+      });
+
+      if (overFields.length > 0) {
+        validationEl.style.display = 'block';
+        validationEl.className = 'validation-error';
+        validationEl.innerHTML = '⚠️ Tegngrænse overskredet: ' + overFields.join(', ');
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = '0.5';
+      } else {
+        validationEl.style.display = 'block';
+        validationEl.className = 'validation-ok';
+        validationEl.innerHTML = '✅ Alle felter er inden for tegngrænsen';
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = '1';
+      }
+    }
+
+    // Claude generate for template
+    document.getElementById('btn-ad-claude-generate').addEventListener('click', async () => {
+      if (selectedItems.size === 0) return;
+      
+      const btn = document.getElementById('btn-ad-claude-generate');
+      const statusEl = document.getElementById('ad-gen-status');
+      btn.disabled = true;
+      btn.textContent = '⏳ Claude arbejder...';
+      statusEl.style.display = 'block';
+      statusEl.innerHTML = '<div style="color:#71717a; font-size:13px;">🧠 Optimerer tekst fra ' + selectedItems.size + ' testimonials med tegngrænser...</div>';
+
+      try {
+        // Build fieldLimits from adFieldConfigs (only text fields with maxChars)
+        const fieldLimits = {};
+        for (const [key, cfg] of Object.entries(adFieldConfigs)) {
+          if (cfg.type !== 'imageUrl') {
+            fieldLimits[key] = cfg.maxChars;
+          }
+        }
+
+        const body = {
+          type: 'template_ad',
+          selectedIds: Array.from(selectedItems.keys()),
+          fieldLimits,
+          minScore: 9.0
+        };
+
+        const res = await fetch(API + '/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+
+        if (data.error) throw new Error(data.error);
+        if (!data.result) throw new Error('Ingen resultat fra Claude');
+
+        const result = data.result;
+        const meta = result._meta || {};
+
+        // Fill fields with generated text
+        document.querySelectorAll('#ad-fields [data-key]').forEach(el => {
+          const key = el.dataset.key;
+          if (result[key] !== undefined && !el.dataset.image) {
+            el.value = result[key];
+            // Trigger char counter update
+            el.dispatchEvent(new Event('input'));
+          }
+        });
+
+        statusEl.innerHTML = 
+          '<div style="display:flex; align-items:center; gap:8px; color:#4ade80; font-size:13px;">' +
+            '<span style="font-weight:600;">✅ Tekst genereret</span>' +
+            (meta.score ? '<span class="gen-score high" style="font-size:12px;">' + meta.score + '/10</span>' : '') +
+          '</div>' +
+          (meta.scoring_notes ? '<div style="color:#71717a; font-size:12px; margin-top:4px;">' + meta.scoring_notes + '</div>' : '') +
+          '<div style="color:#52525b; font-size:11px; margin-top:6px;">💡 Redigér felterne frit — dine ændringer bevares</div>';
+
+      } catch (e) {
+        statusEl.innerHTML = '<div style="color:#ef4444; font-size:13px;">❌ Fejl: ' + e.message + '</div>';
+      } finally {
+        btn.disabled = selectedItems.size === 0;
+        btn.textContent = '✨ Generér';
+      }
     });
 
-    // Back to step 1
-    document.getElementById('btn-orshot-back').addEventListener('click', () => {
-      document.getElementById('orshot-step-1').style.display = 'block';
-      document.getElementById('orshot-step-2').style.display = 'none';
+    // STEP 2 → STEP 3
+    document.getElementById('btn-ad-step2-next').addEventListener('click', () => {
+      // Build render summary
+      const summaryEl = document.getElementById('ad-render-summary');
+      let html = '<div style="font-size:13px; color:#71717a; margin-bottom:8px;">Tekst der sendes til Orshot:</div>';
+      document.querySelectorAll('#ad-fields [data-key]').forEach(el => {
+        const key = el.dataset.key;
+        const val = el.value;
+        const cfg = adFieldConfigs[key];
+        const max = cfg?.maxChars;
+        html += '<div style="margin-bottom:8px;">' +
+          '<span style="color:#B8943E; font-size:12px; text-transform:uppercase; letter-spacing:0.5px;">' + key + '</span>' +
+          (max ? ' <span style="color:#52525b; font-size:11px;">' + val.length + '/' + max + '</span>' : '') +
+          '<div style="color:#e4e4e7; font-size:14px; margin-top:2px;">' + (val || '<em style="color:#52525b;">Tom</em>') + '</div>' +
+        '</div>';
+      });
+      summaryEl.innerHTML = html;
+      document.getElementById('ad-render-result').style.display = 'none';
+      setAdStep(3);
     });
 
-    // Render image
-    document.getElementById('btn-orshot-render').addEventListener('click', async () => {
-      const btn = document.getElementById('btn-orshot-render');
-      const resultDiv = document.getElementById('orshot-result');
+    document.getElementById('btn-ad-back-to-2').addEventListener('click', () => setAdStep(2));
+
+    // ---- STEP 3: Render ----
+    document.getElementById('btn-ad-render').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-ad-render');
+      const resultDiv = document.getElementById('ad-render-result');
       btn.disabled = true;
       btn.innerHTML = '⏳ Orshot renderer...';
       resultDiv.style.display = 'block';
@@ -788,7 +1060,7 @@
 
       // Collect field values
       const modifications = {};
-      document.querySelectorAll('#orshot-fields [data-key]').forEach(el => {
+      document.querySelectorAll('#ad-fields [data-key]').forEach(el => {
         modifications[el.dataset.key] = el.value;
       });
 
@@ -797,32 +1069,30 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            templateId: selectedOrshotTemplate,
+            templateId: adSelectedTemplate,
             modifications
           })
         });
         const data = await res.json();
-        
         if (data.error) throw new Error(data.error);
-        
+
         const imageUrl = data.data?.content || data.content || data.url;
-        if (!imageUrl) throw new Error('Ingen billed-URL returneret fra Orshot');
+        if (!imageUrl) throw new Error('Ingen billed-URL fra Orshot');
 
         const renderTime = data.data?.responseTime ? (data.data.responseTime / 1000).toFixed(1) : '?';
-        
-        resultDiv.innerHTML = 
+
+        resultDiv.innerHTML =
           '<img src="' + imageUrl + '" alt="Genereret ad">' +
           '<div class="render-meta">✅ Renderet på ' + renderTime + ' sekunder</div>' +
           '<div class="render-actions">' +
             '<a href="' + imageUrl + '" download="kjeldgaard-ad-' + Date.now() + '.png" target="_blank" class="btn-download">💾 Download PNG</a>' +
-            '<button class="btn-render-again" onclick="document.getElementById(\'btn-orshot-render\').click()">🔄 Render igen</button>' +
+            '<button class="btn-render-again" onclick="document.getElementById(\'btn-ad-back-to-2\').click()">✏️ Redigér & render igen</button>' +
           '</div>';
-
       } catch (e) {
         resultDiv.innerHTML = '<div class="template-empty">❌ Fejl: ' + e.message + '</div>';
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '🖼️ Generér billede';
+        btn.innerHTML = '🖼️ Render billede via Orshot';
       }
     });
 

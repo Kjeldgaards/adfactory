@@ -1,0 +1,10 @@
+{
+  "_defaults": {
+    "fields": {
+      "anmeldelse": { "maxChars": 180, "label": "Anmeldelse / citat", "type": "text" },
+      "navn": { "maxChars": 25, "label": "Kundens navn", "type": "text" },
+      "ratingtext": { "maxChars": 15, "label": "Rating tekst", "type": "text" }
+    },
+    "note": "Default character limits — override per template when Upwork data arrives"
+  }
+}
