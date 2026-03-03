@@ -284,7 +284,7 @@
       <input type="text" class="search-input" id="search-input" placeholder="Søg keyword, navn, tema..." autofocus>
       <div class="search-mode">
         <button class="mode-btn active" data-mode="exact">Eksakt</button>
-        <button class="mode-btn" data-mode="concept">Koncept</button>
+        <button class="mode-btn" data-mode="concept">AI Søg</button>
       </div>
       <button class="search-btn" id="search-btn">Søg</button>
     </div>
@@ -512,7 +512,7 @@
       }
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('results').innerHTML = searchMode === 'concept'
-        ? '<div class="loading">🧠 Claude analyserer relevans...</div>'
+        ? '<div class="loading">🧠 Claude søger intelligent i ' + (document.getElementById('stat-tp').textContent || '?') + '+ testimonials...</div>'
         : '<div class="loading">Søger...</div>';
       try {
         const params = new URLSearchParams();
@@ -547,7 +547,7 @@
       info.style.display = 'block';
       let infoHtml = '<strong>' + data.total + '</strong> resultater (' + parts.join(', ') + ')';
       if (data.conceptSearch) {
-        infoHtml += ' · <span style="color:#B8943E;">🧠 Claude koncept-søgning</span> <span style="color:#71717a;">(' + data.totalSearched + ' gennemgået)</span>';
+        infoHtml += ' · <span style="color:#B8943E;">🧠 AI søgning</span> <span style="color:#71717a;">(' + data.totalSearched + ' gennemgået)</span>';
       }
       info.innerHTML = infoHtml;
 
@@ -636,7 +636,7 @@
         // Update placeholder
         const input = document.getElementById('search-input');
         input.placeholder = searchMode === 'concept'
-          ? "Koncept-søgning: fx 'økonomi', 'skeptiker', 'selvtillid'..."
+          ? "AI søg: fx 'kvinder over 60 med rynker', 'skeptikere', 'overgangsalder'..."
           : "Søg keyword, navn, tema...";
         if (input.value.trim()) { expandedCards.clear(); doSearch(); }
       });

@@ -882,6 +882,7 @@ app.get('/api/search-concept', async (req, res) => {
         navn: item.navn || '', tekst: item.tekst || '',
         temaer: item.temaer || [], dato: item.dato || '',
         alder: item.alder, rating: item.rating,
+        hudbekymring: item.hudbekymring || '',
         awareness: item.awareness, _full: item
       }));
     }
@@ -892,7 +893,8 @@ app.get('/api/search-concept', async (req, res) => {
         id: item.id, src: 'vdo', srcLabel: 'Video',
         navn: item.navn || '', tekst: item.transkription || '',
         temaer: item.temaer || [], dato: item.dato || '',
-        alder: item.alder, _full: item
+        alder: item.alder, hudbekymring: item.hudbekymring || '',
+        _full: item
       }));
     }
     
@@ -902,33 +904,47 @@ app.get('/api/search-concept', async (req, res) => {
         id: item.id, src: 'meta', srcLabel: 'Meta',
         navn: item.navn || '', tekst: item.tekst || '',
         temaer: item.temaer || [], dato: item.dato || '',
-        alder: item.alder, _full: item
+        alder: item.alder, hudbekymring: item.hudbekymring || '',
+        _full: item
       }));
     }
     
-    // Build compact list for Claude (truncate text to save tokens)
+    // Build detailed compact list for Claude — include ALL structured data
     const compactList = allEntries.map((e, idx) => {
-      const shortText = e.tekst.substring(0, 200).replace(/\n/g, ' ');
-      const themes = (e.temaer || []).join(', ');
-      return `[${idx}] ${e.src.toUpperCase()} | ${e.navn || 'Anonym'} | ${themes ? 'Temaer: ' + themes + ' | ' : ''}${shortText}`;
+      const parts = [`[${idx}] ${e.src.toUpperCase()}`];
+      parts.push(e.navn || 'Anonym');
+      if (e.alder) parts.push('Alder: ' + e.alder);
+      if (e.hudbekymring) parts.push('Hudbekymring: ' + e.hudbekymring);
+      if (e.rating) parts.push('Rating: ' + e.rating + '/5');
+      if (e.awareness) parts.push('Stage: ' + e.awareness);
+      if (e.temaer && e.temaer.length) parts.push('Temaer: ' + e.temaer.join(', '));
+      // Use more text — 400 chars gives much better context
+      const shortText = e.tekst.substring(0, 400).replace(/\n/g, ' ');
+      parts.push('Tekst: "' + shortText + (e.tekst.length > 400 ? '...' : '') + '"');
+      return parts.join(' | ');
     }).join('\n');
     
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: `Du er en STRENG relevansvurderer for en testimonial-database. Du modtager et søgeord og en liste testimonials.
+      max_tokens: 1500,
+      system: `Du er en intelligent søgemaskine for en testimonial-database. Du forstår naturligt sprog og finder de rigtige testimonials.
+
+OPGAVE: Analysér brugerens søgeforespørgsel og find testimonials der matcher. Forespørgslen kan være:
+- Enkelt tema: "rynker", "fugt", "overgangsalder"
+- Demografisk: "kvinder over 60", "unge kvinder"
+- Kombineret: "kvinder over 60 med rynker", "skeptikere der blev overbevist"
+- Vinkel/narrativ: "testimonials om at spare penge på hudpleje", "folk der har prøvet alt andet"
+- Emotionelt: "testimonials om selvtillid", "folk der er blevet glade"
 
 REGLER:
-- Returner KUN testimonials hvor søgeemnet er et CENTRALT TEMA — ikke bare nævnt i forbifarten
-- Maksimum 20 resultater. Hellere 5 præcise end 20 løse
-- "det er det værd" / "guld værd" som generel ros er IKKE økonomi-relateret
-- "sparer tid" er IKKE økonomi-relateret
-- En testimonial handler om "pris/økonomi" KUN hvis den eksplicit nævner: penge, kroner, billig/billigere, dyr, pris, spare penge, erstatter andre produkter (økonomisk vinkel), budget, eller konkret sammenligner omkostninger
-- En testimonial handler om "skeptiker" KUN hvis personen udtrykker tvivl/skepsis FØR de prøvede produktet
-- Vær lige så streng for alle andre søgeord
+- Find ALT der er relevant — hellere for mange end for få
+- Brug ALLE informationer: tekst, temaer, alder, hudbekymring, awareness stage
+- Alder-filtre: "over 60" = alder >= 60. Hvis alder ikke er angivet men teksten nævner alder/pension/menopause, inkluder den
+- Tema-filtre: Match mod temaer OG indhold i teksten
+- Returnér op til 30 resultater sorteret efter relevans (mest relevant først)
+- Returnér tom array [] KUN hvis absolut intet matcher
 
-Returner JSON array med index-numre sorteret efter relevans. Tom array [] hvis intet matcher.
-Format: [3, 17, 42]
+Returner JSON array med index-numre: [3, 17, 42]
 KUN JSON, intet andet.`,
       messages: [{
         role: 'user',
@@ -943,7 +959,6 @@ KUN JSON, intet andet.`,
       matchedIndices = JSON.parse(responseText);
       if (!Array.isArray(matchedIndices)) matchedIndices = [];
     } catch (parseErr) {
-      // Try to extract array from response
       const arrayMatch = responseText.match(/\[[\d,\s]*\]/);
       if (arrayMatch) {
         matchedIndices = JSON.parse(arrayMatch[0]);
