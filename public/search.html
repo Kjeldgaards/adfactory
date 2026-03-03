@@ -167,6 +167,30 @@
     .validation-ok { background: #0f1a0f; border: 1px solid #1e3a2f; color: #4ade80; }
     .validation-warn { background: #1a170f; border: 1px solid #3a2e1e; color: #fbbf24; }
     .validation-error { background: #1a0f0f; border: 1px solid #3a1e1e; color: #ef4444; }
+    /* TEMPLATE SELECTOR BAR */
+    .template-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 12px 16px; background: #18181b; border: 1px solid #27272a; border-radius: 10px; }
+    .template-bar.has-template { border-color: #B8943E; background: #18170f; }
+    .btn-pick-template { background: #10b981; color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+    .btn-pick-template:hover { background: #059669; }
+    .template-bar-preview { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+    .template-bar-thumb { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; background: #0a0a0f; border: 1px solid #27272a; flex-shrink: 0; }
+    .template-bar-info { flex: 1; min-width: 0; }
+    .template-bar-name { color: #B8943E; font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .template-bar-dims { color: #52525b; font-size: 11px; }
+    .template-bar-placeholder { color: #71717a; font-size: 13px; flex: 1; }
+    .btn-change-template { background: none; border: 1px solid #3f3f46; border-radius: 6px; padding: 5px 12px; color: #a1a1aa; font-size: 12px; cursor: pointer; white-space: nowrap; }
+    .btn-change-template:hover { border-color: #B8943E; color: #B8943E; }
+    /* TEMPLATE PICKER MODAL */
+    .tpl-picker-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; display: none; align-items: center; justify-content: center; }
+    .tpl-picker-overlay.visible { display: flex; }
+    .tpl-picker-panel { background: #18181b; border: 1px solid #27272a; border-radius: 16px; padding: 24px; width: 640px; max-width: 95vw; max-height: 80vh; overflow-y: auto; }
+    .tpl-picker-panel h3 { font-size: 18px; color: #fff; margin-bottom: 4px; }
+    .tpl-picker-panel .sub { color: #71717a; font-size: 12px; margin-bottom: 16px; }
+    .tpl-picker-manual { margin-top: 12px; display: flex; gap: 8px; align-items: center; }
+    .tpl-picker-manual input { flex: 1; background: #0a0a0f; border: 1px solid #27272a; border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px; outline: none; }
+    .tpl-picker-manual input:focus { border-color: #B8943E; }
+    .tpl-picker-manual button { background: #10b981; color: #fff; border: none; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .tpl-picker-manual button:hover { background: #059669; }
   </style>
 </head>
 <body>
@@ -182,6 +206,34 @@
       <div class="stat-mini"><div class="stat-mini-number" id="stat-vdo">-</div><div class="stat-mini-label">Video</div></div>
       <div class="stat-mini"><div class="stat-mini-number" id="stat-meta">-</div><div class="stat-mini-label">Meta</div></div>
     </div>
+    <!-- TEMPLATE SELECTOR BAR -->
+    <div class="template-bar" id="template-bar">
+      <button class="btn-pick-template" id="btn-pick-template">🖼️ Vælg template</button>
+      <span class="template-bar-placeholder" id="tpl-bar-placeholder">Ingen template valgt — vælg for at starte ad creation</span>
+      <div class="template-bar-preview" id="tpl-bar-preview" style="display:none;">
+        <img class="template-bar-thumb" id="tpl-bar-thumb" src="" alt="">
+        <div class="template-bar-info">
+          <div class="template-bar-name" id="tpl-bar-name"></div>
+          <div class="template-bar-dims" id="tpl-bar-dims"></div>
+        </div>
+        <button class="btn-change-template" id="btn-change-template">Skift</button>
+      </div>
+    </div>
+
+    <!-- TEMPLATE PICKER MODAL -->
+    <div class="tpl-picker-overlay" id="tpl-picker-overlay">
+      <div class="tpl-picker-panel">
+        <button class="btn-close-panel" id="btn-close-tpl-picker" style="float:right;">✕</button>
+        <h3>🖼️ Vælg Orshot template</h3>
+        <p class="sub">Vælg det template du vil bruge til din ad</p>
+        <div id="tpl-picker-grid" class="template-loading">Indlæser templates...</div>
+        <div class="tpl-picker-manual">
+          <input type="text" id="tpl-picker-manual-id" placeholder="Eller indtast template ID manuelt (f.eks. 4709)">
+          <button id="btn-tpl-picker-manual-go">Brug ID</button>
+        </div>
+      </div>
+    </div>
+
     <div class="search-bar">
       <input type="text" class="search-input" id="search-input" placeholder="Søg keyword, navn, tema..." autofocus>
       <div class="search-mode">
@@ -642,6 +694,7 @@
       if (e.key === 'Escape') {
         document.getElementById('generate-overlay').classList.remove('visible');
         document.getElementById('adcreator-overlay').classList.remove('visible');
+        document.getElementById('tpl-picker-overlay').classList.remove('visible');
       }
     });
 
@@ -679,8 +732,14 @@
     // Open ad creator
     document.getElementById('btn-open-adcreator').addEventListener('click', () => {
       document.getElementById('adcreator-overlay').classList.add('visible');
-      setAdStep(1);
-      loadAdTemplates();
+      // If template already selected from top bar, skip to step 2
+      if (globalSelectedTemplate && adSelectedTemplate) {
+        setAdStep(2);
+        loadAdFields();
+      } else {
+        setAdStep(1);
+        loadAdTemplates();
+      }
     });
     document.getElementById('btn-close-adcreator').addEventListener('click', () => {
       document.getElementById('adcreator-overlay').classList.remove('visible');
@@ -1094,6 +1153,109 @@
         btn.disabled = false;
         btn.innerHTML = '🖼️ Render billede via Orshot';
       }
+    });
+
+    // ============================================================
+    // TOP-LEVEL TEMPLATE PICKER
+    // ============================================================
+    let pickerTemplatesLoaded = false;
+    let pickerTemplatesCache = [];
+    let globalSelectedTemplate = null;  // { id, name, thumb, dims }
+
+    function openTemplatePicker() {
+      document.getElementById('tpl-picker-overlay').classList.add('visible');
+      if (!pickerTemplatesLoaded) loadPickerTemplates();
+    }
+
+    function closeTemplatePicker() {
+      document.getElementById('tpl-picker-overlay').classList.remove('visible');
+    }
+
+    function selectTemplateGlobal(id, name, thumb, dims) {
+      globalSelectedTemplate = { id, name, thumb, dims };
+      // Update bar UI
+      const bar = document.getElementById('template-bar');
+      bar.classList.add('has-template');
+      document.getElementById('tpl-bar-placeholder').style.display = 'none';
+      const preview = document.getElementById('tpl-bar-preview');
+      preview.style.display = 'flex';
+      document.getElementById('tpl-bar-name').textContent = name || 'Template ' + id;
+      document.getElementById('tpl-bar-dims').textContent = dims || 'ID: ' + id;
+      const thumbEl = document.getElementById('tpl-bar-thumb');
+      if (thumb) { thumbEl.src = thumb; thumbEl.style.display = 'block'; }
+      else { thumbEl.style.display = 'none'; }
+      // Also sync with ad creator
+      adSelectedTemplate = id;
+      closeTemplatePicker();
+    }
+
+    async function loadPickerTemplates() {
+      const container = document.getElementById('tpl-picker-grid');
+      container.innerHTML = '<div class="template-loading">⏳ Indlæser templates fra Orshot...</div>';
+      try {
+        const res = await fetch(API + '/api/orshot/templates');
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } catch(e) {
+          container.innerHTML = '<div style="color:#71717a;font-size:13px;text-align:center;padding:16px;">Kunne ikke indlæse templates. Brug manuelt ID nedenfor.</div>';
+          return;
+        }
+        if (data.error) {
+          container.innerHTML = '<div style="color:#71717a;font-size:13px;text-align:center;padding:16px;">' + data.error + '</div>';
+          return;
+        }
+        const templates = data.data || data.templates || data || [];
+        pickerTemplatesCache = Array.isArray(templates) ? templates : [];
+        if (!pickerTemplatesCache.length) {
+          container.innerHTML = '<div style="color:#71717a;font-size:13px;text-align:center;padding:16px;">Ingen templates fundet. Brug manuelt ID nedenfor.</div>';
+          return;
+        }
+        pickerTemplatesLoaded = true;
+
+        container.className = 'template-grid';
+        container.innerHTML = pickerTemplatesCache.map(t => {
+          const id = t.id || t.templateId;
+          const name = t.name || t.title || 'Template ' + id;
+          const thumb = t.thumbnail_url || t.thumbnail || (t.pages_data && t.pages_data[0] && t.pages_data[0].thumbnail_url) || '';
+          const dims = (t.canvas_width && t.canvas_height) ? t.canvas_width + '×' + t.canvas_height : '';
+          return '<div class="template-card" data-id="' + id + '" data-name="' + name.replace(/"/g, '&quot;') + '" data-thumb="' + thumb + '" data-dims="' + dims + '">' +
+            (thumb ? '<img src="' + thumb + '" alt="' + name + '" onerror="this.style.display=\'none\'">' : '<div style="height:160px;background:#18181b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#52525b;font-size:32px;">🖼️</div>') +
+            '<div class="tpl-name">' + name + '</div>' +
+            (dims ? '<div style="color:#52525b;font-size:10px;">' + dims + '</div>' : '') +
+          '</div>';
+        }).join('');
+
+        // Highlight current selection
+        if (globalSelectedTemplate) {
+          const prev = container.querySelector('[data-id="' + globalSelectedTemplate.id + '"]');
+          if (prev) prev.classList.add('selected');
+        }
+
+        container.querySelectorAll('.template-card').forEach(card => {
+          card.addEventListener('click', () => {
+            container.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectTemplateGlobal(card.dataset.id, card.dataset.name, card.dataset.thumb, card.dataset.dims);
+          });
+        });
+
+      } catch (e) {
+        container.innerHTML = '<div style="color:#ef4444;font-size:13px;text-align:center;padding:16px;">Fejl: ' + e.message + '</div>';
+      }
+    }
+
+    document.getElementById('btn-pick-template').addEventListener('click', openTemplatePicker);
+    document.getElementById('btn-change-template').addEventListener('click', openTemplatePicker);
+    document.getElementById('btn-close-tpl-picker').addEventListener('click', closeTemplatePicker);
+    document.getElementById('tpl-picker-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeTemplatePicker();
+    });
+    document.getElementById('btn-tpl-picker-manual-go').addEventListener('click', () => {
+      const id = document.getElementById('tpl-picker-manual-id').value.trim();
+      if (id) selectTemplateGlobal(id, 'Template ' + id, '', 'ID: ' + id);
+    });
+    document.getElementById('tpl-picker-manual-id').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('btn-tpl-picker-manual-go').click();
     });
 
     loadStats();
