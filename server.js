@@ -1288,15 +1288,15 @@ app.post('/api/chat', async (req, res) => {
       if (templateInfo.fields && templateInfo.fields.length > 0) {
         const textFields = templateInfo.fields.filter(f => f.type !== 'image');
         if (textFields.length > 0) {
-          templateContext += '\n\nDYNAMISKE TEKSTFELTER I TEMPLATE:';
+          templateContext += '\n\nDYNAMIC TEXT FIELDS IN TEMPLATE (all field names are in English):';
           textFields.forEach(f => {
-            templateContext += '\n- "' + f.key + '": maks ' + f.maxChars + ' tegn';
+            templateContext += '\n- "' + f.key + '": max ' + f.maxChars + ' characters';
           });
           
           if (templateInfo.charLimitsEnabled) {
-            templateContext += '\n\n⚠️ TEGNGRÆNSER ER AKTIVERET: Når du genererer tekst til dette template, SKAL hver tekst overholde feltets tegngrænse. Angiv altid antal tegn brugt.';
+            templateContext += '\n\nCHARACTER LIMITS ARE ENABLED: When generating text for this template, each text MUST respect the field character limit. Always state characters used. Write content in Danish but use the English field names as keys.';
           } else {
-            templateContext += '\n\n(Tegngrænser er DEAKTIVERET — brugeren ønsker frit tekstformat uden begrænsning)';
+            templateContext += '\n\n(Character limits are DISABLED. User wants free text format. Still use English field names as keys.)';
           }
         }
       }
@@ -1421,22 +1421,23 @@ OPGAVE:
 - Kondensér de valgte kundecitater til den stærkeste, mest overbevisende version for hvert felt
 - Bevar kundens egne ord og vendinger så meget som muligt
 - Hvert felt SKAL overholde sin tegngrænse — tæl tegnene nøje
-- "anmeldelse"/"review" feltet skal lyde som en ægte kunde, ikke som markedsføring
-- "navn"/"name" feltet er kundens navn — brug det direkte
+- "review" feltet skal lyde som en ægte kunde, ikke som markedsføring
+- "name" feltet er kundens navn — brug det direkte
 - "ratingtext" er typisk "X/5 Stars" eller lignende
+- ALLE felt-navne er på ENGELSK (review, name, headline, etc.) — tekst-indholdet er på dansk
 
 Returner PRÆCIS ét JSON objekt (ikke array) med felt-navne som keys og den optimerede tekst som values.
 Tilføj også en _meta key med scoring info.
 
 Eksempel format:
 {
-  "anmeldelse": "Min hud har aldrig følt sig så blød og beskyttet...",
-  "navn": "Gitte M.",
+  "review": "Min hud har aldrig følt sig så blød og beskyttet...",
+  "name": "Gitte M.",
   "ratingtext": "5/5 Stars",
   "_meta": {
     "score": 9.2,
     "scoring_notes": "Stærkt customer language, autentisk tone",
-    "chars_used": { "anmeldelse": 145, "navn": 9, "ratingtext": 11 }
+    "chars_used": { "review": 145, "name": 9, "ratingtext": 11 }
   }
 }`
   }

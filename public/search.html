@@ -960,9 +960,9 @@
           }
           // Fallback based on field type guess
           if (!maxChars) {
-            if (lk.includes('navn') || lk === 'name') maxChars = 25;
+            if (lk.includes('name') || lk.includes('navn')) maxChars = 25;
             else if (lk.includes('rating') || lk.includes('star')) maxChars = 15;
-            else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('tekst') || lk.includes('quote')) maxChars = 180;
+            else if (lk.includes('review') || lk.includes('quote') || lk.includes('anmeldelse') || lk.includes('citat') || lk.includes('tekst')) maxChars = 180;
             else maxChars = 100;
           }
 
@@ -988,8 +988,8 @@
             // Auto-fill logic
             let autoVal = cfg.example || '';
             if (firstItem) {
-              if (lk.includes('navn') || lk === 'name') autoVal = firstItem.navn || autoVal;
-              else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('quote') || lk.includes('tekst') || lk.includes('status'))
+              if (lk.includes('name') || lk.includes('navn')) autoVal = firstItem.navn || autoVal;
+              else if (lk.includes('review') || lk.includes('quote') || lk.includes('anmeldelse') || lk.includes('citat') || lk.includes('tekst') || lk.includes('status'))
                 autoVal = firstItem.tekst || firstItem.transkription || autoVal;
               else if (lk.includes('rating') || lk.includes('star'))
                 autoVal = (firstItem.rating ? firstItem.rating + '/5 Stars' : autoVal);
@@ -1002,7 +1002,7 @@
               '</div>';
             }
 
-            const isLong = lk.includes('anmeldelse') || lk.includes('review') || lk.includes('tekst') || lk.includes('citat') || cfg.maxChars > 50;
+            const isLong = lk.includes('review') || lk.includes('quote') || lk.includes('anmeldelse') || lk.includes('tekst') || lk.includes('citat') || cfg.maxChars > 50;
             const currentLen = autoVal.length;
             const counterClass = currentLen > cfg.maxChars ? 'over' : (currentLen > cfg.maxChars * 0.85 ? 'warn' : 'ok');
             const fieldClass = currentLen > cfg.maxChars ? ' field-over' : '';
@@ -1458,9 +1458,9 @@
             }
           }
           if (!maxChars) {
-            if (lk.includes('navn') || lk === 'name') maxChars = 25;
+            if (lk.includes('name') || lk.includes('navn')) maxChars = 25;
             else if (lk.includes('rating') || lk.includes('star')) maxChars = 15;
-            else if (lk.includes('anmeldelse') || lk.includes('review') || lk.includes('citat') || lk.includes('tekst') || lk.includes('quote')) maxChars = 180;
+            else if (lk.includes('review') || lk.includes('quote') || lk.includes('anmeldelse') || lk.includes('citat') || lk.includes('tekst')) maxChars = 180;
             else maxChars = 100;
           }
 
