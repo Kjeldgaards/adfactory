@@ -83,6 +83,9 @@ SEKTION 2: RESULTAT-ORD
 | game-changing | game-changing | (brug aldrig) |
 | life-changing | livsforandrende | en mærkbar forskel |
 | breakthrough | gennembrud | nyt / effektiv |
+| comfort | komfort | ro / velvære |
+| skin comfort | hudkomfort | ro i huden / velvære for huden |
+| comfortable skin | behagelig hud | hud i ro / hud i balance |
 
 ═══════════════════════════════════════════════════════════════
 SEKTION 3: PRODUKT-BESKRIVELSER
@@ -313,6 +316,9 @@ SEKTION 14: EMOTIONELLE VENDINGER
 | imagine | forestil dig | ✅ (kan bruges) |
 | picture this | forestil dig | tænk på |
 | what if | hvad nu hvis | ✅ (kan bruges) |
+| soothing | beroligende | giver ro / beroligende |
+| calming | beroligende | giver huden ro |
+| well-being | velvære | velvære ✅ (kan bruges) |
 
 ═══════════════════════════════════════════════════════════════
 SEKTION 15: SAMMENLIGNING OG KONTRAST
