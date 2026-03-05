@@ -1,0 +1,225 @@
+═══════════════════════════════════════════════════════════════
+SÆTNINGSPAR: AI-DANSK → NATURLIGT DANSK
+═══════════════════════════════════════════════════════════════
+Version: 1.0
+Opdateret: Marts 2026
+
+Denne fil viser hvordan AI-genereret dansk skal omskrives til
+naturligt, flydende dansk. Eksemplerne er på SÆTNINGSNIVEAU —
+ikke enkeltord (det dækker Ordbanken).
+
+Brug denne fil som reference ved ALT dansk output.
+Læs sætningen højt. Hvis den lyder som noget en dansk kvinde
+på 50 ville sige til en veninde, er den god. Hvis den lyder
+som en oversættelse, skal den omskrives.
+
+═══════════════════════════════════════════════════════════════
+1. ORDSTILLING — STOP MED AT KOPIERE ENGELSK SVO
+═══════════════════════════════════════════════════════════════
+
+Dansk har V2-regel: verbet står altid på andenpladsen.
+Når sætningen starter med andet end subjektet, inverteres
+subjekt og verbum. AI glemmer dette næsten altid.
+
+❌ Derfor mange kvinder oplever tørhed efter de 50.
+✅ Derfor oplever mange kvinder tørhed efter de 50.
+
+❌ Allerede efter fire uger du kan se en forskel.
+✅ Allerede efter fire uger kan du se en forskel.
+
+❌ Med den rigtige pleje din hud kan genvinde sin glød.
+✅ Med den rigtige pleje kan din hud genvinde sin glød.
+
+❌ Hver dag tusindvis af kvinder kæmper med tør hud.
+✅ Hver dag kæmper tusindvis af kvinder med tør hud.
+
+❌ I løbet af bare få uger huden begynder at forandre sig.
+✅ I løbet af bare få uger begynder huden at forandre sig.
+
+═══════════════════════════════════════════════════════════════
+2. SPØRGSMÅL-SVAR MØNSTERET — DEN STØRSTE SYNDER
+═══════════════════════════════════════════════════════════════
+
+Claude laver dette KONSTANT: Et spørgsmål med ? efterfulgt
+af et kort svar. Det er et ENGELSK copywriting-mønster.
+Det er IKKE naturligt dansk. Det skal ALDRIG bruges.
+
+❌ Er din hud moden og sensitiv? Så er det her lavet til dig.
+✅ Serummet er udviklet til moden og sensitiv hud.
+
+❌ Træt af tør hud? Barrier Defense Serum kan hjælpe.
+✅ Hvis du er træt af tør hud, kan Barrier Defense Serum hjælpe.
+
+❌ Vil du have færre rynker? Prøv serummet i dag.
+✅ Serummet hjælper med at reducere synlige rynker.
+
+❌ Kender du det? Huden føles stram og tør. Gløden er væk.
+✅ Mange kvinder oplever, at huden føles stram og tør — og at gløden er forsvundet.
+
+❌ Hvad nu hvis årsagen er en svækket hudbarriere? Det er den ofte.
+✅ Årsagen er ofte en svækket hudbarriere.
+
+❌ Lyder det for godt? Vi har 60 dages garanti.
+✅ Vi står bag produktet med 60 dages garanti.
+
+REGLEN: Omskriv spørgsmål-svar til én sammenhængende sætning.
+Spørgsmål er KUN tilladt i headlines og hooks — ALDRIG i brødtekst.
+
+═══════════════════════════════════════════════════════════════
+3. SÆTNINGSRYTME — BRUG BISÆTNINGER OG INDSKUD
+═══════════════════════════════════════════════════════════════
+
+Engelsk copy bruger korte, parallelle sætninger.
+Dansk lyder bedre med bisætninger, tankestreger og indskud.
+
+❌ Huden mister fugt. Rynkerne bliver dybere. Gløden forsvinder.
+✅ Når huden mister fugt, bliver rynkerne dybere — og gløden forsvinder langsomt.
+
+❌ Hudbarrieren er vigtig. Den beskytter mod ydre påvirkninger. Den holder på fugten.
+✅ Hudbarrieren er vigtig, fordi den både beskytter mod ydre påvirkninger og holder på fugten.
+
+❌ Vi testede serummet. Resultaterne var tydelige. 100% oplevede forbedring.
+✅ Da vi testede serummet, var resultaterne tydelige — hele 100% oplevede forbedring.
+
+❌ Du fortjener en hud, du er glad for. Prøv det i dag.
+✅ Du fortjener en hud, du er glad for — og du kan prøve det helt uden risiko.
+
+❌ Huden bliver tør. Den bliver mat. Den mister sin elasticitet.
+✅ Huden bliver tør og mat, og den mister gradvist sin elasticitet.
+
+═══════════════════════════════════════════════════════════════
+4. AI-FLOSKEL → NATURLIGT DANSK
+═══════════════════════════════════════════════════════════════
+
+Typiske AI-formuleringer der aldrig ville komme ud af munden
+på en dansker. Erstat dem.
+
+❌ Det er vigtigt at bemærke, at hudbarrieren spiller en central rolle.
+✅ Hudbarrieren spiller en større rolle, end de fleste tror.
+
+❌ I denne sammenhæng er det værd at nævne, at ceramider...
+✅ Her er ceramiderne afgørende, fordi...
+
+❌ Det er essentielt at forstå, at huden ændrer sig over tid.
+✅ Huden ændrer sig over tid — det mærker de fleste allerede i 40'erne.
+
+❌ Med henblik på at opnå de bedste resultater anbefales det at...
+✅ For at få mest ud af serummet, brug det morgen og aften.
+
+❌ Dette produkt er designet til at adressere de underliggende årsager.
+✅ Serummet tager hånd om årsagen — ikke bare symptomerne.
+
+❌ Det er afgørende at opretholde en konsistent hudplejerutine.
+✅ En fast rutine gør en overraskende stor forskel.
+
+❌ Studier indikerer, at ingredienserne bidrager til forbedret hudkvalitet.
+✅ Kliniske tests viser, at ingredienserne forbedrer huden mærkbart.
+
+❌ Produktet har vist sig at være yderst effektivt i forbindelse med...
+✅ Serummet virker — det bekræfter både tests og kundernes anmeldelser.
+
+❌ Denne innovative formel kombinerer avancerede ingredienser.
+✅ Formlen samler de mest effektive ingredienser i ét produkt.
+
+❌ Resultater kan variere fra person til person afhængigt af individuelle faktorer.
+✅ Hud er forskellig, og resultaterne varierer — men de fleste ser forskel inden for de første uger.
+
+═══════════════════════════════════════════════════════════════
+5. OVERGANGE — STOP DEN STIVE KOBLING
+═══════════════════════════════════════════════════════════════
+
+AI bruger de samme 5 overgangsord i al dansk tekst.
+Variér dem.
+
+❌ Derudover indeholder serummet også peptider.
+✅ Serummet indeholder også peptider, der støtter hudens struktur.
+
+❌ Desuden er formlen klinisk testet.
+✅ Formlen er i øvrigt klinisk testet.
+
+❌ Ydermere har serummet vist sig effektivt mod rødme.
+✅ Det hjælper også mærkbart mod rødme.
+
+❌ Herudover tilbyder vi 60 dages garanti.
+✅ Og så er der vores 60 dages garanti.
+
+❌ Derudover er det værd at nævne...
+✅ Det er også værd at vide, at...
+
+═══════════════════════════════════════════════════════════════
+6. TONE — FJERN AFSTAND, TILFØJ NÆRVÆR
+═══════════════════════════════════════════════════════════════
+
+AI skriver som en brochure. Vi skriver som en klog veninde.
+
+❌ Barrier Defense Serum er formuleret med fem typer ceramider, der understøtter hudens naturlige barrierefunktion.
+✅ Serummet indeholder fem typer ceramider — det er de naturlige fedtstoffer, der holder din hudbarriere intakt.
+
+❌ Produktet er velegnet til kvinder med moden og sensitiv hud.
+✅ Er din hud moden og sensitiv? Så er det her lavet til dig.
+
+❌ Kliniske studier har dokumenteret en reduktion på 27% af fine linjer.
+✅ I kliniske tests så deltagerne 27% færre fine linjer — efter bare 8 uger.
+
+❌ Serummet kan med fordel anvendes som en del af din daglige hudplejerutine.
+✅ Brug det morgen og aften som en fast del af din rutine.
+
+❌ Mange forbrugere rapporterer om synlige forbedringer inden for de første uger.
+✅ De fleste mærker forskel allerede i de første uger.
+
+❌ Vi anbefaler at konsultere en hudplejespecialist, hvis du er i tvivl.
+✅ Er du i tvivl, så prøv det — du har 60 dages garanti.
+
+═══════════════════════════════════════════════════════════════
+7. HOOKS OG HEADLINES — STACCATO ER FORBUDT
+═══════════════════════════════════════════════════════════════
+
+Staccato (korte fragmenter uden verbum) er FORBUDT i brødtekst.
+I headlines er korte sætninger OK — men fragmenter uden verbum
+er stadig dårligt dansk.
+
+❌ Ét serum. Synlige resultater. Uden irritation.
+✅ Oplev synlige resultater uden irritation.
+
+❌ Stærkere hud. Færre rynker. Mere glød.
+✅ Stærkere hud med færre rynker og mere glød.
+
+❌ Dansk. Klinisk testet. Elsket af tusindvis.
+✅ Et dansk, klinisk testet serum — elsket af tusindvis af kvinder.
+
+❌ Har du nogensinde undret dig over, hvorfor din hudpleje ikke virker?
+✅ Derfor virker din dyre hudpleje ikke.
+
+❌ Denne serum er udviklet til at møde behovene hos kvinder med moden hud.
+✅ Udviklet til moden hud.
+
+❌ Opdag hemmeligheden bag strålende og ungdommelig hud.
+✅ Den skjulte årsag bag tør og træt hud.
+
+═══════════════════════════════════════════════════════════════
+HURTIG REFERENCE — DE 10 VIGTIGSTE REGLER
+═══════════════════════════════════════════════════════════════
+
+1. V2: Verbum på andenpladsen efter indledende led.
+2. ALDRIG spørgsmål-svar mønster i brødtekst. Omskriv til én sætning.
+3. ALDRIG staccato i brødtekst. Fragmenter uden verbum er forbudt.
+4. Bind korte sætninger sammen med bisætninger.
+5. Brug tankestreger til indskud og eftertanke.
+6. Fjern "derudover/desuden/ydermere" — brug variation.
+7. Fjern "det er vigtigt at/essentielt at/afgørende at".
+8. Skriv "serummet" — ikke "produktet" eller "dette produkt".
+9. Skriv som en klog veninde, ikke som en brochure.
+10. Læs sætningen højt. Lyder den stiv? Omskriv.
+
+═══════════════════════════════════════════════════════════════
+CHANGELOG
+═══════════════════════════════════════════════════════════════
+
+v1.0 (Marts 2026)
+- Første version
+- 7 sektioner med sætningspar (ordstilling, spørgsmål-svar,
+  sætningsrytme, AI-floskel, overgange, tone, hooks/staccato)
+- 40+ eksempler på AI-dansk → naturligt dansk
+- Hurtig reference med 10 regler
+
+═══════════════════════════════════════════════════════════════
