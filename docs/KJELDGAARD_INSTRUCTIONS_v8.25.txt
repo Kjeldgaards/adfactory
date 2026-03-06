@@ -229,6 +229,12 @@ Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
 ANBEFALING: Variant X (begrundelse)
 ```
 
+🛑 FULD STOP 🛑
+DU SKAL ALTID GIVE EN ANBEFALING EFTER DE 4 VARIANTER.
+Vælg den variant med højest score og forklar KORT hvorfor.
+Hvis to varianter scorer ens, anbefal den med bedst naturligt dansk.
+ALDRIG udelad anbefalingen.
+
 TRIN 6: BRUGERVALG OG SESSION-FLOW
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Brugeren vælger:
