@@ -1,5 +1,5 @@
 # KJELDGAARD AI KNOWLEDGE BASE INDEX
-Version: 1.0
+Version: 1.1
 
 Location: docs/GITHUB_KNOWLEDGE_INDEX.md  
 Repository: Kjeldgaards/adfactory  
@@ -27,11 +27,9 @@ Railway exposes them through the API:
 
 https://adfactory-production.up.railway.app/api/docs/{filename}
 
-Example:
-
-https://adfactory-production.up.railway.app/api/docs/CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md
-
 Claude Projects retrieve these files using `web_fetch`.
+
+IMPORTANT: All files in this index are listed with their full retrieval URLs. AI systems must use these exact URLs when fetching documents.
 
 ------------------------------------------------------------
 
@@ -41,7 +39,7 @@ Primary product documentation used by all AI systems.
 
 File:
 
-CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md
+https://adfactory-production.up.railway.app/api/docs/CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md
 
 Contains:
 
@@ -65,9 +63,9 @@ Used for verifying marketing claims.
 
 Files:
 
-FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt  
-FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt  
-FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt  
+https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt  
+https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt  
+https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt  
 
 These documents define:
 
@@ -86,9 +84,9 @@ Defines the KJELDGAARD brand voice and Danish language rules.
 
 Files:
 
-ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt  
-SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt  
-ORDBANK_VOICE_OF_CUSTOMER_v4.txt  
+https://adfactory-production.up.railway.app/api/docs/ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt  
+https://adfactory-production.up.railway.app/api/docs/SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt  
+https://adfactory-production.up.railway.app/api/docs/ORDBANK_VOICE_OF_CUSTOMER_v4.txt  
 
 Purpose:
 
@@ -106,9 +104,9 @@ Used for persuasion analysis and script optimization.
 
 Files:
 
-Breakthrough-Advertising-by-Eugene-M-Schwartz_-_FInal.txt  
-jon-benson-copychief-master-system_v3.md  
-KJELDGAARD_MASTER_INSTRUCTIONS_v1.md  
+https://adfactory-production.up.railway.app/api/docs/Breakthrough-Advertising-by-Eugene-M-Schwartz_-_FInal.txt  
+https://adfactory-production.up.railway.app/api/docs/jon-benson-copychief-master-system_v3.md  
+https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_MASTER_INSTRUCTIONS_v1.md  
 
 These frameworks define:
 
@@ -124,15 +122,15 @@ Reusable copy patterns from successful campaigns.
 
 Files:
 
-SWIPE_KJELDGAARD_HOOKS_BEST.txt  
-SWIPE_KJELDGAARD_MECHANISMS_BEST.txt  
-SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt  
-SWIPE_KJELDGAARD_BENEFITS_BEST.txt  
-SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt  
-SWIPE_KJELDGAARD_GOLDEN_STANDARD_ADVERTORIALS.txt  
-SWIPE_TP_KJELDGAARD_TESTIMONIALS_03_01_26.txt  
-SWIPE_KJELDGAARD_DO_txt_UPDATED.txt  
-SWIPE_KJELDGAARD_DON_T_UPDATED.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_HOOKS_BEST.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_MECHANISMS_BEST.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_BENEFITS_BEST.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_GOLDEN_STANDARD_ADVERTORIALS.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_TP_KJELDGAARD_TESTIMONIALS_03_01_26.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DO_txt_UPDATED.txt  
+https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DON_T_UPDATED.txt  
 
 These files provide:
 
@@ -153,7 +151,7 @@ Used for adapting successful marketing structures from other industries.
 
 File:
 
-ORSHOT_MIGRATION_FREELANCER_GUIDE.md
+https://adfactory-production.up.railway.app/api/docs/ORSHOT_MIGRATION_FREELANCER_GUIDE.md
 
 This file explains how persuasion structures from other niches can be adapted to KJELDGAARD skincare marketing.
 
@@ -163,7 +161,7 @@ This file explains how persuasion structures from other niches can be adapted to
 
 File:
 
-README.md
+https://adfactory-production.up.railway.app/api/docs/README.md
 
 Provides general repository information.
 
