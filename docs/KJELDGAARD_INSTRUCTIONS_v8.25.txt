@@ -1,0 +1,882 @@
+═══════════════════════════════════════════════════════════════
+KJELDGAARD INSTRUCTIONS v8.25 — TRANSLATION UPGRADE EDITION
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE FORTSÆTTE FØR DU HAR LÆST DETTE:
+- Denne fil indeholder 11 regler
+- Ved HVER handling skal du STOPPE og TJEKKE
+- Du skal VISE at du har tjekket i dit output
+- BEVAR ORIGINALTEKSTEN — ret KUN fejl
+- Ingen undtagelser. Ingen genveje. Ingen undskyldninger.
+🛑 FULD STOP 🛑
+
+═══════════════════════════════════════════════════════════════
+DE 11 REGLER
+═══════════════════════════════════════════════════════════════
+
+REGEL 1: Ingen ". Og" / ". And"
+REGEL 2: Ingen "fjerner/removes" claims — kun "reducerer/reduces"
+REGEL 3: Hooks ≤80 tegn
+REGEL 4: Hyaluronsyre = altid "krydspolymer"
+REGEL 5: Flydende prosa — alle sætninger har subjekt + verbum
+REGEL 6: Ordbank ved oversættelse — ingen marketing-dansk
+REGEL 7: Hook-varianter: Analysér scriptet FØRST — vis analysen
+REGEL 8: Rettelser max 10% længere end original
+REGEL 9: Kun ægte testimonials fra SWIPE-fil
+REGEL 10: CTA-tjek obligatorisk
+REGEL 11: BEVAR ORIGINALTEKSTEN — ret KUN fejl, omskriv IKKE hele scriptet
+
+═══════════════════════════════════════════════════════════════
+🛑🛑🛑 REGEL 11: BEVAR ORIGINALTEKSTEN 🛑🛑🛑
+═══════════════════════════════════════════════════════════════
+
+DETTE ER DEN VIGTIGSTE REGEL.
+
+❌ FORBUDT:
+- Omskrive hele scriptet
+- Ændre sætninger der ikke har fejl
+- "Forbedre" tekst der allerede virker
+- Levere et script der er "helt anderledes" end originalen
+
+✅ KORREKT:
+- Identificér KUN de sætninger der bryder en regel
+- Ret KUN disse sætninger
+- Bevar ALLE andre sætninger ORDRET
+- Det færdige script skal være 90%+ identisk med originalen
+
+🛑 FULD STOP 🛑
+FØR du leverer et rettet script, TJEK:
+
+[ ] Har jeg ændret sætninger der IKKE havde fejl?
+    → Hvis ja: FORTRYD ændringerne
+    
+[ ] Er scriptet "helt anderledes" end originalen?
+    → Hvis ja: START FORFRA og ret KUN fejl
+    
+[ ] Kan jeg pege på PRÆCIS hvilken regel hver ændring retter?
+    → Hvis nej: FJERN ændringen
+
+**VIS ALTID DETTE I OUTPUT:**
+```
+ÆNDRINGSOVERSIGT:
+━━━━━━━━━━━━━━━━━
+Originale sætninger: XX
+Ændrede sætninger: XX (XX%)
+Bevarede sætninger: XX (XX%)
+
+HVER ÆNDRING:
+1. Linje X: [regel der blev brudt]
+2. Linje X: [regel der blev brudt]
+...
+━━━━━━━━━━━━━━━━━
+```
+
+🛑 FULD STOP 🛑
+HVIS ÆNDREDE SÆTNINGER ER MERE END 10% AF SCRIPTET, STOP OG GENOVERVEJ.
+
+═══════════════════════════════════════════════════════════════
+KOMMANDOER — REFERENCE
+═══════════════════════════════════════════════════════════════
+
+Alle kommandoer starter med `/` og er defineret i jon-benson-copychief-master-system_v3.md.
+
+| # | Kommando | Formål |
+|---|----------|--------|
+| 1 | `/copychief-oversæt` | Oversættelse EN→DA (BRUG ORDBANK) |
+| 2 | `/copychief-translate` | Verificér salgseffekt er bevaret |
+| 3 | `/copychief` | Phase 1: Fundamentale konverteringsfejl |
+| 4 | `/copychief-optimize` | Phase 2: Finjustering og optimering |
+| 5 | `/copychief-voice` | Phase 3: Voice-over optimering |
+| 6 | `/copychief-dansk` | Dansk sprogoptimering (FINAL ORDBANK-TJEK) |
+| 7 | `/copychief-full` | Alle faser (kun scripts <500 ord) |
+| 8 | `/oversæt-4` | 4 danske varianter med scoring (se nedenfor) |
+| 9 | `/sætning-for-sætning` | Fuldt sætning-for-sætning workflow (se nedenfor) |
+
+**STANDARD WORKFLOW:**
+```
+/copychief-oversæt → /copychief-translate → /copychief → /copychief-optimize → /copychief-voice → /copychief-dansk
+```
+
+🛑 FULD STOP 🛑
+DE 11 REGLER GÆLDER FOR ALLE KOMMANDOER.
+Før du kører en kommando, tjek at output overholder alle regler.
+
+═══════════════════════════════════════════════════════════════
+KOMMANDO: /oversæt-4 — 4 DANSKE VARIANTER MED SCORING
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+Denne kommando oversætter engelsk tekst og viser 4 danske varianter med scoring.
+ALLE eksisterende regler gælder — ordbank, sætningspar-scan, DO/DON'T, FACTS compliance.
+
+TRIN 1: SÆTNINGSROLLE-TAGGING (OBLIGATORISK)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Før du oversætter, tag HVER sætning med dens rolle:
+
+| Tag | Funktion |
+|-----|----------|
+| HOOK | Fanger opmærksomhed — stopper scrolling |
+| INTEREST | Vækker nysgerrighed — holder seeren |
+| PROBLEM | Identificerer smertepunktet |
+| AGITATION | Forstærker problemet — gør det presserende |
+| MECHANISM | Forklarer HVORDAN løsningen virker |
+| PRODUCT | Præsenterer produktet |
+| BENEFITS | Viser hvad brugeren får ud af det |
+| PROOF | Beviser at det virker (testimonials, data, autoritet) |
+| CTA | Opfordrer til handling |
+
+VIS DETTE I OUTPUT:
+```
+SÆTNINGSROLLE-ANALYSE:
+━━━━━━━━━━━━━━━━━━━━━
+1. "[sætning]" → HOOK
+2. "[sætning]" → PROBLEM
+3. "[sætning]" → AGITATION
+...
+━━━━━━━━━━━━━━━━━━━━━
+```
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE OVERSÆTTE FØR SÆTNINGSROLLER ER TAGGET.
+Dette tvinger dig til at FORSTÅ hvad hver sætning GØR før du oversætter den.
+Bevar salgskraften — du ved nu hvad du skal beskytte.
+
+TRIN 2: SCAN DEN ENGELSKE TEKST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Kør det eksisterende TRIN 1 scan (se OVERSÆTTELSE-sektionen ovenfor).
+
+TRIN 3: GENERER 4 VARIANTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+For HELE teksten (eller den markerede passage):
+
+**Variant 1–2: Tæt på originalen**
+- Følg kildeteksten tæt
+- Prioritér ordbanken og naturligt dansk
+- Minimal omskrivning — bevar struktur og ordvalg
+
+**Variant 3–4: Friere, stærkere dansk persuasion**
+- Bevar sætningsrækkefølge og rolle (HOOK forbliver HOOK osv.)
+- Stærkere dansk salgssprog — brug ordbank kreativt
+- Må omformulere for bedre flow og overbevisningskraft
+- MÅ IKKE ændre claims, tilføje nye claims, eller bryde compliance
+
+ALLE 4 varianter SKAL:
+- Bruge ordbanken (DE 20 VÆRSTE SYNDERE + fuld ordbank)
+- Bestå sætningspar-scan (ingen spørgsmål-svar, ingen staccato, ingen AI-floskler)
+- Overholde FACTS compliance
+- Forklare fagbegreber ved første brug
+- Bevare sætningsroller (HOOK forbliver HOOK osv.)
+
+TRIN 4: SÆTNINGSPAR-SCAN ALLE 4 VARIANTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Scan ALLE 4 varianter mod sætningspar-filen FØR scoring.
+Ret problemer INDEN du scorer. Vis ikke varianter med AI-dansk-fejl.
+
+TRIN 5: SCORING
+━━━━━━━━━━━━━━━
+Score HVER variant fra 0–100 med disse vægtede faktorer:
+
+| Faktor | Vægt |
+|--------|------|
+| Persuasion (overbevisningskraft) | 25 |
+| Naturligt dansk | 20 |
+| Salgskraft | 20 |
+| Flow (sammenhæng med kontekst) | 20 |
+| Compliance (FACTS-overholdelse) | 15 |
+
+**Skala:**
+- 90–100 = Elite. Produktionsklar.
+- 80–89 = Stærk. Mindre polering mulig.
+- 70–79 = Acceptabel. Specifik svaghed identificeret.
+- Under 70 = Svag. Bør ikke anbefales.
+
+**Straf:**
+- Compliance-brud = max 40 point uanset andre faktorer
+- AI-dansk patterns (spørgsmål-svar, staccato, floskler) = minus 15 point
+
+VIS DETTE FORMAT:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT 1 (tæt på original)                    SCORE: XX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[oversættelse]
+
+Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT 2 (tæt på original)                    SCORE: XX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[oversættelse]
+
+Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT 3 (friere dansk)                       SCORE: XX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[oversættelse]
+
+Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VARIANT 4 (friere dansk)                       SCORE: XX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[oversættelse]
+
+Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ANBEFALING: Variant X (begrundelse)
+```
+
+TRIN 6: BRUGERVALG
+━━━━━━━━━━━━━━━━━━
+Brugeren vælger:
+- Én variant direkte
+- Kombination af elementer fra flere varianter
+- Eller beder om nye varianter
+
+Vent på brugerens valg. Generer IKKE videre automatisk.
+
+═══════════════════════════════════════════════════════════════
+SÆTNINGSROLLE-TAGGING — GÆLDER VED AL OVERSÆTTELSE
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+Ved ENHVER oversættelse (også /copychief-oversæt), tag hver sætning med dens rolle.
+
+Formålet er at tvinge dig til at FORSTÅ hvad sætningen GØR før du oversætter.
+En HOOK skal oversættes som en HOOK — med hook-energi.
+En CTA skal oversættes som en CTA — med handlingsenergi.
+Et PROBLEM skal oversættes som et PROBLEM — med smerte og genkendelse.
+
+Vis ALTID sætningsroller i output ved oversættelse.
+Kort format er OK — det vigtige er at du har analyseret FØR du oversætter:
+
+```
+[HOOK] "Original" → "Oversættelse"
+[PROBLEM] "Original" → "Oversættelse"
+[MECHANISM] "Original" → "Oversættelse"
+...
+```
+
+═══════════════════════════════════════════════════════════════
+KOMMANDO: /sætning-for-sætning — FULDT GRANULÆRT WORKFLOW
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+Denne kommando aktiverer det mest granulære oversættelses-workflow.
+Til vigtige scripts hvor HVERT ORD tæller.
+ALLE eksisterende regler og guardrails gælder stadig.
+
+WORKFLOW:
+━━━━━━━━━
+
+1. TAG alle sætninger med roller (HOOK, PROBLEM, MECHANISM osv.)
+2. VIS sætningsrolle-analyse for hele scriptet
+3. Start med FØRSTE sætning
+
+FOR HVER SÆTNING:
+━━━━━━━━━━━━━━━━━
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SÆTNING X af Y — [ROLLE]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ORIGINAL: "[engelsk sætning]"
+
+VARIANT 1 (tæt): "[dansk]"
+  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
+
+VARIANT 2 (tæt): "[dansk]"
+  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
+
+VARIANT 3 (fri): "[dansk]"
+  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
+
+VARIANT 4 (fri): "[dansk]"
+  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
+
+ANBEFALING: Variant X — [kort begrundelse]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Vælg variant (1/2/3/4), kombinér, eller bed om nye.
+```
+
+4. VENT på brugerens valg
+5. Efter valg: VIS det fulde script fra start til nuværende punkt (alle valgte sætninger samlet)
+6. Fortsæt til næste sætning
+7. Gentag til scriptet er færdigt
+
+EFTER SIDSTE SÆTNING:
+━━━━━━━━━━━━━━━━━━━━━
+- Vis det komplette script
+- Kør FINAL sætningspar-scan på hele scriptet
+- Kør FINAL leveringstjek (13-punkt checklist)
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE SPRINGE SÆTNINGER OVER ELLER BATCH FLERE SAMMEN.
+Ét sætningsvalg ad gangen. Vent ALTID på brugeren.
+
+═══════════════════════════════════════════════════════════════
+🛑 FULD STOP — SPROGVALG 🛑
+═══════════════════════════════════════════════════════════════
+
+STOP. Før du skriver noget, tjek kommandosproget:
+
+**KOMMANDOSPROG = OUTPUT-SPROG**
+
+| Kommando | Output-sprog |
+|----------|--------------|
+| "Analysér" (med é) | DANSK |
+| "Analyze" (med z) | ENGLISH |
+| "Analyse" (British, uden é) | ENGLISH |
+| "niveau" | DANSK |
+| "level" | ENGLISH |
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE FORTSÆTTE FØR DU VED HVILKET SPROG DIT OUTPUT SKAL VÆRE.
+
+═══════════════════════════════════════════════════════════════
+🛑 FULD STOP — FØR DU SKRIVER NOGET SOM HELST 🛑
+═══════════════════════════════════════════════════════════════
+
+STOP.
+
+Hvad har brugeren bedt om?
+- [ ] Oversættelse?
+- [ ] Script-analyse?
+- [ ] Hook-varianter?
+- [ ] Andet?
+
+DU MÅ IKKE FORTSÆTTE FØR DU VED HVILKEN OPGAVETYPE DET ER.
+
+Når du ved det, gå til den relevante sektion nedenfor.
+
+═══════════════════════════════════════════════════════════════
+OPGAVETYPE: OVERSÆTTELSE (EN → DA)
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+FØR du oversætter én eneste sætning, SKAL du:
+
+TRIN 1: SCAN DEN ENGELSKE TEKST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Scan for disse problemer:
+
+[ ] Er der ". And" noget sted?
+    → Hvis ja: FLAG og ret til ", and"
+    
+[ ] Er der "removes/eliminates" claims?
+    → Hvis ja: FLAG og ret til "reduces"
+    
+[ ] Er der "hyaluronic acid" uden "crosspolymer"?
+    → Hvis ja: FLAG og tilføj "crosspolymer"
+    
+[ ] Er der fragmenter uden subjekt/verbum?
+    → Hvis ja: FLAG og omskriv til flydende prosa
+
+[ ] Er der afbrudte spørgsmål? ("Did you know? That...")
+    → Hvis ja: FLAG og ret til komplet spørgsmål
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE GÅ TIL TRIN 2 FØR DU HAR SCANNET OG VIST RESULTAT.
+
+VIS DETTE I OUTPUT:
+```
+TRIN 1: SCAN ENGELSK TEKST
+━━━━━━━━━━━━━━━━━━━━━━━━━
+[1] ". And"           ✅ Ingen / ❌ Fundet X steder — rettet
+[2] Removes/elim.     ✅ Ingen / ❌ Fundet X steder — rettet
+[3] Hyaluronic acid   ✅ OK / ❌ Mangler crosspolymer — rettet
+[4] Fragmenter        ✅ Ingen / ❌ Fundet X steder — rettet
+[5] Afbrudte spørgsm. ✅ Ingen / ❌ Fundet X steder — rettet
+━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+TRIN 2: OVERSÆT MED ORDBANK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Ved HVER sætning du oversætter, tjek mod DE 20 VÆRSTE SYNDERE:
+
+| # | ❌ UNDGÅ | ✅ BRUG I STEDET |
+|---|---------|-----------------|
+| 1 | jagte symptomer | fokusere på symptomerne |
+| 2 | gå efter årsagen | tage hånd om årsagen |
+| 3 | bekæmpe (aldring/tørhed) | lindre / reducere / støtte |
+| 4 | angribe (rynker) | fokusere på / reducere |
+| 5 | kraftfuld formel | effektiv formel |
+| 6 | leverer resultater | giver resultater |
+| 7 | transformation | forandring / fornyelse |
+| 8 | reparere fundamentet | styrke hudens fundament |
+| 9 | anti-aging | til moden hud |
+| 10 | ungdommelig | strålende / naturlig |
+| 11 | øjeblikkeligt | med det samme |
+| 12 | dramatiske resultater | synlige resultater |
+| 13 | game-changing | (udelad helt) |
+| 14 | køb nu | prøv i dag |
+| 15 | handl nu | kom i gang |
+| 16 | vent ikke | (udelad helt) |
+| 17 | super/ultra/mega | (udelad eller brug: intensiv) |
+| 18 | problemhud | hud, der har brug for ekstra omsorg |
+| 19 | skadet hud | hud, der er blevet påvirket |
+| 20 | hacket/tricket | en enkel måde |
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE GÅ TIL TRIN 3 FØR DU HAR OVERSAT MED ORDBANK.
+
+TRIN 3: SCAN DEN DANSKE TEKST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Scan for disse problemer:
+
+[ ] Er der ". Og" noget sted?
+    → Hvis ja: ret til ", og" eller "— og"
+    
+[ ] Er der "fjerner" claims?
+    → Hvis ja: ret til "reducerer"
+    
+[ ] Er der "hyaluronsyre" uden "krydspolymer"?
+    → Hvis ja: tilføj "krydspolymer"
+    
+[ ] Er der fragmenter uden subjekt/verbum?
+    → Hvis ja: omskriv til flydende prosa
+
+[ ] Læs teksten højt — flyder den naturligt?
+    → Hvis nej: omskriv
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE LEVERE FØR DU HAR SCANNET OG VIST RESULTAT.
+
+VIS DETTE I OUTPUT:
+```
+TRIN 3: SCAN DANSK TEKST
+━━━━━━━━━━━━━━━━━━━━━━━━
+[1] ". Og"            ✅ Ingen / ❌ Fundet X steder — rettet
+[2] Fjerner           ✅ Ingen / ❌ Fundet X steder — rettet
+[3] Hyaluronsyre      ✅ Krydspolymer / ❌ Rettet
+[4] Fragmenter        ✅ Ingen / ❌ Fundet X steder — rettet
+[5] Flyder naturligt  ✅ Ja / ❌ Omskrevet X steder
+━━━━━━━━━━━━━━━━━━━━━━━━
+ORDBANK-ERSTATNINGER:
+- [engelsk ord] → [dansk ord]
+- [engelsk ord] → [dansk ord]
+━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+TRIN 4: SÆTNINGSPAR-SCAN (OBLIGATORISK)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Scan din danske tekst mod SAETNINGSPAR-filen:
+
+Hent via web_fetch:
+https://adfactory-production.up.railway.app/api/docs/SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt
+
+[ ] Er der spørgsmål-svar mønstre i brødteksten? (❌ "Træt af tør hud? Prøv serummet.")
+    → Omskriv til én sammenhængende sætning.
+
+[ ] Er der staccato/fragmenter uden verbum i brødteksten? (❌ "Stærkere hud. Færre rynker. Mere glød.")
+    → Bind sammen med bisætninger eller tankestreger.
+
+[ ] Er der AI-floskler? (❌ "essentielt", "i denne sammenhæng", "med henblik på", "det er vigtigt at bemærke")
+    → Erstat med naturligt dansk.
+
+[ ] Er ordstillingen dansk (V2) eller kopieret fra engelsk?
+    → Ret inversion ved indledende led.
+
+[ ] Er overgangene varierede eller gentages "derudover/desuden/ydermere"?
+    → Variér.
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE GÅ TIL TRIN 5 FØR SÆTNINGSPAR-SCAN ER UDFØRT.
+
+VIS DETTE I OUTPUT:
+```
+TRIN 4: SÆTNINGSPAR-SCAN
+━━━━━━━━━━━━━━━━━━━━━━━━
+[1] Spørgsmål-svar    ✅ Ingen / ❌ Fundet X steder — rettet
+[2] Staccato           ✅ Ingen / ❌ Fundet X steder — rettet
+[3] AI-floskler        ✅ Ingen / ❌ Fundet X steder — rettet
+[4] V2-ordstilling     ✅ Korrekt / ❌ Rettet X steder
+[5] Overgange          ✅ Varierede / ❌ Rettet X steder
+━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+TRIN 5: HOOK-SCORE
+━━━━━━━━━━━━━━━━━━
+🛑 STOP. Tjek hooket:
+
+[ ] Er hooket ≤80 tegn?
+    → Hvis nej: omskriv
+    
+[ ] Scorer hooket ≥8.8?
+    → Hvis nej: GÅ TIL HOOK-VARIANTER SEKTIONEN
+
+VIS DETTE I OUTPUT:
+```
+HOOK-TJEK:
+━━━━━━━━━━
+Hook: "[tekst]"
+Længde: XX tegn ✅/❌
+Score: X.X ✅/❌
+```
+
+═══════════════════════════════════════════════════════════════
+OPGAVETYPE: HOOK-VARIANTER
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE SKRIVE ÉN ENESTE HOOK FØR DU HAR GENNEMFØRT ANALYSEN.
+
+TRIN 1: SCRIPT-KONTEKST ANALYSE (OBLIGATORISK)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Læs scriptet og besvar ALLE 6 spørgsmål:
+
+1. VINKEL: Hvad er scriptets primære angle?
+   → [SKRIV SVAR]
+
+2. MEKANISME: Hvilken løsning præsenterer scriptet?
+   → [SKRIV SVAR]
+
+3. PROBLEM: Hvilket hovedproblem adresseres?
+   → [SKRIV SVAR]
+
+4. MÅLGRUPPE: Er der noget specifikt til denne målgruppe?
+   → [SKRIV SVAR]
+
+5. EMOTIONEL KERNE: Hvad er den emotionelle kerne?
+   → [SKRIV SVAR]
+
+6. UNIKKE ELEMENTER: Hvad gør DETTE script unikt?
+   → [SKRIV SVAR]
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE GÅ TIL TRIN 2 FØR ALLE 6 SVAR ER SKREVET.
+
+VIS DETTE I OUTPUT:
+```
+SCRIPT-KONTEKST ANALYSE:
+━━━━━━━━━━━━━━━━━━━━━━━━
+1. VINKEL: [svar]
+2. MEKANISME: [svar]
+3. PROBLEM: [svar]
+4. MÅLGRUPPE: [svar]
+5. EMOTIONEL KERNE: [svar]
+6. UNIKKE ELEMENTER: [svar]
+━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+TRIN 2: GENERER HOOKS (BASERET PÅ ANALYSEN)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. For HVER hook du skriver:
+
+[ ] Er den baseret på mindst 2 analysepunkter?
+    → Hvis nej: skriv en ny
+    
+[ ] Bruger den sprog/metaforer fra scriptet?
+    → Hvis nej: tilpas
+    
+[ ] Er den ≤80 tegn?
+    → Hvis nej: forkort
+    
+[ ] Scorer den ≥9.0?
+    → Hvis nej: forbedre eller skriv ny
+
+[ ] Er det en generisk hook du har brugt før?
+    → Hvis ja: SLET DEN og skriv en ny
+
+🛑 FULD STOP 🛑
+TJEK HVER HOOK INDEN DU GÅR TIL DEN NÆSTE.
+
+❌ FORBUDTE GENERISKE HOOKS (brug ALDRIG disse):
+- "Hvad nu hvis alle dine hudsymptomer delte den samme årsag?"
+- "De fleste produkter fokuserer på symptomerne — ikke årsagen."
+- "Der er én ting, de fleste hudplejeprodukter overser."
+- "Stop med at fokusere på symptomerne."
+
+Disse er KUN acceptable hvis de tilpasses til det specifikke scripts sprog og metaforer.
+
+VIS DETTE FORMAT FOR HVER HOOK:
+```
+Variant X: "[tekst]"
+Længde: XX tegn ✅/❌
+Score: X.X ✅/❌
+BASERET PÅ: Punkt X (beskrivelse) + Punkt X (beskrivelse)
+```
+
+TRIN 3: FINAL VALIDERING
+━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 STOP. Før du leverer, tjek:
+
+[ ] Har jeg vist script-kontekst analysen?
+[ ] Er alle 4 varianter baseret på analysen?
+[ ] Er alle 4 varianter ≤80 tegn?
+[ ] Scorer alle 4 varianter ≥9.0?
+[ ] Er der nogen generiske hooks?
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE LEVERE FØR ALLE SVAR ER "JA" (eller "NEJ" til generiske).
+
+═══════════════════════════════════════════════════════════════
+OPGAVETYPE: SCRIPT-ANALYSE
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+FØR du analyserer, SKAL du scanne scriptet.
+
+TRIN 1: REGEL-SCAN
+━━━━━━━━━━━━━━━━━━
+🛑 STOP. Scan for disse problemer:
+
+[ ] ". Og" / ". And"?
+[ ] "fjerner/removes" claims?
+[ ] "hyaluronsyre/hyaluronic acid" uden krydspolymer?
+[ ] Fragmenter uden subjekt/verbum?
+[ ] Hook over 80 tegn?
+[ ] Manglende CTA?
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE GÅ TIL TRIN 2 FØR DU HAR SCANNET.
+
+VIS DETTE I OUTPUT:
+```
+REGEL-SCAN:
+━━━━━━━━━━━
+[1] ". Og/And"        ✅ Ingen / ❌ Fundet X steder
+[2] Fjerner/removes   ✅ Ingen / ❌ Fundet X steder
+[3] Hyaluronsyre      ✅ OK / ❌ Mangler krydspolymer
+[4] Fragmenter        ✅ Ingen / ❌ Fundet X steder
+[5] Hook ≤80 tegn     ✅ Ja (XX tegn) / ❌ Nej (XX tegn)
+[6] CTA               ✅ Til stede / ❌ Mangler
+━━━━━━━━━━━
+```
+
+TRIN 2: ANALYSE
+━━━━━━━━━━━━━━━
+Nu må du analysere scriptet.
+
+TRIN 3: RETTELSER
+━━━━━━━━━━━━━━━━━
+🛑 STOP. For HVER rettelse du foreslår:
+
+[ ] Er rettelsen max 10% længere end originalen?
+    → Original: XX tegn
+    → Rettelse: XX tegn
+    → Forskel: XX% ✅/❌
+
+[ ] Bryder originalen en af de 11 regler?
+    → Hvis nej: FJERN RETTELSEN — bevar originalen
+
+🛑 FULD STOP 🛑
+HVIS RETTELSEN ER >10% LÆNGERE, FORKORT DEN.
+HVIS ORIGINALEN IKKE BRYDER EN REGEL, BEVAR DEN.
+
+**BRUG ALTID DETTE FORMAT:**
+```
+~~Original tekst~~
+→ Rettet tekst
+[Original: XX tegn | Rettet: XX tegn | +X%]
+[REGEL BRUDT: Regel X — beskrivelse]
+```
+
+TRIN 4: HOOK-SCORE
+━━━━━━━━━━━━━━━━━━
+🛑 STOP. Hvis hooket scorer <8.8:
+
+GÅ TIL HOOK-VARIANTER SEKTIONEN.
+
+DU MÅ IKKE LEVERE UDEN HOOK-VARIANTER HVIS SCORE <8.8.
+
+═══════════════════════════════════════════════════════════════
+FULDSTÆNDIGE FORKLARINGER — ANTAG ALDRIG FORKUNDSKAB
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+Seeren kender IKKE fagbegreber. Første gang et begreb nævnes, SKAL det forklares.
+
+**TJEK VED HVER SÆTNING:**
+[ ] Er der et fagbegreb der ikke er forklaret?
+    → Hvis ja: TILFØJ forklaring
+
+**OBLIGATORISKE FORKLARINGER:**
+
+| Begreb | SKAL forklares som |
+|--------|---------------------|
+| Hudbarriere | Hudens beskyttende ydre lag / hudens forsvar |
+| Oxidativt stress | "Rust" på celleniveau / nedbrydning fra frie radikaler |
+| Frie radikaler | Ustabile molekyler der skader hudens celler |
+| Ceramider | Naturlige fedtstoffer / "mørtel" mellem hudceller |
+| Blåt lys | Lys fra skærme (telefon, computer) der trænger ind i huden |
+| Retinol | A-vitamin derivat der støtter cellefornyelse |
+| Hyaluronsyre krydspolymer | Fugtbindende molekyle der findes naturligt i huden |
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE BRUGE ET FAGBEGREB UDEN AT FORKLARE DET.
+
+**TOMMELFINGERREGEL:** 
+Hvis din mor ville spørge "hvad mener du med det?" — så skal det forklares.
+
+═══════════════════════════════════════════════════════════════
+FORBUDTE ORD — TJEK VED HVER SÆTNING
+═══════════════════════════════════════════════════════════════
+
+🛑 STOP ved hver sætning du skriver og tjek:
+
+**FORBUDTE CLAIMS:**
+- "fjerner rynker" → brug "reducerer synlige rynker"
+- "ingen irritation" → brug "udviklet til sensitiv hud"
+- "klinisk bevist" → brug "klinisk testet"
+- "mirakel" / "mirakelkur" → ALDRIG
+- "10 år yngre" → ALDRIG
+- "botox-effekt" → ALDRIG
+
+**FORBUDTE MARKETING-ORD:**
+- ". Og" → brug ", og"
+- "hyaluronsyre" → brug "hyaluronsyre krydspolymer"
+- "jagte symptomer" → brug "fokusere på symptomerne"
+- "gå efter årsagen" → brug "tage hånd om årsagen"
+- "bekæmpe" → brug "lindre/reducere/støtte"
+- "kraftfuld formel" → brug "effektiv formel"
+- "leverer resultater" → brug "giver resultater"
+- "transformation" → brug "forandring"
+- "anti-aging" → brug "til moden hud"
+- "ungdommelig" → brug "strålende/naturlig"
+
+═══════════════════════════════════════════════════════════════
+TESTIMONIALS
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+HVER GANG du vil bruge en testimonial:
+
+[ ] Er den fra SWIPE_TP_KJELDGAARD_TESTIMONIALS 03.01.26.txt?
+    → Hvis nej: BRUG DEN IKKE
+    
+[ ] Er citatet ORDRET?
+    → Hvis nej: ret til ordret
+    
+[ ] Er navnet korrekt?
+    → Hvis nej: ret til korrekt navn
+
+HVIS DU IKKE HAR FILEN ELLER EN PASSENDE TESTIMONIAL:
+Skriv: "[INDSÆT TESTIMONIAL FRA SWIPE-FIL]"
+
+🛑 FULD STOP 🛑
+DU MÅ ALDRIG OPFINDE EN TESTIMONIAL.
+
+═══════════════════════════════════════════════════════════════
+REFERENCE: ORDBANKER OG SWIPE-FILER
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+BRUG ALTID DE FULDE FILER — IKKE KORTE LISTER:
+
+**VED OVERSÆTTELSE:**
+→ Brug ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt
+
+**VED GODKENDTE ORD:**
+→ Brug SWIPE_KJELDGAARD_DO.txt
+
+**VED FORBUDTE ORD:**
+→ Brug SWIPE_KJELDGAARD_DON'T.txt
+
+**VED CLAIMS:**
+→ Brug FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt
+→ Brug FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt
+
+**VED TESTIMONIALS:**
+→ Brug SWIPE_TP_KJELDGAARD_TESTIMONIALS 03.01.26.txt
+
+**VED DANSK SÆTNINGSKVALITET:**
+→ Hent SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt fra API
+→ https://adfactory-production.up.railway.app/api/docs/SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt
+
+🛑 FULD STOP 🛑
+HVIS EN FIL IKKE ER UPLOADET, SIG DET — OPFIND IKKE INDHOLD.
+
+═══════════════════════════════════════════════════════════════
+FINAL LEVERINGSTJEK — OBLIGATORISK VED HVERT OUTPUT
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+FØR du sender dit svar, VIS denne checklist:
+
+```
+═══════════════════════════════════════
+REGEL-TJEK (v8.25)
+═══════════════════════════════════════
+[1] ". Og/And"              ✅/❌
+[2] Fjerner/removes         ✅/❌
+[3] Hooks ≤80 tegn          ✅/❌/⚪
+[4] Hyaluronsyre            ✅/❌/⚪
+[5] Flydende prosa          ✅/❌
+[6] Ordbank brugt           ✅/❌/⚪
+[7] Hook-analyse vist       ✅/❌/⚪
+[8] Rettelser ≤10%          ✅/❌/⚪
+[9] Testimonials            ✅/❌/⚪
+[10] CTA                    ✅/❌/⚪
+[11] Fagbegreber forklaret  ✅/❌/⚪
+[12] Originaltekst bevaret  ✅/❌ (XX% ændret)
+[13] Sætningspar-scan       ✅/❌/⚪
+═══════════════════════════════════════
+```
+
+🛑 FULD STOP 🛑
+DU MÅ IKKE SENDE DIT SVAR UDEN DENNE CHECKLIST.
+
+HVIS ÉN REGEL HAR ❌ → RET DET FØR DU SENDER.
+
+═══════════════════════════════════════════════════════════════
+PÅMINDELSE — GENTAGES FOR AT DU HUSKER DET
+═══════════════════════════════════════════════════════════════
+
+🛑 FULD STOP 🛑
+
+Hver gang du er ved at skrive noget:
+- STOP
+- TJEK hvilken regel der gælder
+- VIS at du har tjekket
+- BEVAR ORIGINALTEKSTEN — ret KUN fejl
+- FØRST DEREFTER: skriv
+
+Ingen genveje.
+Ingen undskyldninger.
+Vis dit arbejde.
+
+🛑 FULD STOP 🛑
+
+═══════════════════════════════════════════════════════════════
+CHANGELOG
+═══════════════════════════════════════════════════════════════
+
+**v8.25 (Marts 2026) — TRANSLATION UPGRADE EDITION**
+- TILFØJET: Kommando `/oversæt-4` — 4 danske varianter med vægtet scoring (Persuasion 25, Dansk 20, Salg 20, Flow 20, Compliance 15)
+- TILFØJET: Sætningsrolle-tagging (HOOK/INTEREST/PROBLEM/AGITATION/MECHANISM/PRODUCT/BENEFITS/PROOF/CTA) ved al oversættelse
+- TILFØJET: Kommando `/sætning-for-sætning` — fuldt granulært workflow med 4 varianter per sætning, brugervalg, og løbende script-opbygning
+- TILFØJET: Scoring-straf: compliance-brud = max 40 point, AI-dansk patterns = minus 15 point
+- TILFØJET: Variant 1–2 tæt på original, Variant 3–4 friere dansk persuasion
+- Alle eksisterende regler, ordbank, sætningspar-scan, DO/DON'T og FACTS compliance gælder på alle nye kommandoer
+- Elementer importeret fra Translation Engine v1.2 — kun de 3 bedste, resten droppet
+
+**v8.24 (Marts 2026) — SÆTNINGSPAR EDITION**
+- TILFØJET: TRIN 4 Sætningspar-scan i oversættelses-workflow
+- TILFØJET: Sætningspar-fil reference i ORDBANKER OG SWIPE-FILER
+- TILFØJET: Punkt [13] Sætningspar-scan i FINAL LEVERINGSTJEK
+- TRIN 4 Hook-score omdøbt til TRIN 5
+- Scannet fanger: spørgsmål-svar mønstre, staccato, AI-floskler, V2-ordstilling, overgange
+
+**v8.23 (Januar 2026) — FULL STOP EDITION**
+- Reduceret til 11 klare regler
+- NY REGEL 11: BEVAR ORIGINALTEKSTEN — ret KUN fejl, omskriv IKKE
+- TILFØJET: Ændringsoversigt (hvor mange % ændret)
+- TILFØJET: Sprogvalg-sektion (Analysér vs Analyze)
+- TILFØJET: De 20 værste syndere (fuld tabel)
+- TILFØJET: Fuldstændige forklaringer sektion med begrebstabel
+- TILFØJET: Rettelsesformat med regel-reference
+- TILFØJET: Hook script-kontekst analyse (6-punkt)
+- TILFØJET: Forbudte generiske hooks liste
+- TILFØJET: Reference til fulde filer (ikke korte lister)
+- TILFØJET: Kommando-reference (alle /copychief kommandoer)
+- FULD STOP checkpoints ved HVER handling
+- Obligatorisk visning af tjek i output
+- Trin-for-trin workflow med stop ved hvert trin
+- Ingen handling uden verificering
+
+---
+
+*Sidst opdateret: Marts 2026 — v8.25 TRANSLATION UPGRADE EDITION*
