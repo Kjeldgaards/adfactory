@@ -229,14 +229,47 @@ Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
 ANBEFALING: Variant X (begrundelse)
 ```
 
-TRIN 6: BRUGERVALG
-━━━━━━━━━━━━━━━━━━
+TRIN 6: BRUGERVALG OG SESSION-FLOW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Brugeren vælger:
 - Én variant direkte
 - Kombination af elementer fra flere varianter
 - Eller beder om nye varianter
 
 Vent på brugerens valg. Generer IKKE videre automatisk.
+
+🛑 FULD STOP — SESSION-REGLER 🛑
+
+/oversæt-4 er en SESSION — ikke en enkeltstående opgave.
+Brugeren bygger et HELT SCRIPT sætning for sætning i denne chat.
+
+SÅDAN FUNGERER DET:
+1. Brugeren sender en engelsk sætning → du viser 4 varianter med scoring
+2. Brugeren vælger → du GEMMER valget og viser det SAMLEDE script hidtil
+3. Brugeren sender NÆSTE sætning → du viser 4 varianter (med Flow-score baseret på foregående valg)
+4. Gentag til brugeren siger "færdig", "done", "det var det" eller lignende
+
+EFTER HVERT VALG, VIS:
+```
+SCRIPT HIDTIL:
+━━━━━━━━━━━━━
+[HOOK] Valgt variant her
+[PROBLEM] Valgt variant her
+[MECHANISM] Valgt variant her
+... (alle valgte sætninger i rækkefølge)
+━━━━━━━━━━━━━
+Sætninger: X af ? — Send næste sætning.
+```
+
+NÅR BRUGEREN SIGER "FÆRDIG":
+- Vis det komplette script
+- Kør FINAL sætningspar-scan på hele scriptet
+- Kør FINAL leveringstjek (13-punkt checklist)
+
+🛑 FULD STOP 🛑
+EN NY SÆTNING FRA BRUGEREN ER IKKE EN NY OPGAVE.
+Det er NÆSTE SÆTNING i det igangværende script.
+Sessionen slutter KUN når brugeren eksplicit siger det.
 
 ═══════════════════════════════════════════════════════════════
 SÆTNINGSROLLE-TAGGING — GÆLDER VED AL OVERSÆTTELSE
@@ -315,6 +348,10 @@ EFTER SIDSTE SÆTNING:
 🛑 FULD STOP 🛑
 DU MÅ IKKE SPRINGE SÆTNINGER OVER ELLER BATCH FLERE SAMMEN.
 Ét sætningsvalg ad gangen. Vent ALTID på brugeren.
+
+EN NY SÆTNING FRA BRUGEREN ER IKKE EN NY OPGAVE.
+Det er NÆSTE SÆTNING i det igangværende script.
+Sessionen slutter KUN når brugeren siger "færdig", "done", "det var det" eller lignende.
 
 ═══════════════════════════════════════════════════════════════
 🛑 FULD STOP — SPROGVALG 🛑
