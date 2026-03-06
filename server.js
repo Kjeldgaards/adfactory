@@ -664,6 +664,9 @@ app.get('/api/docs/:filename', (req, res) => {
   if (!fs.existsSync(filepath)) return res.status(404).json({ error: 'Document not found' });
   // Prevent directory traversal
   if (!filepath.startsWith(DOCS_DIR)) return res.status(403).json({ error: 'Forbidden' });
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   const content = fs.readFileSync(filepath, 'utf8');
   const ext = path.extname(req.params.filename).toLowerCase();
   if (ext === '.json') {
