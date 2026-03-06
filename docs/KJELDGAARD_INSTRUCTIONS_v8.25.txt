@@ -202,34 +202,28 @@ VARIANT 1 (tæt på original)                    SCORE: XX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [oversættelse]
 
-Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 VARIANT 2 (tæt på original)                    SCORE: XX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [oversættelse]
-
-Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 VARIANT 3 (friere dansk)                       SCORE: XX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [oversættelse]
 
-Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 VARIANT 4 (friere dansk)                       SCORE: XX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [oversættelse]
-
-Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ANBEFALING: Variant X (begrundelse)
 ```
 
 🛑 FULD STOP 🛑
+VIS KUN TOTAL-SCORE PER VARIANT. Ingen faktor-breakdown (Persuasion: XX | Dansk: XX osv.).
+Ingen kommentarer per variant. Brug scoring-faktorerne INTERNT til at beregne scoren, men vis KUN total-tallet.
 DU SKAL ALTID GIVE EN ANBEFALING EFTER DE 4 VARIANTER.
 Vælg den variant med højest score og forklar KORT hvorfor.
 Hvis to varianter scorer ens, anbefal den med bedst naturligt dansk.
@@ -323,17 +317,10 @@ SÆTNING X af Y — [ROLLE]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ORIGINAL: "[engelsk sætning]"
 
-VARIANT 1 (tæt): "[dansk]"
-  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
-
-VARIANT 2 (tæt): "[dansk]"
-  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
-
-VARIANT 3 (fri): "[dansk]"
-  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
-
-VARIANT 4 (fri): "[dansk]"
-  Persuasion: XX | Dansk: XX | Salg: XX | Flow: XX | Compliance: XX → SCORE: XX
+VARIANT 1 (tæt): "[dansk]" — SCORE: XX
+VARIANT 2 (tæt): "[dansk]" — SCORE: XX
+VARIANT 3 (fri): "[dansk]" — SCORE: XX
+VARIANT 4 (fri): "[dansk]" — SCORE: XX
 
 ANBEFALING: Variant X — [kort begrundelse]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
