@@ -1521,6 +1521,9 @@ app.post('/api/generate', async (req, res) => {
     // Apply perspective mode
     if (mode === 'first_person') {
       instruction += '\n\nPERSPEKTIV: Skriv i 1. PERSON (jeg-form). Teksten skal lyde som om kunden selv taler.\nEksempel: "Min hud er blevet silkeblød og har fået sin naturlige glød tilbage."\nBevar kundens egne ord og autentiske stemme. Det skal føles ægte, ikke som markedsføring.';
+    } else if (mode === 'combined') {
+      instruction = instruction.replace(/VIGTIGT: Hv[^\n]+ÉN specifik testimonial\.[^\n]*\n[^\n]*MÅ IKKE blande[^\n]*\n/g, '');
+      instruction += '\n\nTILGANG: Kombinér de stærkeste elementer fra ALLE valgte testimonials til hver generering. Brug de bedste vendinger på tværs af citaterne.\nSkriv teksten uden specifik kunde-attribution — det er en sammensmeltning af flere stemmer.\nSæt "navn" til null og "alder" til null i dit JSON output.';
     } else {
       instruction += '\n\nPERSPEKTIV: Skriv i 2./3. PERSON. Referer til kunden ved navn.\nEksempel: "Efter 5-6 måneder med Barrier Defense Serum får Jane ros for sin hud."\nBrug kundens historie og ord, men fortalt udefra.';
     }
