@@ -371,10 +371,10 @@
         <textarea class="form-textarea" id="gen-custom-prompt" placeholder="Skriv hvad du vil have genereret med de valgte testimonials..."></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">Testimonial-tilgang</label>
+        <label class="form-label">Perspektiv</label>
         <div class="toggle-row" id="gen-mode-toggle">
-          <button class="toggle-btn active" data-mode="single">Én per testimonial</button>
-          <button class="toggle-btn" data-mode="combined">Kombinér valgte</button>
+          <button class="toggle-btn" data-mode="first_person">1. person</button>
+          <button class="toggle-btn active" data-mode="third_person">2. person</button>
         </div>
       </div>
       <div class="form-row">
@@ -697,7 +697,7 @@
     document.getElementById('gen-type').addEventListener('change', (e) => { document.getElementById('custom-prompt-group').style.display = e.target.value === 'custom' ? 'block' : 'none'; });
 
     // Toggle testimonial mode
-    let genMode = 'single';
+    let genMode = 'third_person';
     document.getElementById('gen-mode-toggle').addEventListener('click', (e) => {
       const btn = e.target.closest('.toggle-btn');
       if (!btn) return;
