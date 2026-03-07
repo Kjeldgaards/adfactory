@@ -106,6 +106,7 @@
     .gen-score.medium { background: #3a2e1e; color: #fbbf24; }
     .gen-words { color: #71717a; font-size: 12px; }
     .gen-notes { color: #52525b; font-size: 12px; font-style: italic; margin-top: 6px; }
+    .gen-attribution { color: #B8943E; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
     .copy-btn { background: none; border: 1px solid #3f3f46; border-radius: 4px; padding: 3px 10px; color: #a1a1aa; font-size: 11px; cursor: pointer; }
     .copy-btn:hover { border-color: #B8943E; color: #B8943E; }
     .gen-avg { text-align: center; padding: 12px; background: #0f1117; border-radius: 8px; margin-bottom: 16px; color: #71717a; font-size: 13px; }
@@ -709,6 +710,7 @@
           data.results.map((r, i) =>
             '<div class="gen-result-card">' +
               '<div class="gen-result-text">' + (r.text || '') + '</div>' +
+              (r.navn ? '<div class="gen-attribution">— ' + r.navn + (r.alder ? ', ' + r.alder + ' år' : '') + '</div>' : '') +
               '<div class="gen-result-meta">' +
                 '<span class="gen-score ' + ((r.score||0) >= 9 ? 'high' : 'medium') + '">' + (r.score||'?') + '/10</span>' +
                 (r.customer_words_used ? '<span class="gen-words">Kundeord: ' + r.customer_words_used.join(', ') + '</span>' : '') +
@@ -722,8 +724,11 @@
     });
 
     window.copyText = function(btn) {
-      const text = btn.closest('.gen-result-card').querySelector('.gen-result-text').textContent;
-      navigator.clipboard.writeText(text).then(() => { btn.textContent = '✓ Kopieret'; setTimeout(() => btn.textContent = 'Kopiér', 2000); });
+      const card = btn.closest('.gen-result-card');
+      const text = card.querySelector('.gen-result-text').textContent;
+      const attr = card.querySelector('.gen-attribution');
+      const fullText = text + (attr ? '\n' + attr.textContent : '');
+      navigator.clipboard.writeText(fullText).then(() => { btn.textContent = '✓ Kopieret'; setTimeout(() => btn.textContent = 'Kopiér', 2000); });
     };
 
     window.copyAll = function() {
@@ -731,11 +736,14 @@
       const lines = [];
       cards.forEach((card, i) => {
         const text = card.querySelector('.gen-result-text').textContent.trim();
+        const attr = card.querySelector('.gen-attribution');
+        const attribution = attr ? attr.textContent.trim() : '';
         const scoreEl = card.querySelector('.gen-score');
         const score = scoreEl ? scoreEl.textContent.trim() : '';
         const wordsEl = card.querySelector('.gen-words');
         const words = wordsEl ? wordsEl.textContent.replace('Kundeord: ', '').trim() : '';
         lines.push((i+1) + '. ' + text);
+        if (attribution) lines.push('   ' + attribution);
         lines.push('   Score: ' + score + (words ? ' | Kundeord: ' + words : ''));
         lines.push('');
       });

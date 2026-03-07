@@ -1385,26 +1385,32 @@ const GENERATION_TYPES = {
     label: 'Meta Headlines / Hooks',
     docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
     instruction: `Skriv {{count}} Meta ad headlines (hooks) til KJELDGAARD Barrier Defense Serum.
-Brug sprog og vendinger fra de valgte kundecitater herunder.
+VIGTIGT: Hver headline skal baseres på ÉN specifik testimonial. Du MÅ IKKE blande fra flere testimonials i samme headline.
+Brug sprog og vendinger fra den valgte kundes citat.
 Følg DO/DON'T reglerne nøje. Brug HOOKS_BEST som kvalitetseksempler.
-Hvert headline skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`
+Hvert headline skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.
+Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers null) i dit JSON output.`
   },
   benefits: {
     label: 'Benefit Statements',
     docs: ['SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
     instruction: `Skriv {{count}} benefit statements til KJELDGAARD Barrier Defense Serum.
-Brug sprog og vendinger fra de valgte kundecitater herunder.
+VIGTIGT: Hvert benefit statement skal baseres på ÉN specifik testimonial. Du MÅ IKKE blande fra flere testimonials i samme statement.
+Brug sprog og vendinger fra den valgte kundes citat.
 Følg DO/DON'T reglerne nøje. Brug BENEFITS_BEST som kvalitetseksempler.
-Hvert statement skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`
+Hvert statement skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.
+Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers null) i dit JSON output.`
   },
   adcopy: {
     label: 'Meta Ad Copy (komplet)',
     docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt', 'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt', 'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt'],
     instruction: `Skriv {{count}} komplette Meta ad copy varianter til KJELDGAARD Barrier Defense Serum.
 Hver variant skal have: Hook → Problem/Interest → Mechanism → Benefit → Social Proof → CTA.
-Brug sprog og vendinger fra de valgte kundecitater herunder.
+VIGTIGT: Hver ad copy variant skal baseres på ÉN specifik testimonial. Du MÅ IKKE blande fra flere testimonials i samme variant.
+Brug sprog og vendinger fra den valgte kundes citat.
 Følg DO/DON'T reglerne nøje. Brug SWIPE-filerne som kvalitetseksempler.
-Hver ad copy skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`
+Hver ad copy skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.
+Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers null) i dit JSON output.`
   },
   custom: {
     label: 'Frit prompt',
@@ -1541,7 +1547,9 @@ Returner output som JSON array:
     "text": "Den genererede tekst",
     "score": 9.2,
     "scoring_notes": "Kort begrundelse for scoren",
-    "customer_words_used": ["ord1", "ord2"]
+    "customer_words_used": ["ord1", "ord2"],
+    "navn": "Kundens navn",
+    "alder": "64" eller null hvis alder ikke er nævnt
   }
 ]
 
