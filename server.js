@@ -1384,7 +1384,11 @@ const GENERATION_TYPES = {
   headlines: {
     label: 'Meta Headlines / Hooks',
     docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
-    instruction: `Skriv {{count}} Meta ad headlines (hooks) til KJELDGAARD Barrier Defense Serum.
+    instruction_base: `Skriv {{count}} Meta ad headlines (hooks) til KJELDGAARD Barrier Defense Serum.
+Brug sprog og vendinger fra de valgte kundecitater herunder.
+Følg DO/DON'T reglerne nøje. Brug HOOKS_BEST som kvalitetseksempler.
+Hvert headline skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`,
+    instruction_single: `Skriv {{count}} Meta ad headlines (hooks) til KJELDGAARD Barrier Defense Serum.
 VIGTIGT: Hver headline skal baseres på ÉN specifik testimonial. Du MÅ IKKE blande fra flere testimonials i samme headline.
 Brug sprog og vendinger fra den valgte kundes citat.
 Følg DO/DON'T reglerne nøje. Brug HOOKS_BEST som kvalitetseksempler.
@@ -1394,7 +1398,11 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   benefits: {
     label: 'Benefit Statements',
     docs: ['SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
-    instruction: `Skriv {{count}} benefit statements til KJELDGAARD Barrier Defense Serum.
+    instruction_base: `Skriv {{count}} benefit statements til KJELDGAARD Barrier Defense Serum.
+Brug sprog og vendinger fra de valgte kundecitater herunder.
+Følg DO/DON'T reglerne nøje. Brug BENEFITS_BEST som kvalitetseksempler.
+Hvert statement skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`,
+    instruction_single: `Skriv {{count}} benefit statements til KJELDGAARD Barrier Defense Serum.
 VIGTIGT: Hvert benefit statement skal baseres på ÉN specifik testimonial. Du MÅ IKKE blande fra flere testimonials i samme statement.
 Brug sprog og vendinger fra den valgte kundes citat.
 Følg DO/DON'T reglerne nøje. Brug BENEFITS_BEST som kvalitetseksempler.
@@ -1404,7 +1412,12 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   adcopy: {
     label: 'Meta Ad Copy (komplet)',
     docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt', 'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt', 'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt'],
-    instruction: `Skriv {{count}} komplette Meta ad copy varianter til KJELDGAARD Barrier Defense Serum.
+    instruction_base: `Skriv {{count}} komplette Meta ad copy varianter til KJELDGAARD Barrier Defense Serum.
+Hver variant skal have: Hook → Problem/Interest → Mechanism → Benefit → Social Proof → CTA.
+Brug sprog og vendinger fra de valgte kundecitater herunder.
+Følg DO/DON'T reglerne nøje. Brug SWIPE-filerne som kvalitetseksempler.
+Hver ad copy skal scores med Benson 12-factor systemet og have minimum {{minScore}}/10.`,
+    instruction_single: `Skriv {{count}} komplette Meta ad copy varianter til KJELDGAARD Barrier Defense Serum.
 Hver variant skal have: Hook → Problem/Interest → Mechanism → Benefit → Social Proof → CTA.
 VIGTIGT: Hver ad copy variant skal baseres på ÉN specifik testimonial. Du MÅ IKKE blande fra flere testimonials i samme variant.
 Brug sprog og vendinger fra den valgte kundes citat.
@@ -1511,19 +1524,23 @@ app.post('/api/generate', async (req, res) => {
           .join('\n');
     }
 
-    // Build instruction
-    let instruction = config.instruction
+    // Build instruction — pick the right version based on mode
+    const isCombined = mode === 'combined';
+    const rawInstruction = isCombined
+      ? (config.instruction_base || config.instruction)
+      : (config.instruction_single || config.instruction);
+    
+    let instruction = rawInstruction
       .replace('{{count}}', count)
       .replace('{{minScore}}', minScore)
       .replace('{{customPrompt}}', customPrompt || '')
       .replace('{{fieldLimits}}', fieldLimitsStr);
 
-    // Apply perspective mode
-    if (mode === 'first_person') {
+    // Apply perspective for non-combined modes only
+    if (isCombined) {
+      // Combined mode: use instruction_base as-is (identical to pre-perspective behavior)
+    } else if (mode === 'first_person') {
       instruction += '\n\nPERSPEKTIV: Skriv i 1. PERSON (jeg-form). Teksten skal lyde som om kunden selv taler.\nEksempel: "Min hud er blevet silkeblød og har fået sin naturlige glød tilbage."\nBevar kundens egne ord og autentiske stemme. Det skal føles ægte, ikke som markedsføring.';
-    } else if (mode === 'combined') {
-      instruction = instruction.replace(/VIGTIGT: Hv[^\n]+ÉN specifik testimonial\.[^\n]*\n[^\n]*MÅ IKKE blande[^\n]*\n/g, '');
-      instruction += '\n\nTILGANG: Kombinér de stærkeste elementer fra ALLE valgte testimonials til hver generering. Brug de bedste vendinger på tværs af citaterne.\nSkriv teksten uden specifik kunde-attribution — det er en sammensmeltning af flere stemmer.\nSæt "navn" til null og "alder" til null i dit JSON output.';
     } else {
       instruction += '\n\nPERSPEKTIV: Skriv i 2./3. PERSON. Referer til kunden ved navn.\nEksempel: "Efter 5-6 måneder med Barrier Defense Serum får Jane ros for sin hud."\nBrug kundens historie og ord, men fortalt udefra.';
     }
@@ -1545,6 +1562,23 @@ ${docsContent}`;
 ${testimonialsText}
 
 Returner KUN ét JSON objekt (IKKE array), intet andet.`;
+    } else if (isCombined) {
+      userPrompt = `${instruction}
+
+=== VALGTE KUNDECITATER (${selected.length} stk) ===
+${testimonialsText}
+
+Returner output som JSON array:
+[
+  {
+    "text": "Den genererede tekst",
+    "score": 9.2,
+    "scoring_notes": "Kort begrundelse for scoren",
+    "customer_words_used": ["ord1", "ord2"]
+  }
+]
+
+Returner KUN JSON array, intet andet.`;
     } else {
       userPrompt = `${instruction}
 
