@@ -1538,7 +1538,7 @@ app.post('/api/generate', async (req, res) => {
 
     // Apply perspective for non-combined modes only
     if (isCombined) {
-      // Combined mode: use instruction_base as-is (identical to pre-perspective behavior)
+      instruction += '\n\nVIGTIGT: Bevar det originale perspektiv fra hvert testimonial. Hvis kunden skriver i jeg-form, behold jeg-form. Hvis kunden omtales i tredje person, behold tredje person. Du MÅ IKKE ændre perspektivet.';
     } else if (mode === 'first_person') {
       instruction += '\n\nPERSPEKTIV: Skriv i 1. PERSON (jeg-form). Teksten skal lyde som om kunden selv taler.\nEksempel: "Min hud er blevet silkeblød og har fået sin naturlige glød tilbage."\nBevar kundens egne ord og autentiske stemme. Det skal føles ægte, ikke som markedsføring.';
     } else {
