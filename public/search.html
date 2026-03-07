@@ -107,6 +107,9 @@
     .gen-words { color: #71717a; font-size: 12px; }
     .gen-notes { color: #52525b; font-size: 12px; font-style: italic; margin-top: 6px; }
     .gen-attribution { color: #B8943E; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    .toggle-row { display: flex; gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid #27272a; }
+    .toggle-btn { flex: 1; padding: 8px 12px; font-size: 13px; border: none; background: #18181b; color: #71717a; cursor: pointer; transition: all 0.15s; }
+    .toggle-btn.active { background: #B8943E; color: #000; font-weight: 600; }
     .copy-btn { background: none; border: 1px solid #3f3f46; border-radius: 4px; padding: 3px 10px; color: #a1a1aa; font-size: 11px; cursor: pointer; }
     .copy-btn:hover { border-color: #B8943E; color: #B8943E; }
     .gen-avg { text-align: center; padding: 12px; background: #0f1117; border-radius: 8px; margin-bottom: 16px; color: #71717a; font-size: 13px; }
@@ -366,6 +369,13 @@
       <div class="form-group" id="custom-prompt-group" style="display:none;">
         <label class="form-label">Dit prompt</label>
         <textarea class="form-textarea" id="gen-custom-prompt" placeholder="Skriv hvad du vil have genereret med de valgte testimonials..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Testimonial-tilgang</label>
+        <div class="toggle-row" id="gen-mode-toggle">
+          <button class="toggle-btn active" data-mode="single">Én per testimonial</button>
+          <button class="toggle-btn" data-mode="combined">Kombinér valgte</button>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -686,6 +696,16 @@
     document.getElementById('generate-overlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('visible'); });
     document.getElementById('gen-type').addEventListener('change', (e) => { document.getElementById('custom-prompt-group').style.display = e.target.value === 'custom' ? 'block' : 'none'; });
 
+    // Toggle testimonial mode
+    let genMode = 'single';
+    document.getElementById('gen-mode-toggle').addEventListener('click', (e) => {
+      const btn = e.target.closest('.toggle-btn');
+      if (!btn) return;
+      genMode = btn.dataset.mode;
+      document.querySelectorAll('#gen-mode-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+
     document.getElementById('btn-run-generate').addEventListener('click', async () => {
       const btn = document.getElementById('btn-run-generate');
       const resultsDiv = document.getElementById('gen-results');
@@ -698,7 +718,8 @@
           count: parseInt(document.getElementById('gen-count').value),
           minScore: parseFloat(document.getElementById('gen-score').value),
           selectedIds: Array.from(selectedItems.keys()),
-          customPrompt: document.getElementById('gen-custom-prompt').value
+          customPrompt: document.getElementById('gen-custom-prompt').value,
+          mode: genMode
         };
         const res = await fetch(API + '/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         const data = await res.json();

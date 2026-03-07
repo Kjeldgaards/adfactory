@@ -1454,7 +1454,7 @@ Eksempel format:
 
 app.post('/api/generate', async (req, res) => {
   try {
-    const { type, count = 3, minScore = 9.0, customPrompt, selectedIds, fieldLimits } = req.body;
+    const { type, count = 3, minScore = 9.0, customPrompt, selectedIds, fieldLimits, mode = 'single' } = req.body;
     
     if (!type || !GENERATION_TYPES[type]) {
       return res.status(400).json({ error: 'Invalid type. Options: ' + Object.keys(GENERATION_TYPES).join(', ') });
@@ -1517,6 +1517,12 @@ app.post('/api/generate', async (req, res) => {
       .replace('{{minScore}}', minScore)
       .replace('{{customPrompt}}', customPrompt || '')
       .replace('{{fieldLimits}}', fieldLimitsStr);
+
+    // Apply mode: single (1 testimonial per result) vs combined (blend all selected)
+    if (mode === 'combined') {
+      instruction = instruction.replace(/VIGTIGT: Hv[^\n]+ÉN specifik testimonial\.[^\n]*\n[^\n]*MÅ IKKE blande[^\n]*\n/g, '');
+      instruction += '\nTILGANG: Kombinér de stærkeste elementer fra ALLE valgte testimonials til hver generering. Brug de bedste vendinger på tværs af citaterne.\nDu behøver IKKE inkludere "navn" eller "alder" i output — sæt begge til null.';
+    }
 
     const systemPrompt = `Du er KJELDGAARD's senior copywriter. Du skriver på dansk til danske kvinder 40-65.
 Du scorer ALT output med Benson 12-factor systemet. Minimum score: ${minScore}/10.
