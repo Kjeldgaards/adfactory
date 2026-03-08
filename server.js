@@ -1362,7 +1362,7 @@ Brug kundeord fra testimonials når de er tilgængelige.`;
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 4000,
+      max_tokens: 8000,
       messages,
       system: systemPrompt
     });
@@ -1593,7 +1593,7 @@ Returner output som JSON array:
     "scoring_notes": "Kort begrundelse for scoren",
     "customer_words_used": ["ord1", "ord2"],
     "navn": "Kundens navn",
-    "alder": "64" eller null hvis alder ikke er nævnt
+    "alder": "64"
   }
 ]
 
@@ -1604,7 +1604,7 @@ Returner KUN JSON array, intet andet.`;
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 4000,
+      max_tokens: 8000,
       messages: [
         { role: 'user', content: userPrompt }
       ],
@@ -1624,9 +1624,22 @@ Returner KUN JSON array, intet andet.`;
     } else {
       const jsonMatch = responseText.match(/\[[\s\S]*\]/);
       if (!jsonMatch) {
+        console.error('Generate: no JSON array found in response:', responseText.substring(0, 500));
         return res.json({ results: [], raw: responseText, error: 'Could not parse JSON from response' });
       }
-      const results = JSON.parse(jsonMatch[0]);
+      let results;
+      try {
+        results = JSON.parse(jsonMatch[0]);
+      } catch (parseErr) {
+        console.error('Generate: JSON parse failed:', parseErr.message, '\nRaw match:', jsonMatch[0].substring(0, 500));
+        // Try to fix common issues: trailing commas, unescaped quotes
+        let cleaned = jsonMatch[0].replace(/,\s*([\]\}])/g, '$1');
+        try {
+          results = JSON.parse(cleaned);
+        } catch (e2) {
+          return res.json({ results: [], raw: responseText, error: parseErr.message });
+        }
+      }
       res.json({ 
         results,
         meta: {
