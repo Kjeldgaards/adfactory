@@ -1178,13 +1178,6 @@ app.post('/api/orshot/render', async (req, res) => {
 });
 
 // ============================================================
-// Serve frontend for all non-API routes
-// ============================================================
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// ============================================================
 // Start
 // ============================================================
 async function autoDiscoverTemplates() {
@@ -1940,6 +1933,13 @@ app.put('/api/scriptblocks/:id', (req, res) => {
   blocks[idx] = { ...blocks[idx], ...req.body, id: blocks[idx].id, updatedAt: new Date().toISOString() };
   saveJSON(DATA_FILES.scriptblocks, blocks);
   res.json({ success: true, block: blocks[idx] });
+});
+
+// ============================================================
+// Serve frontend for all non-API routes (MUST BE LAST)
+// ============================================================
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, async () => {
