@@ -1683,6 +1683,79 @@ app.get('/api/scripts', (req, res) => {
   res.json(scripts);
 });
 
+// GET script factory stats — MUST be before :id route
+app.get('/api/scripts/stats/overview', (req, res) => {
+  const scripts = loadJSON(DATA_FILES.scripts);
+  const blocks = loadJSON(DATA_FILES.scriptblocks);
+
+  const roleCounts = {};
+  const themeCounts = {};
+  blocks.forEach(b => {
+    roleCounts[b.role] = (roleCounts[b.role] || 0) + 1;
+    (b.themes || []).forEach(t => {
+      themeCounts[t] = (themeCounts[t] || 0) + 1;
+    });
+  });
+
+  res.json({
+    totalScripts: scripts.length,
+    totalBlocks: blocks.length,
+    roleCounts,
+    themeCounts,
+    roles: SCRIPT_ROLES,
+    themes: SCRIPT_THEMES
+  });
+});
+
+// POST — assemble script from selected blocks — MUST be before :id route
+app.post('/api/scripts/assemble', async (req, res) => {
+  try {
+    const { blockIds, polish } = req.body;
+    if (!blockIds || !blockIds.length) return res.status(400).json({ error: 'No blocks selected' });
+
+    const allBlocks = loadJSON(DATA_FILES.scriptblocks);
+    const selected = blockIds.map(id => allBlocks.find(b => b.id === id)).filter(Boolean);
+
+    if (!selected.length) return res.status(400).json({ error: 'No valid blocks found' });
+
+    const assembled = selected.map(b => b.text).join('\n\n');
+
+    if (!polish) {
+      return res.json({ script: assembled, blocks: selected, polished: false });
+    }
+
+    // Claude polishes transitions
+    const polishResponse = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 2048,
+      system: `Du er en dansk videoscript-redaktør for KJELDGAARD (premium skincare).
+
+Din opgave: Tag et sammensat script (bygget af blokke fra forskellige scripts) og polér overgangene så det flyder naturligt som ÉT sammenhængende script.
+
+REGLER:
+- Bevar ALLE sætningers kernebetydning og salgsbudskab
+- Ændr KUN overgange mellem blokke
+- Hold det i naturligt dansk (ingen AI-dansk, ingen staccato)
+- Bevar hook-energi i HOOK, smerte i PROBLEM, handling i CTA
+- Ingen sætninger der starter med "Og"
+- Ingen spørgsmål-svar retoriske mønstre i prosa
+- Output: kun det polerede script, ingen kommentarer`,
+      messages: [{ role: 'user', content: `Polér overgangene i dette sammensatte script:\n\n${assembled}` }]
+    });
+
+    res.json({
+      script: polishResponse.content[0].text,
+      original: assembled,
+      blocks: selected,
+      polished: true
+    });
+
+  } catch (err) {
+    console.error('Assemble error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET single script with its blocks
 app.get('/api/scripts/:id', (req, res) => {
   const scripts = loadJSON(DATA_FILES.scripts);
@@ -1867,79 +1940,6 @@ app.put('/api/scriptblocks/:id', (req, res) => {
   blocks[idx] = { ...blocks[idx], ...req.body, id: blocks[idx].id, updatedAt: new Date().toISOString() };
   saveJSON(DATA_FILES.scriptblocks, blocks);
   res.json({ success: true, block: blocks[idx] });
-});
-
-// POST — assemble script from selected blocks + optional Claude polish
-app.post('/api/scripts/assemble', async (req, res) => {
-  try {
-    const { blockIds, polish } = req.body;
-    if (!blockIds || !blockIds.length) return res.status(400).json({ error: 'No blocks selected' });
-
-    const allBlocks = loadJSON(DATA_FILES.scriptblocks);
-    const selected = blockIds.map(id => allBlocks.find(b => b.id === id)).filter(Boolean);
-
-    if (!selected.length) return res.status(400).json({ error: 'No valid blocks found' });
-
-    const assembled = selected.map(b => b.text).join('\n\n');
-
-    if (!polish) {
-      return res.json({ script: assembled, blocks: selected, polished: false });
-    }
-
-    // Claude polishes transitions
-    const polishResponse = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 2048,
-      system: `Du er en dansk videoscript-redaktør for KJELDGAARD (premium skincare).
-
-Din opgave: Tag et sammensat script (bygget af blokke fra forskellige scripts) og polér overgangene så det flyder naturligt som ÉT sammenhængende script.
-
-REGLER:
-- Bevar ALLE sætningers kernebetydning og salgsbudskab
-- Ændr KUN overgange mellem blokke
-- Hold det i naturligt dansk (ingen AI-dansk, ingen staccato)
-- Bevar hook-energi i HOOK, smerte i PROBLEM, handling i CTA
-- Ingen sætninger der starter med "Og"
-- Ingen spørgsmål-svar retoriske mønstre i prosa
-- Output: kun det polerede script, ingen kommentarer`,
-      messages: [{ role: 'user', content: `Polér overgangene i dette sammensatte script:\n\n${assembled}` }]
-    });
-
-    res.json({
-      script: polishResponse.content[0].text,
-      original: assembled,
-      blocks: selected,
-      polished: true
-    });
-
-  } catch (err) {
-    console.error('Assemble error:', err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// GET script factory stats
-app.get('/api/scripts/stats/overview', (req, res) => {
-  const scripts = loadJSON(DATA_FILES.scripts);
-  const blocks = loadJSON(DATA_FILES.scriptblocks);
-
-  const roleCounts = {};
-  const themeCounts = {};
-  blocks.forEach(b => {
-    roleCounts[b.role] = (roleCounts[b.role] || 0) + 1;
-    (b.themes || []).forEach(t => {
-      themeCounts[t] = (themeCounts[t] || 0) + 1;
-    });
-  });
-
-  res.json({
-    totalScripts: scripts.length,
-    totalBlocks: blocks.length,
-    roleCounts,
-    themeCounts,
-    roles: SCRIPT_ROLES,
-    themes: SCRIPT_THEMES
-  });
 });
 
 app.listen(PORT, async () => {
