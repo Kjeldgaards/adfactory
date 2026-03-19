@@ -546,13 +546,33 @@
   }
   .btn-copy:hover { background: var(--dark); }
 
-  /* Error Log */
+  /* Error Log — hidden by default, toggle with icon */
+  .debug-toggle {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--dark);
+    color: var(--gray-500);
+    border: 1px solid #333;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 0.15s;
+  }
+  .debug-toggle:hover { background: var(--navy); color: var(--white); }
+  .debug-toggle.has-errors { color: #ff6b6b; border-color: #ff6b6b44; }
   .error-log {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-height: 200px;
+    bottom: 56px;
+    right: 12px;
+    width: 600px;
+    max-height: 250px;
     overflow-y: auto;
     background: #1a1a2e;
     color: #e0e0e0;
@@ -561,7 +581,9 @@
     padding: 0;
     z-index: 999;
     display: none;
-    border-top: 2px solid var(--red);
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
   .error-log.active { display: block; }
   .error-log-header {
@@ -574,7 +596,7 @@
     align-items: center;
     border-bottom: 1px solid #333;
   }
-  .error-log-header span { color: var(--red); font-weight: 700; }
+  .error-log-header span { color: var(--gray-500); font-weight: 600; font-size: 11px; }
   .error-log-header button {
     background: none;
     border: 1px solid #555;
@@ -726,7 +748,8 @@
   </div>
 </div>
 
-<!-- ERROR LOG -->
+<!-- DEBUG TOGGLE -->
+<button class="debug-toggle" id="debugToggle" onclick="toggleDebugLog()" title="Debug log">🔧</button>
 <div class="error-log" id="errorLog">
   <div class="error-log-header">
     <span>DEBUG LOG</span>
@@ -744,19 +767,27 @@ let roles = [];
 let themes = [];
 
 // ---- DEBUG LOG ----
+let hasErrors = false;
 function log(level, msg, data) {
   const el = document.getElementById('errorLogEntries');
-  const logPanel = document.getElementById('errorLog');
   const time = new Date().toLocaleTimeString('da-DK');
   const dataStr = data ? ' → ' + (typeof data === 'string' ? data : JSON.stringify(data).substring(0, 300)) : '';
   el.innerHTML += `<div class="error-log-entry"><span class="time">${time}</span><span class="level-${level}">[${level.toUpperCase()}]</span> ${msg}${dataStr}</div>`;
-  logPanel.classList.add('active');
   el.scrollTop = el.scrollHeight;
+  if (level === 'error') {
+    hasErrors = true;
+    document.getElementById('debugToggle').classList.add('has-errors');
+  }
   console[level === 'error' ? 'error' : level === 'warn' ? 'warn' : 'log'](`[${level}] ${msg}`, data || '');
+}
+function toggleDebugLog() {
+  document.getElementById('errorLog').classList.toggle('active');
 }
 function clearLog() {
   document.getElementById('errorLogEntries').innerHTML = '';
   document.getElementById('errorLog').classList.remove('active');
+  hasErrors = false;
+  document.getElementById('debugToggle').classList.remove('has-errors');
 }
 
 // ---- INIT ----
