@@ -1793,14 +1793,20 @@ ${SCRIPT_ROLES.map(r => `- ${r}`).join('\n')}
 TEMAER (brug eksisterende når muligt, opret kun nye hvis nødvendigt):
 ${SCRIPT_THEMES.join(', ')}
 
-REGLER:
+KRITISK REGEL — HOOKS:
+- Et script har typisk 3-4 forskellige hook-varianter
+- Hver hook-variant er en SEPARAT blok med rolle HOOK
+- SAML ALDRIG flere hooks i én blok
+- Eksempel: Hvis scriptet har "Hook 1: X", "Hook 2: Y", "Hook 3: Z" → det er 3 separate HOOK-blokke
+
+ØVRIGE REGLER:
 - Hver blok er 1-3 sætninger der hører sammen funktionelt
 - En blok har PRÆCIS én rolle
 - En blok kan have 1-3 temaer
-- Bevar den ORIGINALE danske tekst ordret
-- Hvis scriptet er på engelsk, bevar også originalen ordret
+- Bevar den ORIGINALE danske tekst ordret — ændr INTET
 - Sæt blokkene i den rækkefølge de optræder i scriptet
 - Ikke alle roller behøver være til stede — tag KUN det der faktisk er der
+- Hvis samme rolle optræder flere gange (fx flere PROOF-blokke), lav en separat blok for hver
 
 Returner ALTID gyldig JSON array:
 [
@@ -1983,6 +1989,12 @@ app.get('*', (req, res) => {
 app.listen(PORT, async () => {
   console.log(`\n  KJELDGAARD AD FACTORY`);
   console.log(`  Running on http://localhost:${PORT}`);
+  
+  // ONE-TIME RESET v2 — remove after successful reimport
+  saveJSON(DATA_FILES.scripts, []);
+  saveJSON(DATA_FILES.scriptblocks, []);
+  console.log('  ⚠️ Script Factory data RESET v2');
+  
   await autoDiscoverTemplates();
   console.log(`  Templates: ${loadTemplates().length}`);
   console.log(`  Testimonials: ${loadTestimonials().length}`);
