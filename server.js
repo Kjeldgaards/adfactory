@@ -1989,12 +1989,6 @@ app.get('*', (req, res) => {
 app.listen(PORT, async () => {
   console.log(`\n  KJELDGAARD AD FACTORY`);
   console.log(`  Running on http://localhost:${PORT}`);
-  
-  // ONE-TIME RESET v2 — remove after successful reimport
-  saveJSON(DATA_FILES.scripts, []);
-  saveJSON(DATA_FILES.scriptblocks, []);
-  console.log('  ⚠️ Script Factory data RESET v2');
-  
   await autoDiscoverTemplates();
   console.log(`  Templates: ${loadTemplates().length}`);
   console.log(`  Testimonials: ${loadTestimonials().length}`);
