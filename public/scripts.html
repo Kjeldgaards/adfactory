@@ -545,6 +545,54 @@
     font-family: 'DM Sans', sans-serif;
   }
   .btn-copy:hover { background: var(--dark); }
+
+  /* Error Log */
+  .error-log {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    padding: 0;
+    z-index: 999;
+    display: none;
+    border-top: 2px solid var(--red);
+  }
+  .error-log.active { display: block; }
+  .error-log-header {
+    position: sticky;
+    top: 0;
+    background: #1a1a2e;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+  }
+  .error-log-header span { color: var(--red); font-weight: 700; }
+  .error-log-header button {
+    background: none;
+    border: 1px solid #555;
+    color: #aaa;
+    padding: 2px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+  }
+  .error-log-entries { padding: 8px 12px; }
+  .error-log-entry {
+    padding: 4px 0;
+    border-bottom: 1px solid #2a2a3e;
+  }
+  .error-log-entry .time { color: #666; margin-right: 8px; }
+  .error-log-entry .level-error { color: #ff6b6b; }
+  .error-log-entry .level-info { color: #69db7c; }
+  .error-log-entry .level-warn { color: #ffd43b; }
 </style>
 </head>
 <body>
@@ -678,25 +726,60 @@
   </div>
 </div>
 
+<!-- ERROR LOG -->
+<div class="error-log" id="errorLog">
+  <div class="error-log-header">
+    <span>DEBUG LOG</span>
+    <button onclick="clearLog()">Ryd</button>
+  </div>
+  <div class="error-log-entries" id="errorLogEntries"></div>
+</div>
+
 <script>
 const API = '';
 let allScripts = [];
 let allBlocks = [];
-let selectedBlocks = []; // ids in order
+let selectedBlocks = [];
 let roles = [];
 let themes = [];
 
+// ---- DEBUG LOG ----
+function log(level, msg, data) {
+  const el = document.getElementById('errorLogEntries');
+  const logPanel = document.getElementById('errorLog');
+  const time = new Date().toLocaleTimeString('da-DK');
+  const dataStr = data ? ' → ' + (typeof data === 'string' ? data : JSON.stringify(data).substring(0, 300)) : '';
+  el.innerHTML += `<div class="error-log-entry"><span class="time">${time}</span><span class="level-${level}">[${level.toUpperCase()}]</span> ${msg}${dataStr}</div>`;
+  logPanel.classList.add('active');
+  el.scrollTop = el.scrollHeight;
+  console[level === 'error' ? 'error' : level === 'warn' ? 'warn' : 'log'](`[${level}] ${msg}`, data || '');
+}
+function clearLog() {
+  document.getElementById('errorLogEntries').innerHTML = '';
+  document.getElementById('errorLog').classList.remove('active');
+}
+
 // ---- INIT ----
 async function init() {
+  log('info', 'Script Factory initializing...');
   await loadStats();
   await loadScripts();
   await loadBlocks();
+  log('info', 'Init complete');
 }
 
 async function loadStats() {
   try {
+    log('info', 'Loading stats...');
     const res = await fetch(`${API}/api/scripts/stats/overview`);
+    log('info', `Stats response: ${res.status} ${res.statusText}`);
+    if (!res.ok) {
+      const text = await res.text();
+      log('error', `Stats failed: ${res.status}`, text);
+      return;
+    }
     const data = await res.json();
+    log('info', 'Stats loaded', data);
     document.getElementById('statScripts').textContent = data.totalScripts;
     document.getElementById('statBlocks').textContent = data.totalBlocks;
     roles = data.roles || [];
@@ -704,7 +787,7 @@ async function loadStats() {
     if (!themes.length) themes = data.themes || [];
     populateFilters();
   } catch (e) {
-    console.error('Stats error:', e);
+    log('error', 'Stats error', e.message);
   }
 }
 
@@ -724,11 +807,18 @@ function populateFilters() {
 
 async function loadScripts() {
   try {
+    log('info', 'Loading scripts...');
     const res = await fetch(`${API}/api/scripts`);
+    if (!res.ok) {
+      const text = await res.text();
+      log('error', `Scripts failed: ${res.status}`, text);
+      return;
+    }
     allScripts = await res.json();
+    log('info', `Loaded ${allScripts.length} scripts`);
     renderScriptsList();
   } catch (e) {
-    console.error('Scripts error:', e);
+    log('error', 'Scripts error', e.message);
   }
 }
 
@@ -752,8 +842,8 @@ function renderScriptsList() {
 }
 
 async function selectScript(id) {
+  log('info', `Selecting script ${id}`);
   document.querySelectorAll('.script-card').forEach(el => el.classList.remove('active'));
-  // Load blocks for this script
   document.getElementById('filterRole').value = '';
   document.getElementById('filterTheme').value = '';
   document.getElementById('filterAwareness').value = '';
@@ -761,22 +851,34 @@ async function selectScript(id) {
 
   try {
     const res = await fetch(`${API}/api/scripts/${id}`);
+    if (!res.ok) {
+      log('error', `Select script failed: ${res.status}`, await res.text());
+      return;
+    }
     const data = await res.json();
     allBlocks = data.blocks.map(b => ({ ...b, scriptTitle: data.title }));
+    log('info', `Loaded ${allBlocks.length} blocks for "${data.title}"`);
     renderBlocks();
   } catch (e) {
-    console.error('Load script blocks error:', e);
+    log('error', 'Select script error', e.message);
   }
 }
 
 async function loadBlocks(params = '') {
   try {
+    log('info', `Loading blocks... ${params}`);
     const res = await fetch(`${API}/api/scriptblocks${params}`);
+    if (!res.ok) {
+      log('error', `Blocks failed: ${res.status}`, await res.text());
+      return;
+    }
     const data = await res.json();
     allBlocks = data.blocks || [];
+    log('info', `Loaded ${allBlocks.length} blocks`);
     renderBlocks();
   } catch (e) {
-    console.error('Blocks error:', e);
+    log('error', 'Blocks error', e.message);
+  }
   }
 }
 
@@ -896,27 +998,49 @@ async function submitScript() {
 
   if (!rawText.trim()) return alert('Indsæt script-teksten først.');
 
+  log('info', 'Submitting script...', { title, textLength: rawText.length, awareness });
+
   const btn = document.getElementById('btnSubmitScript');
   btn.disabled = true;
   btn.innerHTML = '<span class="loading-spinner"></span>Claude dekomponerer...';
 
   try {
+    const body = JSON.stringify({ title, rawText, source, awareness, performance });
+    log('info', `POST /api/scripts (${body.length} bytes)`);
+
     const res = await fetch(`${API}/api/scripts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, rawText, source, awareness, performance })
+      body
     });
-    const data = await res.json();
+
+    log('info', `Response: ${res.status} ${res.statusText}`);
+
+    const text = await res.text();
+    log('info', 'Response body', text.substring(0, 500));
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseErr) {
+      log('error', 'JSON parse failed', { parseError: parseErr.message, rawResponse: text.substring(0, 300) });
+      alert('Serverfejl — se debug log i bunden.');
+      return;
+    }
+
     if (data.success) {
+      log('info', `Script created: ${data.blocks} blokke`, data.parsed);
       closeAddModal();
       await loadStats();
       await loadScripts();
       await loadBlocks();
     } else {
-      alert('Fejl: ' + (data.error || 'Ukendt fejl'));
+      log('error', 'Script creation failed', data);
+      alert('Fejl: ' + (data.error || 'Ukendt fejl') + ' — se debug log.');
     }
   } catch (e) {
-    alert('Fejl: ' + e.message);
+    log('error', 'Submit error', e.message);
+    alert('Netværksfejl: ' + e.message + ' — se debug log.');
   } finally {
     btn.disabled = false;
     btn.textContent = 'Tilføj og dekomponér';
