@@ -1935,6 +1935,44 @@ app.put('/api/scriptblocks/:id', (req, res) => {
   res.json({ success: true, block: blocks[idx] });
 });
 
+// Admin: Reset all Script Factory data
+app.delete('/api/scripts/admin/reset-all', (req, res) => {
+  saveJSON(DATA_FILES.scripts, []);
+  saveJSON(DATA_FILES.scriptblocks, []);
+  res.json({ success: true, message: 'All scripts and blocks deleted' });
+});
+
+// Admin: Deduplicate scripts by title (keeps first, removes rest)
+app.post('/api/scripts/admin/dedup', (req, res) => {
+  const scripts = loadJSON(DATA_FILES.scripts);
+  let blocks = loadJSON(DATA_FILES.scriptblocks);
+  
+  const seen = {};
+  const keep = [];
+  const removeIds = [];
+  
+  scripts.forEach(s => {
+    if (!seen[s.title]) {
+      seen[s.title] = true;
+      keep.push(s);
+    } else {
+      removeIds.push(s.id);
+    }
+  });
+  
+  blocks = blocks.filter(b => !removeIds.includes(b.scriptId));
+  
+  saveJSON(DATA_FILES.scripts, keep);
+  saveJSON(DATA_FILES.scriptblocks, blocks);
+  
+  res.json({ 
+    success: true, 
+    removed: scripts.length - keep.length, 
+    remaining: keep.length,
+    scripts: keep.map(s => s.title)
+  });
+});
+
 // ============================================================
 // Serve frontend for all non-API routes (MUST BE LAST)
 // ============================================================
