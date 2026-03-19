@@ -302,7 +302,9 @@ seedDataIfEmpty();
 const DATA_FILES = {
   testimonials: path.join(__dirname, 'data', 'testimonials.json'),
   videos: path.join(__dirname, 'data', 'video-master.json'),
-  metacomments: path.join(__dirname, 'data', 'meta-comments.json')
+  metacomments: path.join(__dirname, 'data', 'meta-comments.json'),
+  scripts: path.join(__dirname, 'data', 'scripts.json'),
+  scriptblocks: path.join(__dirname, 'data', 'script-blocks.json')
 };
 
 Object.entries(DATA_FILES).forEach(([key, filepath]) => {
@@ -1656,6 +1658,288 @@ Returner KUN JSON array, intet andet.`;
     console.error('Generate error:', err);
     res.status(500).json({ error: err.message });
   }
+});
+
+// ============================================================
+// SCRIPT FACTORY — Modular Script Database
+// ============================================================
+
+const SCRIPT_ROLES = [
+  'HOOK', 'INTEREST', 'PROBLEM', 'AGITATION', 'DESIRE',
+  'MECHANISM', 'PRODUCT', 'BENEFITS', 'PROOF', 'OBJECTION',
+  'GUARANTEE', 'URGENCY', 'TRANSITION', 'CTA'
+];
+
+const SCRIPT_THEMES = [
+  'rynker', 'fugt', 'alder', 'overgangsalder', 'rødme', 'barriere',
+  'sensitiv', 'glød', 'fasthed', 'pigment', 'rosacea', 'tør hud',
+  'poser under øjne', 'mørke rande', 'anti-aging', 'enkelhed',
+  'skeptiker', 'prøvet alt', 'solskader', 'acne', 'kemi', 'natur'
+];
+
+// GET all scripts (metadata only)
+app.get('/api/scripts', (req, res) => {
+  const scripts = loadJSON(DATA_FILES.scripts);
+  res.json(scripts);
+});
+
+// GET single script with its blocks
+app.get('/api/scripts/:id', (req, res) => {
+  const scripts = loadJSON(DATA_FILES.scripts);
+  const script = scripts.find(s => s.id === parseInt(req.params.id));
+  if (!script) return res.status(404).json({ error: 'Script not found' });
+  const allBlocks = loadJSON(DATA_FILES.scriptblocks);
+  const blocks = allBlocks.filter(b => b.scriptId === script.id).sort((a, b) => a.order - b.order);
+  res.json({ ...script, blocks });
+});
+
+// POST — add new script (raw text → Claude parses into blocks)
+app.post('/api/scripts', async (req, res) => {
+  try {
+    const { title, rawText, source, performance, awareness } = req.body;
+    if (!rawText) return res.status(400).json({ error: 'No script text provided' });
+
+    const scripts = loadJSON(DATA_FILES.scripts);
+    const blocks = loadJSON(DATA_FILES.scriptblocks);
+
+    const scriptId = getNextId(scripts);
+    const newScript = {
+      id: scriptId,
+      title: title || `Script #${scriptId}`,
+      source: source || null,
+      performance: performance || null,
+      awareness: awareness || null,
+      blockCount: 0,
+      createdAt: new Date().toISOString()
+    };
+
+    // Claude parses the script into tagged blocks
+    const parseResponse = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4096,
+      system: `Du er en script-dekomponerings-ekspert for KJELDGAARD (dansk skincare brand).
+
+Din opgave: Tag et videoscript og opdel det i sætningsblokke. Hver blok får en ROLLE og et eller flere TEMAER.
+
+ROLLER (brug KUN disse):
+${SCRIPT_ROLES.map(r => `- ${r}`).join('\n')}
+
+TEMAER (brug eksisterende når muligt, opret kun nye hvis nødvendigt):
+${SCRIPT_THEMES.join(', ')}
+
+REGLER:
+- Hver blok er 1-3 sætninger der hører sammen funktionelt
+- En blok har PRÆCIS én rolle
+- En blok kan have 1-3 temaer
+- Bevar den ORIGINALE danske tekst ordret
+- Hvis scriptet er på engelsk, bevar også originalen ordret
+- Sæt blokkene i den rækkefølge de optræder i scriptet
+- Ikke alle roller behøver være til stede — tag KUN det der faktisk er der
+
+Returner ALTID gyldig JSON array:
+[
+  {
+    "text": "den originale tekst",
+    "role": "HOOK",
+    "themes": ["rynker", "alder"],
+    "notes": "valgfri kort note om hvorfor denne rolle"
+  }
+]
+
+Returner KUN JSON array, ingen anden tekst.`,
+      messages: [{ role: 'user', content: `Dekomponér dette script i taggede blokke:\n\n${rawText}` }]
+    });
+
+    const parseText = parseResponse.content[0].text;
+    const jsonMatch = parseText.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) {
+      return res.status(400).json({ error: 'Could not parse script into blocks' });
+    }
+
+    const parsedBlocks = JSON.parse(jsonMatch[0]);
+
+    // Save blocks
+    parsedBlocks.forEach((block, index) => {
+      blocks.push({
+        id: getNextId(blocks),
+        scriptId: scriptId,
+        order: index + 1,
+        text: block.text,
+        role: block.role,
+        themes: block.themes || [],
+        notes: block.notes || null,
+        createdAt: new Date().toISOString()
+      });
+    });
+
+    newScript.blockCount = parsedBlocks.length;
+    scripts.push(newScript);
+
+    saveJSON(DATA_FILES.scripts, scripts);
+    saveJSON(DATA_FILES.scriptblocks, blocks);
+
+    res.json({
+      success: true,
+      script: newScript,
+      blocks: parsedBlocks.length,
+      parsed: parsedBlocks
+    });
+
+  } catch (err) {
+    console.error('Script parse error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT — update script metadata
+app.put('/api/scripts/:id', (req, res) => {
+  const scripts = loadJSON(DATA_FILES.scripts);
+  const idx = scripts.findIndex(s => s.id === parseInt(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  scripts[idx] = { ...scripts[idx], ...req.body, id: scripts[idx].id, updatedAt: new Date().toISOString() };
+  saveJSON(DATA_FILES.scripts, scripts);
+  res.json({ success: true, script: scripts[idx] });
+});
+
+// DELETE script + its blocks
+app.delete('/api/scripts/:id', (req, res) => {
+  let scripts = loadJSON(DATA_FILES.scripts);
+  let blocks = loadJSON(DATA_FILES.scriptblocks);
+  const scriptId = parseInt(req.params.id);
+  const initialLen = scripts.length;
+  scripts = scripts.filter(s => s.id !== scriptId);
+  if (scripts.length === initialLen) return res.status(404).json({ error: 'Not found' });
+  blocks = blocks.filter(b => b.scriptId !== scriptId);
+  saveJSON(DATA_FILES.scripts, scripts);
+  saveJSON(DATA_FILES.scriptblocks, blocks);
+  res.json({ success: true });
+});
+
+// GET blocks — searchable with filters
+app.get('/api/scriptblocks', (req, res) => {
+  let blocks = loadJSON(DATA_FILES.scriptblocks);
+  const scripts = loadJSON(DATA_FILES.scripts);
+
+  // Filter by role
+  if (req.query.role) {
+    const roles = req.query.role.split(',').map(r => r.trim().toUpperCase());
+    blocks = blocks.filter(b => roles.includes(b.role));
+  }
+
+  // Filter by theme
+  if (req.query.theme) {
+    const themes = req.query.theme.split(',').map(t => t.trim().toLowerCase());
+    blocks = blocks.filter(b => b.themes && b.themes.some(t => themes.includes(t.toLowerCase())));
+  }
+
+  // Filter by awareness
+  if (req.query.awareness) {
+    const scriptIds = scripts
+      .filter(s => s.awareness === req.query.awareness)
+      .map(s => s.id);
+    blocks = blocks.filter(b => scriptIds.includes(b.scriptId));
+  }
+
+  // Text search
+  if (req.query.q) {
+    const q = req.query.q.toLowerCase();
+    blocks = blocks.filter(b => b.text.toLowerCase().includes(q));
+  }
+
+  // Enrich with script title
+  const enriched = blocks.map(b => {
+    const script = scripts.find(s => s.id === b.scriptId);
+    return { ...b, scriptTitle: script ? script.title : 'Ukendt' };
+  });
+
+  res.json({
+    blocks: enriched,
+    total: enriched.length,
+    filters: { role: req.query.role, theme: req.query.theme, awareness: req.query.awareness, q: req.query.q }
+  });
+});
+
+// PUT — update single block
+app.put('/api/scriptblocks/:id', (req, res) => {
+  const blocks = loadJSON(DATA_FILES.scriptblocks);
+  const idx = blocks.findIndex(b => b.id === parseInt(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  blocks[idx] = { ...blocks[idx], ...req.body, id: blocks[idx].id, updatedAt: new Date().toISOString() };
+  saveJSON(DATA_FILES.scriptblocks, blocks);
+  res.json({ success: true, block: blocks[idx] });
+});
+
+// POST — assemble script from selected blocks + optional Claude polish
+app.post('/api/scripts/assemble', async (req, res) => {
+  try {
+    const { blockIds, polish } = req.body;
+    if (!blockIds || !blockIds.length) return res.status(400).json({ error: 'No blocks selected' });
+
+    const allBlocks = loadJSON(DATA_FILES.scriptblocks);
+    const selected = blockIds.map(id => allBlocks.find(b => b.id === id)).filter(Boolean);
+
+    if (!selected.length) return res.status(400).json({ error: 'No valid blocks found' });
+
+    const assembled = selected.map(b => b.text).join('\n\n');
+
+    if (!polish) {
+      return res.json({ script: assembled, blocks: selected, polished: false });
+    }
+
+    // Claude polishes transitions
+    const polishResponse = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 2048,
+      system: `Du er en dansk videoscript-redaktør for KJELDGAARD (premium skincare).
+
+Din opgave: Tag et sammensat script (bygget af blokke fra forskellige scripts) og polér overgangene så det flyder naturligt som ÉT sammenhængende script.
+
+REGLER:
+- Bevar ALLE sætningers kernebetydning og salgsbudskab
+- Ændr KUN overgange mellem blokke
+- Hold det i naturligt dansk (ingen AI-dansk, ingen staccato)
+- Bevar hook-energi i HOOK, smerte i PROBLEM, handling i CTA
+- Ingen sætninger der starter med "Og"
+- Ingen spørgsmål-svar retoriske mønstre i prosa
+- Output: kun det polerede script, ingen kommentarer`,
+      messages: [{ role: 'user', content: `Polér overgangene i dette sammensatte script:\n\n${assembled}` }]
+    });
+
+    res.json({
+      script: polishResponse.content[0].text,
+      original: assembled,
+      blocks: selected,
+      polished: true
+    });
+
+  } catch (err) {
+    console.error('Assemble error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET script factory stats
+app.get('/api/scripts/stats/overview', (req, res) => {
+  const scripts = loadJSON(DATA_FILES.scripts);
+  const blocks = loadJSON(DATA_FILES.scriptblocks);
+
+  const roleCounts = {};
+  const themeCounts = {};
+  blocks.forEach(b => {
+    roleCounts[b.role] = (roleCounts[b.role] || 0) + 1;
+    (b.themes || []).forEach(t => {
+      themeCounts[t] = (themeCounts[t] || 0) + 1;
+    });
+  });
+
+  res.json({
+    totalScripts: scripts.length,
+    totalBlocks: blocks.length,
+    roleCounts,
+    themeCounts,
+    roles: SCRIPT_ROLES,
+    themes: SCRIPT_THEMES
+  });
 });
 
 app.listen(PORT, async () => {

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KJELDGAARD Script Factory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --navy: #004058;
+    --teal: #167DA2;
+    --gold: #B8945A;
+    --cream: #F7F4F0;
+    --dark: #0B3544;
+    --white: #FFFFFF;
+    --gray-100: #F5F5F5;
+    --gray-200: #E8E8E8;
+    --gray-300: #D1D1D1;
+    --gray-500: #888;
+    --gray-700: #444;
+    --red: #C0392B;
+    --green: #27AE60;
+    --orange: #E67E22;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* === HEADER === */
+  .header {
+    background: var(--dark);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-left a {
+    color: var(--gray-500);
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .header-left a:hover { color: var(--white); }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 24px;
+    color: var(--gray-300);
+    font-size: 13px;
+  }
+  .header-stats strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* === LAYOUT === */
+  .layout {
+    display: grid;
+    grid-template-columns: 300px 1fr 360px;
+    min-height: calc(100vh - 68px);
+  }
+
+  /* === SIDEBAR — Scripts List === */
+  .sidebar {
+    background: var(--white);
+    border-right: 1px solid var(--gray-200);
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sidebar-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--navy);
+  }
+  .btn-add {
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-add:hover { background: var(--navy); }
+
+  .scripts-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+  }
+  .script-card {
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .script-card:hover { background: var(--gray-100); }
+  .script-card.active {
+    background: #E8F4F8;
+    border-color: var(--teal);
+  }
+  .script-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--dark);
+  }
+  .script-card-meta {
+    font-size: 11px;
+    color: var(--gray-500);
+    display: flex;
+    gap: 10px;
+  }
+
+  /* === MAIN — Block Browser === */
+  .main {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Filter Bar */
+  .filter-bar {
+    padding: 16px 20px;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .filter-group label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-500);
+  }
+  .filter-group select, .filter-group input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 6px 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    background: var(--white);
+    color: var(--dark);
+  }
+  .filter-group select { min-width: 140px; }
+  .filter-group input { min-width: 180px; }
+
+  .btn-filter {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    align-self: flex-end;
+  }
+  .btn-filter:hover { background: var(--teal); }
+  .btn-clear {
+    background: none;
+    color: var(--gray-500);
+    border: 1px solid var(--gray-300);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    align-self: flex-end;
+  }
+
+  /* Block Grid */
+  .blocks-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .blocks-count {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  .block-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 10px;
+    position: relative;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .block-card:hover {
+    border-color: var(--teal);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .block-card.selected {
+    border-color: var(--gold);
+    background: #FFFBF5;
+    box-shadow: 0 0 0 2px rgba(184, 148, 90, 0.2);
+  }
+  .block-role {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  /* Role colors */
+  .role-HOOK { background: #FDEBD0; color: #E67E22; }
+  .role-INTEREST { background: #D4EFDF; color: #27AE60; }
+  .role-PROBLEM { background: #FADBD8; color: #C0392B; }
+  .role-AGITATION { background: #F5B7B1; color: #922B21; }
+  .role-DESIRE { background: #D6EAF8; color: #2E86C1; }
+  .role-MECHANISM { background: #D5D8DC; color: #566573; }
+  .role-PRODUCT { background: #E8DAEF; color: #7D3C98; }
+  .role-BENEFITS { background: #A9DFBF; color: #1E8449; }
+  .role-PROOF { background: #AED6F1; color: #2471A3; }
+  .role-OBJECTION { background: #F9E79F; color: #B7950B; }
+  .role-GUARANTEE { background: #A3E4D7; color: #148F77; }
+  .role-URGENCY { background: #F5CBA7; color: #CA6F1E; }
+  .role-TRANSITION { background: #D5DBDB; color: #717D7E; }
+  .role-CTA { background: #D4AC0D22; color: #D4AC0D; border: 1px solid #D4AC0D55; }
+
+  .block-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+  .block-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .block-theme {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--gray-100);
+    border-radius: 3px;
+    color: var(--gray-700);
+  }
+  .block-source {
+    font-size: 10px;
+    color: var(--gray-500);
+    margin-left: auto;
+  }
+  .block-select-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: transparent;
+    transition: all 0.15s;
+  }
+  .block-card.selected .block-select-indicator {
+    border-color: var(--gold);
+    background: var(--gold);
+    color: var(--white);
+  }
+
+  /* === ASSEMBLER PANEL === */
+  .assembler {
+    background: var(--white);
+    border-left: 1px solid var(--gray-200);
+    display: flex;
+    flex-direction: column;
+  }
+  .assembler-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .assembler-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--navy);
+  }
+  .assembler-header p {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 4px;
+  }
+  .assembler-blocks {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+  }
+  .assembler-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray-500);
+    font-size: 13px;
+  }
+  .assembled-block {
+    padding: 10px;
+    background: var(--gray-100);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    position: relative;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .assembled-block .block-role {
+    font-size: 9px;
+    margin-bottom: 4px;
+  }
+  .assembled-block-text {
+    font-size: 12px;
+    color: var(--dark);
+  }
+  .assembled-block-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-500);
+    font-size: 14px;
+  }
+  .assembled-block-remove:hover { color: var(--red); }
+
+  .assembler-actions {
+    padding: 16px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .btn-assemble {
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.3px;
+  }
+  .btn-assemble:hover { background: #A07A45; }
+  .btn-assemble:disabled { background: var(--gray-300); cursor: not-allowed; }
+  .btn-polish {
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-polish:hover { background: var(--navy); }
+  .btn-polish:disabled { background: var(--gray-300); cursor: not-allowed; }
+  .btn-clear-assembler {
+    background: none;
+    border: 1px solid var(--gray-300);
+    color: var(--gray-500);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* === MODAL === */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 12px;
+    width: 640px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 28px;
+  }
+  .modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .form-group {
+    margin-bottom: 14px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--gray-700);
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+  }
+  .form-group textarea {
+    min-height: 200px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  .btn-cancel {
+    background: none;
+    border: 1px solid var(--gray-300);
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+  }
+  .btn-submit {
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    padding: 8px 24px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-submit:hover { background: var(--navy); }
+  .btn-submit:disabled { background: var(--gray-300); cursor: not-allowed; }
+
+  /* Output modal */
+  .output-script {
+    background: var(--gray-100);
+    padding: 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 16px 0;
+  }
+
+  .loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--gray-300);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Delete btn for scripts */
+  .script-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-500);
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .script-delete:hover { color: var(--red); background: #FEE; }
+
+  /* Copy btn */
+  .btn-copy {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-copy:hover { background: var(--dark); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <a href="/">← Ad Factory</a>
+    <h1>SCRIPT FACTORY</h1>
+  </div>
+  <div class="header-stats">
+    <span><strong id="statScripts">0</strong> scripts</span>
+    <span><strong id="statBlocks">0</strong> blokke</span>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- LEFT: Scripts list -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Scripts</h2>
+      <button class="btn-add" onclick="openAddModal()">+ Tilføj</button>
+    </div>
+    <div class="scripts-list" id="scriptsList"></div>
+  </div>
+
+  <!-- CENTER: Block browser -->
+  <div class="main">
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Rolle</label>
+        <select id="filterRole">
+          <option value="">Alle roller</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Tema</label>
+        <select id="filterTheme">
+          <option value="">Alle temaer</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Awareness</label>
+        <select id="filterAwareness">
+          <option value="">Alle</option>
+          <option value="problem_aware">Problem Aware</option>
+          <option value="solution_aware">Solution Aware</option>
+          <option value="product_aware">Product Aware</option>
+          <option value="most_aware">Most Aware</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Søg tekst</label>
+        <input type="text" id="filterSearch" placeholder="fx rynker, fugt, barriere...">
+      </div>
+      <button class="btn-filter" onclick="applyFilters()">Søg</button>
+      <button class="btn-clear" onclick="clearFilters()">Nulstil</button>
+    </div>
+
+    <div class="blocks-container" id="blocksContainer">
+      <div class="blocks-count" id="blocksCount"></div>
+      <div id="blocksList"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Assembler -->
+  <div class="assembler">
+    <div class="assembler-header">
+      <h2>Assembler</h2>
+      <p>Klik på blokke for at tilføje dem til dit nye script</p>
+    </div>
+    <div class="assembler-blocks" id="assemblerBlocks">
+      <div class="assembler-empty">Ingen blokke valgt endnu.<br>Klik på blokke i midten for at tilføje.</div>
+    </div>
+    <div class="assembler-actions">
+      <button class="btn-assemble" id="btnAssemble" disabled onclick="assembleScript(false)">Sammensæt script</button>
+      <button class="btn-polish" id="btnPolish" disabled onclick="assembleScript(true)">Sammensæt + polér med Claude</button>
+      <button class="btn-clear-assembler" onclick="clearAssembler()">Ryd assembler</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SCRIPT MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2>Tilføj nyt script</h2>
+    <div class="form-group">
+      <label>Titel</label>
+      <input type="text" id="scriptTitle" placeholder="fx 'Rynke-hook VSL marts 2026'">
+    </div>
+    <div class="form-group">
+      <label>Kilde</label>
+      <input type="text" id="scriptSource" placeholder="fx 'Meta ad 12345' eller 'VSL v3'">
+    </div>
+    <div class="form-group">
+      <label>Awareness level</label>
+      <select id="scriptAwareness">
+        <option value="">Vælg...</option>
+        <option value="problem_aware">Problem Aware</option>
+        <option value="solution_aware">Solution Aware</option>
+        <option value="product_aware">Product Aware</option>
+        <option value="most_aware">Most Aware</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Performance (valgfrit)</label>
+      <input type="text" id="scriptPerformance" placeholder="fx 'CPA 285 DKK, CTR 2.1%'">
+    </div>
+    <div class="form-group">
+      <label>Script tekst <span style="color:var(--gray-500); font-weight:400">(hele scriptet — Claude dekomponerer automatisk)</span></label>
+      <textarea id="scriptText" placeholder="Indsæt hele scriptet her..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddModal()">Annuller</button>
+      <button class="btn-submit" id="btnSubmitScript" onclick="submitScript()">Tilføj og dekomponér</button>
+    </div>
+  </div>
+</div>
+
+<!-- OUTPUT MODAL -->
+<div class="modal-overlay" id="outputModal">
+  <div class="modal">
+    <h2 id="outputTitle">Sammensat script</h2>
+    <div class="output-script" id="outputScript"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeOutputModal()">Luk</button>
+      <button class="btn-copy" onclick="copyOutput()">Kopiér script</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+let allScripts = [];
+let allBlocks = [];
+let selectedBlocks = []; // ids in order
+let roles = [];
+let themes = [];
+
+// ---- INIT ----
+async function init() {
+  await loadStats();
+  await loadScripts();
+  await loadBlocks();
+}
+
+async function loadStats() {
+  try {
+    const res = await fetch(`${API}/api/scripts/stats/overview`);
+    const data = await res.json();
+    document.getElementById('statScripts').textContent = data.totalScripts;
+    document.getElementById('statBlocks').textContent = data.totalBlocks;
+    roles = data.roles || [];
+    themes = Object.keys(data.themeCounts || {}).sort();
+    if (!themes.length) themes = data.themes || [];
+    populateFilters();
+  } catch (e) {
+    console.error('Stats error:', e);
+  }
+}
+
+function populateFilters() {
+  const roleSelect = document.getElementById('filterRole');
+  roleSelect.innerHTML = '<option value="">Alle roller</option>';
+  roles.forEach(r => {
+    roleSelect.innerHTML += `<option value="${r}">${r}</option>`;
+  });
+
+  const themeSelect = document.getElementById('filterTheme');
+  themeSelect.innerHTML = '<option value="">Alle temaer</option>';
+  themes.forEach(t => {
+    themeSelect.innerHTML += `<option value="${t}">${t}</option>`;
+  });
+}
+
+async function loadScripts() {
+  try {
+    const res = await fetch(`${API}/api/scripts`);
+    allScripts = await res.json();
+    renderScriptsList();
+  } catch (e) {
+    console.error('Scripts error:', e);
+  }
+}
+
+function renderScriptsList() {
+  const el = document.getElementById('scriptsList');
+  if (!allScripts.length) {
+    el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--gray-500);font-size:13px">Ingen scripts endnu.<br>Klik "+ Tilføj" for at starte.</div>';
+    return;
+  }
+  el.innerHTML = allScripts.map(s => `
+    <div class="script-card" onclick="selectScript(${s.id})">
+      <h3>${esc(s.title)}</h3>
+      <div class="script-card-meta">
+        <span>${s.blockCount || 0} blokke</span>
+        ${s.awareness ? `<span>${s.awareness}</span>` : ''}
+        ${s.source ? `<span>${esc(s.source)}</span>` : ''}
+        <button class="script-delete" onclick="event.stopPropagation(); deleteScript(${s.id})" title="Slet">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function selectScript(id) {
+  document.querySelectorAll('.script-card').forEach(el => el.classList.remove('active'));
+  // Load blocks for this script
+  document.getElementById('filterRole').value = '';
+  document.getElementById('filterTheme').value = '';
+  document.getElementById('filterAwareness').value = '';
+  document.getElementById('filterSearch').value = '';
+
+  try {
+    const res = await fetch(`${API}/api/scripts/${id}`);
+    const data = await res.json();
+    allBlocks = data.blocks.map(b => ({ ...b, scriptTitle: data.title }));
+    renderBlocks();
+  } catch (e) {
+    console.error('Load script blocks error:', e);
+  }
+}
+
+async function loadBlocks(params = '') {
+  try {
+    const res = await fetch(`${API}/api/scriptblocks${params}`);
+    const data = await res.json();
+    allBlocks = data.blocks || [];
+    renderBlocks();
+  } catch (e) {
+    console.error('Blocks error:', e);
+  }
+}
+
+function renderBlocks() {
+  const el = document.getElementById('blocksList');
+  document.getElementById('blocksCount').textContent = `${allBlocks.length} blokke`;
+
+  if (!allBlocks.length) {
+    el.innerHTML = '<div style="padding:40px;text-align:center;color:var(--gray-500);font-size:13px">Ingen blokke fundet.</div>';
+    return;
+  }
+
+  el.innerHTML = allBlocks.map(b => `
+    <div class="block-card ${selectedBlocks.includes(b.id) ? 'selected' : ''}" onclick="toggleBlock(${b.id})">
+      <div class="block-select-indicator">${selectedBlocks.includes(b.id) ? '✓' : ''}</div>
+      <span class="block-role role-${b.role}">${b.role}</span>
+      <div class="block-text">${esc(b.text)}</div>
+      <div class="block-meta">
+        ${(b.themes || []).map(t => `<span class="block-theme">${esc(t)}</span>`).join('')}
+        <span class="block-source">${esc(b.scriptTitle || '')}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleBlock(id) {
+  const idx = selectedBlocks.indexOf(id);
+  if (idx > -1) {
+    selectedBlocks.splice(idx, 1);
+  } else {
+    selectedBlocks.push(id);
+  }
+  renderBlocks();
+  renderAssembler();
+}
+
+function renderAssembler() {
+  const el = document.getElementById('assemblerBlocks');
+  const btnAssemble = document.getElementById('btnAssemble');
+  const btnPolish = document.getElementById('btnPolish');
+
+  if (!selectedBlocks.length) {
+    el.innerHTML = '<div class="assembler-empty">Ingen blokke valgt endnu.<br>Klik på blokke i midten for at tilføje.</div>';
+    btnAssemble.disabled = true;
+    btnPolish.disabled = true;
+    return;
+  }
+
+  btnAssemble.disabled = false;
+  btnPolish.disabled = false;
+
+  const blocks = selectedBlocks.map(id => allBlocks.find(b => b.id === id)).filter(Boolean);
+  el.innerHTML = blocks.map((b, i) => `
+    <div class="assembled-block">
+      <button class="assembled-block-remove" onclick="removeFromAssembler(${b.id})">✕</button>
+      <span class="block-role role-${b.role}">${b.role}</span>
+      <div class="assembled-block-text">${esc(b.text.substring(0, 120))}${b.text.length > 120 ? '...' : ''}</div>
+    </div>
+  `).join('');
+}
+
+function removeFromAssembler(id) {
+  selectedBlocks = selectedBlocks.filter(bid => bid !== id);
+  renderBlocks();
+  renderAssembler();
+}
+
+function clearAssembler() {
+  selectedBlocks = [];
+  renderBlocks();
+  renderAssembler();
+}
+
+// ---- FILTERS ----
+function applyFilters() {
+  const params = new URLSearchParams();
+  const role = document.getElementById('filterRole').value;
+  const theme = document.getElementById('filterTheme').value;
+  const awareness = document.getElementById('filterAwareness').value;
+  const q = document.getElementById('filterSearch').value;
+  if (role) params.set('role', role);
+  if (theme) params.set('theme', theme);
+  if (awareness) params.set('awareness', awareness);
+  if (q) params.set('q', q);
+  const qs = params.toString() ? `?${params.toString()}` : '';
+  loadBlocks(qs);
+}
+
+function clearFilters() {
+  document.getElementById('filterRole').value = '';
+  document.getElementById('filterTheme').value = '';
+  document.getElementById('filterAwareness').value = '';
+  document.getElementById('filterSearch').value = '';
+  loadBlocks();
+}
+
+// ---- ADD SCRIPT ----
+function openAddModal() {
+  document.getElementById('addModal').classList.add('active');
+  document.getElementById('scriptTitle').value = '';
+  document.getElementById('scriptSource').value = '';
+  document.getElementById('scriptAwareness').value = '';
+  document.getElementById('scriptPerformance').value = '';
+  document.getElementById('scriptText').value = '';
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('active');
+}
+
+async function submitScript() {
+  const title = document.getElementById('scriptTitle').value;
+  const rawText = document.getElementById('scriptText').value;
+  const source = document.getElementById('scriptSource').value;
+  const awareness = document.getElementById('scriptAwareness').value;
+  const performance = document.getElementById('scriptPerformance').value;
+
+  if (!rawText.trim()) return alert('Indsæt script-teksten først.');
+
+  const btn = document.getElementById('btnSubmitScript');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span>Claude dekomponerer...';
+
+  try {
+    const res = await fetch(`${API}/api/scripts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, rawText, source, awareness, performance })
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeAddModal();
+      await loadStats();
+      await loadScripts();
+      await loadBlocks();
+    } else {
+      alert('Fejl: ' + (data.error || 'Ukendt fejl'));
+    }
+  } catch (e) {
+    alert('Fejl: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Tilføj og dekomponér';
+  }
+}
+
+async function deleteScript(id) {
+  if (!confirm('Slet dette script og alle dets blokke?')) return;
+  try {
+    await fetch(`${API}/api/scripts/${id}`, { method: 'DELETE' });
+    await loadStats();
+    await loadScripts();
+    await loadBlocks();
+  } catch (e) {
+    alert('Fejl: ' + e.message);
+  }
+}
+
+// ---- ASSEMBLE ----
+async function assembleScript(polish) {
+  const btn = polish ? document.getElementById('btnPolish') : document.getElementById('btnAssemble');
+  btn.disabled = true;
+  btn.innerHTML = `<span class="loading-spinner"></span>${polish ? 'Claude polerer...' : 'Sammensætter...'}`;
+
+  try {
+    const res = await fetch(`${API}/api/scripts/assemble`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ blockIds: selectedBlocks, polish })
+    });
+    const data = await res.json();
+    document.getElementById('outputTitle').textContent = polish ? 'Poleret script' : 'Sammensat script';
+    document.getElementById('outputScript').textContent = data.script;
+    document.getElementById('outputModal').classList.add('active');
+  } catch (e) {
+    alert('Fejl: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = polish ? 'Sammensæt + polér med Claude' : 'Sammensæt script';
+  }
+}
+
+function closeOutputModal() {
+  document.getElementById('outputModal').classList.remove('active');
+}
+
+function copyOutput() {
+  const text = document.getElementById('outputScript').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = 'Kopieret ✓';
+    setTimeout(() => { btn.textContent = 'Kopiér script'; }, 1500);
+  });
+}
+
+// ---- UTILS ----
+function esc(s) {
+  if (!s) return '';
+  const el = document.createElement('span');
+  el.textContent = s;
+  return el.innerHTML;
+}
+
+// ---- KEYBOARD SHORTCUTS ----
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeAddModal();
+    closeOutputModal();
+  }
+});
+
+// Enter in search field triggers filter
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('filterSearch').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') applyFilters();
+  });
+});
+
+// ---- BOOT ----
+init();
+</script>
+</body>
+</html>
