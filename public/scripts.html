@@ -575,6 +575,195 @@
   }
   .btn-copy:hover { background: var(--dark); }
 
+  /* Header Tabs */
+  .header-tabs {
+    display: flex;
+    gap: 4px;
+    margin-left: 24px;
+  }
+  .header-tab {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--gray-500);
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .header-tab:hover { color: var(--white); background: rgba(255,255,255,0.15); }
+  .header-tab.active {
+    background: var(--teal);
+    color: var(--white);
+    border-color: var(--teal);
+  }
+
+  /* Generator Tab */
+  .generate-tab {
+    min-height: calc(100vh - 68px);
+    background: var(--cream);
+  }
+  .gen-container {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    min-height: calc(100vh - 68px);
+  }
+  .gen-left {
+    background: var(--white);
+    padding: 28px;
+    border-right: 1px solid var(--gray-200);
+    overflow-y: auto;
+  }
+  .gen-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .gen-subtitle {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .gen-form { display: flex; flex-direction: column; gap: 16px; }
+  .gen-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-700);
+    margin-bottom: 5px;
+  }
+  .gen-field select, .gen-field textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    background: var(--white);
+  }
+  .gen-field textarea { resize: vertical; line-height: 1.5; }
+  .gen-framework-desc {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 5px;
+    line-height: 1.4;
+    padding: 6px 8px;
+    background: var(--gray-100);
+    border-radius: 3px;
+  }
+  .btn-generate {
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.3px;
+    margin-top: 8px;
+  }
+  .btn-generate:hover { background: #A07A45; }
+  .btn-generate:disabled { background: var(--gray-300); cursor: not-allowed; }
+
+  .gen-right {
+    padding: 28px;
+    overflow-y: auto;
+  }
+  .gen-empty {
+    text-align: center;
+    padding: 60px 40px;
+    color: var(--gray-500);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .gen-variant {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .gen-variant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .gen-variant-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--navy);
+  }
+  .gen-variant-angle {
+    font-size: 12px;
+    color: var(--gray-500);
+    font-style: italic;
+  }
+  .gen-variant-copy {
+    background: none;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .gen-variant-copy:hover { background: var(--teal); color: var(--white); }
+  .gen-section {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 3px solid var(--gray-300);
+  }
+  .gen-section-role {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .gen-section-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--dark);
+  }
+  .gen-source-tag {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-weight: 400;
+  }
+  .gen-source-reused {
+    background: #D4EFDF;
+    color: #27AE60;
+  }
+  .gen-source-original {
+    background: #FDEBD0;
+    color: #E67E22;
+  }
+  .gen-meta {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-200);
+    font-size: 11px;
+    color: var(--gray-500);
+    display: flex;
+    gap: 16px;
+  }
+
   /* Error Log — hidden by default, toggle with icon */
   .debug-toggle {
     position: fixed;
@@ -653,6 +842,10 @@
   <div class="header-left">
     <a href="/">← Ad Factory</a>
     <h1>SCRIPT FACTORY</h1>
+    <div class="header-tabs">
+      <button class="header-tab active" id="tabBrowse" onclick="switchTab('browse')">Browse & Assemble</button>
+      <button class="header-tab" id="tabGenerate" onclick="switchTab('generate')">AI Generator</button>
+    </div>
   </div>
   <div class="header-stats">
     <span><strong id="statScripts">0</strong> scripts</span>
@@ -660,8 +853,8 @@
   </div>
 </div>
 
-<!-- LAYOUT -->
-<div class="layout">
+<!-- BROWSE TAB (existing) -->
+<div class="layout" id="browseTab">
 
   <!-- LEFT: Scripts list -->
   <div class="sidebar">
@@ -724,6 +917,65 @@
       <button class="btn-assemble" id="btnAssemble" disabled onclick="assembleScript(false)">Sammensæt script</button>
       <button class="btn-polish" id="btnPolish" disabled onclick="assembleScript(true)">Sammensæt + polér med Claude</button>
       <button class="btn-clear-assembler" onclick="clearAssembler()">Ryd assembler</button>
+    </div>
+  </div>
+</div>
+
+<!-- GENERATE TAB -->
+<div class="generate-tab" id="generateTab" style="display:none;">
+  <div class="gen-container">
+    <div class="gen-left">
+      <h2 class="gen-title">AI Script Generator</h2>
+      <p class="gen-subtitle">Vælg framework, tema og awareness — Claude sammensætter et konverterende script fra dine proven blokke.</p>
+
+      <div class="gen-form">
+        <div class="gen-field">
+          <label>Framework</label>
+          <select id="genFramework"></select>
+          <div class="gen-framework-desc" id="genFrameworkDesc"></div>
+        </div>
+
+        <div class="gen-field">
+          <label>Tema</label>
+          <select id="genTheme">
+            <option value="">Vælg tema...</option>
+          </select>
+        </div>
+
+        <div class="gen-field">
+          <label>Awareness Level (Schwartz)</label>
+          <select id="genAwareness">
+            <option value="">Auto — Claude vælger</option>
+            <option value="problem_aware">Problem Aware — kender problemet, søger løsning</option>
+            <option value="solution_aware">Solution Aware — ved løsninger findes, kender ikke produktet</option>
+            <option value="product_aware">Product Aware — kender produktet, skal overbevises</option>
+            <option value="most_aware">Most Aware — kender alt, behøver kun et push</option>
+          </select>
+        </div>
+
+        <div class="gen-field">
+          <label>Script-længde</label>
+          <select id="genLength">
+            <option value="short">Kort (30-45 sek)</option>
+            <option value="medium" selected>Medium (45-75 sek)</option>
+            <option value="long">Lang (90-120 sek)</option>
+          </select>
+        </div>
+
+        <div class="gen-field">
+          <label>Ekstra noter (valgfrit)</label>
+          <textarea id="genNotes" rows="3" placeholder="fx 'Fokusér på overgangsalder-vinkel' eller 'Brug skeptiker-testimonials'"></textarea>
+        </div>
+
+        <button class="btn-generate" id="btnGenerate" onclick="generateScript()">Generér scripts</button>
+      </div>
+    </div>
+
+    <div class="gen-right" id="genResults">
+      <div class="gen-empty">
+        <p>Vælg framework og tema, og klik "Generér scripts".</p>
+        <p>Claude sammensætter 2 script-varianter baseret på dine 523+ proven blokke, Schwartz awareness levels og Benson scoring.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -1239,6 +1491,142 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') applyFilters();
   });
 });
+
+// ---- TAB SWITCHING ----
+function switchTab(tab) {
+  document.getElementById('browseTab').style.display = tab === 'browse' ? 'grid' : 'none';
+  document.getElementById('generateTab').style.display = tab === 'generate' ? 'block' : 'none';
+  document.getElementById('tabBrowse').classList.toggle('active', tab === 'browse');
+  document.getElementById('tabGenerate').classList.toggle('active', tab === 'generate');
+  if (tab === 'generate') initGenerator();
+}
+
+// ---- AI GENERATOR ----
+let frameworksData = {};
+
+async function initGenerator() {
+  if (Object.keys(frameworksData).length) return;
+  try {
+    const res = await fetch(`${API}/api/scripts/frameworks`);
+    frameworksData = await res.json();
+    const sel = document.getElementById('genFramework');
+    sel.innerHTML = '';
+    Object.entries(frameworksData).forEach(([key, fw]) => {
+      sel.innerHTML += `<option value="${key}">${fw.name}</option>`;
+    });
+    updateFrameworkDesc();
+    sel.addEventListener('change', updateFrameworkDesc);
+
+    // Populate themes from stats
+    const statsRes = await fetch(`${API}/api/scripts/stats/overview`);
+    const stats = await statsRes.json();
+    const themeSel = document.getElementById('genTheme');
+    themeSel.innerHTML = '<option value="">Vælg tema...</option>';
+    const allThemes = Object.keys(stats.themeCounts || {}).sort((a, b) => (stats.themeCounts[b] || 0) - (stats.themeCounts[a] || 0));
+    allThemes.forEach(t => {
+      themeSel.innerHTML += `<option value="${t}">${t} (${stats.themeCounts[t]} blokke)</option>`;
+    });
+  } catch (e) {
+    log('error', 'Generator init error', e.message);
+  }
+}
+
+function updateFrameworkDesc() {
+  const key = document.getElementById('genFramework').value;
+  const fw = frameworksData[key];
+  if (fw) {
+    document.getElementById('genFrameworkDesc').innerHTML = `<strong>${fw.structure}</strong><br>${fw.description}`;
+  }
+}
+
+async function generateScript() {
+  const framework = document.getElementById('genFramework').value;
+  const theme = document.getElementById('genTheme').value;
+  const awareness = document.getElementById('genAwareness').value;
+  const length = document.getElementById('genLength').value;
+  const notes = document.getElementById('genNotes').value;
+
+  if (!theme) return alert('Vælg et tema først.');
+
+  const btn = document.getElementById('btnGenerate');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span>Claude genererer scripts...';
+
+  const resultsEl = document.getElementById('genResults');
+  resultsEl.innerHTML = '<div class="gen-empty"><span class="loading-spinner"></span><p>Claude analyserer dine blokke og sammensætter scripts...</p><p>Det tager 15-30 sekunder.</p></div>';
+
+  try {
+    const res = await fetch(`${API}/api/scripts/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ framework, theme, awareness, length, notes })
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+      resultsEl.innerHTML = `<div class="gen-empty"><p style="color:var(--red)">Fejl: ${data.error}</p></div>`;
+      return;
+    }
+
+    renderGeneratedScripts(data);
+  } catch (e) {
+    resultsEl.innerHTML = `<div class="gen-empty"><p style="color:var(--red)">Fejl: ${e.message}</p></div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Generér scripts';
+  }
+}
+
+function renderGeneratedScripts(data) {
+  const el = document.getElementById('genResults');
+  const roleColors = {
+    HOOK: '#E67E22', INTEREST: '#27AE60', PROBLEM: '#C0392B', AGITATION: '#922B21',
+    DESIRE: '#2E86C1', MECHANISM: '#566573', PRODUCT: '#7D3C98', BENEFITS: '#1E8449',
+    PROOF: '#2471A3', OBJECTION: '#B7950B', GUARANTEE: '#148F77', URGENCY: '#CA6F1E',
+    TRANSITION: '#717D7E', CTA: '#D4AC0D'
+  };
+
+  el.innerHTML = data.scripts.map((variant, vi) => {
+    const sections = variant.sections.map(s => {
+      const color = roleColors[s.role] || '#888';
+      const isOriginal = s.source === 'original';
+      return `
+        <div class="gen-section" style="border-left-color: ${color}">
+          <div class="gen-section-role" style="color: ${color}">
+            ${s.role}
+            <span class="gen-source-tag ${isOriginal ? 'gen-source-original' : 'gen-source-reused'}">${isOriginal ? 'nyskrevet' : s.source}</span>
+          </div>
+          <div class="gen-section-text">${esc(s.text)}</div>
+        </div>`;
+    }).join('');
+
+    const fullText = variant.sections.map(s => s.text).join('\n\n');
+
+    return `
+      <div class="gen-variant">
+        <div class="gen-variant-header">
+          <div>
+            <div class="gen-variant-title">Variant ${variant.variant}</div>
+            <div class="gen-variant-angle">${esc(variant.angle)}</div>
+          </div>
+          <button class="gen-variant-copy" onclick="copyGeneratedScript(this, \`${fullText.replace(/`/g, '\\`').replace(/\\/g, '\\\\')}\`)">Kopiér script</button>
+        </div>
+        ${sections}
+        <div class="gen-meta">
+          <span>Framework: ${data.framework.name}</span>
+          <span>Tema: ${data.theme}</span>
+          <span>Kilde-blokke: ${data.sourceBlocks}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function copyGeneratedScript(btn, text) {
+  navigator.clipboard.writeText(text.replace(/\\n\\n/g, '\n\n')).then(() => {
+    btn.textContent = 'Kopieret ✓';
+    setTimeout(() => { btn.textContent = 'Kopiér script'; }, 1500);
+  });
+}
 
 // ---- BOOT ----
 init();

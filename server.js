@@ -1980,6 +1980,219 @@ app.post('/api/scripts/admin/dedup', (req, res) => {
 });
 
 // ============================================================
+// AI SCRIPT GENERATOR — Framework-based script generation
+// ============================================================
+
+const FRAMEWORKS = {
+  PAS: {
+    name: 'PAS (Problem → Agitate → Solution)',
+    structure: 'HOOK → PROBLEM → AGITATION → PRODUCT → BENEFITS → CTA',
+    description: 'Kort og direkte. Identificerer smerten, forstærker den, og præsenterer løsningen. Stærk til cold traffic.',
+    roles: ['HOOK', 'PROBLEM', 'AGITATION', 'PRODUCT', 'BENEFITS', 'PROOF', 'CTA']
+  },
+  AIDA: {
+    name: 'AIDA (Attention → Interest → Desire → Action)',
+    structure: 'HOOK → INTEREST → DESIRE → PRODUCT → BENEFITS → CTA',
+    description: 'Klassisk salgsmodel. Bygger nysgerrighed og desire op gradvist før produktet præsenteres.',
+    roles: ['HOOK', 'INTEREST', 'DESIRE', 'MECHANISM', 'PRODUCT', 'BENEFITS', 'PROOF', 'CTA']
+  },
+  BAB: {
+    name: 'BAB (Before → After → Bridge)',
+    structure: 'HOOK → PROBLEM → DESIRE → PRODUCT → MECHANISM → BENEFITS → CTA',
+    description: 'Transformation-fokuseret. Maler et billede af livet FØR og EFTER, og viser broen derimellem.',
+    roles: ['HOOK', 'PROBLEM', 'DESIRE', 'PRODUCT', 'MECHANISM', 'BENEFITS', 'GUARANTEE', 'CTA']
+  },
+  SCHWARTZ: {
+    name: 'Schwartz Full Sequence',
+    structure: 'HOOK → INTEREST → PROBLEM → AGITATION → DESIRE → MECHANISM → PRODUCT → BENEFITS → PROOF → OBJECTION → GUARANTEE → CTA',
+    description: 'Komplet salgssekvens baseret på Eugene Schwartz. Dækker hele rejsen fra opmærksomhed til handling.',
+    roles: ['HOOK', 'INTEREST', 'PROBLEM', 'AGITATION', 'DESIRE', 'MECHANISM', 'PRODUCT', 'BENEFITS', 'PROOF', 'OBJECTION', 'GUARANTEE', 'CTA']
+  },
+  THREE_REASONS: {
+    name: '3 Reasons Why',
+    structure: 'HOOK → USP1 → USP2 → USP3 → BENEFITS → CTA',
+    description: 'Listicle-format. Præsenterer 3 stærke grunde. Virker godt for product-aware publikum.',
+    roles: ['HOOK', 'BENEFITS', 'MECHANISM', 'PROOF', 'DESIRE', 'CTA']
+  },
+  ROOT_CAUSE: {
+    name: 'Root Cause (Educational/TEDx)',
+    structure: 'HOOK → PROBLEM → AGITATION → MECHANISM → PRODUCT → BENEFITS → PROOF → GUARANTEE → CTA',
+    description: 'Længere, educational format. Forklarer HVORFOR problemet opstår og positionerer produktet som den intelligente løsning.',
+    roles: ['HOOK', 'INTEREST', 'PROBLEM', 'AGITATION', 'MECHANISM', 'PRODUCT', 'BENEFITS', 'PROOF', 'GUARANTEE', 'CTA']
+  }
+};
+
+app.post('/api/scripts/generate', async (req, res) => {
+  try {
+    const { framework, theme, awareness, length, notes } = req.body;
+    
+    if (!framework || !FRAMEWORKS[framework]) {
+      return res.status(400).json({ error: 'Invalid framework', available: Object.keys(FRAMEWORKS) });
+    }
+    if (!theme) {
+      return res.status(400).json({ error: 'Theme is required' });
+    }
+
+    const fw = FRAMEWORKS[framework];
+    const allBlocks = loadJSON(DATA_FILES.scriptblocks);
+    const scripts = loadJSON(DATA_FILES.scripts);
+
+    // Find relevant blocks by theme
+    const themeBlocks = allBlocks.filter(b => 
+      b.themes && b.themes.some(t => t.toLowerCase().includes(theme.toLowerCase()))
+    );
+
+    // Also get blocks from scripts with matching awareness
+    let awarenessBlocks = [];
+    if (awareness) {
+      const awarenessScriptIds = scripts
+        .filter(s => s.awareness === awareness)
+        .map(s => s.id);
+      awarenessBlocks = allBlocks.filter(b => awarenessScriptIds.includes(b.scriptId));
+    }
+
+    // Combine and deduplicate
+    const relevantBlockIds = new Set();
+    const relevantBlocks = [];
+    [...themeBlocks, ...awarenessBlocks].forEach(b => {
+      if (!relevantBlockIds.has(b.id)) {
+        relevantBlockIds.add(b.id);
+        relevantBlocks.push(b);
+      }
+    });
+
+    // Group by role for the prompt
+    const blocksByRole = {};
+    relevantBlocks.forEach(b => {
+      if (!blocksByRole[b.role]) blocksByRole[b.role] = [];
+      blocksByRole[b.role].push(b);
+    });
+
+    // Build the source material section
+    let sourceMaterial = '';
+    for (const role of fw.roles) {
+      const roleBlocks = blocksByRole[role] || [];
+      if (roleBlocks.length) {
+        sourceMaterial += `\n--- ${role} (${roleBlocks.length} blokke) ---\n`;
+        roleBlocks.forEach(b => {
+          const scriptTitle = scripts.find(s => s.id === b.scriptId)?.title || '';
+          sourceMaterial += `[${scriptTitle}] "${b.text}"\n`;
+        });
+      }
+    }
+
+    // Also include ALL hooks regardless of theme (hooks are gold)
+    const allHooks = allBlocks.filter(b => b.role === 'HOOK');
+    if (allHooks.length) {
+      sourceMaterial += `\n--- ALLE HOOKS (${allHooks.length} stk) ---\n`;
+      allHooks.forEach(b => {
+        const scriptTitle = scripts.find(s => s.id === b.scriptId)?.title || '';
+        sourceMaterial += `[${scriptTitle}] "${b.text}" [temaer: ${(b.themes || []).join(', ')}]\n`;
+      });
+    }
+
+    const lengthGuide = length === 'short' ? '30-45 sekunder (8-12 sætninger)' 
+      : length === 'long' ? '90-120 sekunder (25-35 sætninger)' 
+      : '45-75 sekunder (15-22 sætninger)';
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 8000,
+      system: `Du er KJELDGAARD's senior copywriter. Du skriver konverterende danske videoscripts til Meta-reklamer for Barrier Defense Serum.
+
+DIT FUNDAMENT:
+- Eugene Schwartz (Breakthrough Advertising): Awareness levels styrer tonalitet og approach
+- Jon Benson (CopyChief Master System): 12-faktor scoring, sætningsroller, emotional triggers
+
+PRODUKT: KJELDGAARD Barrier Defense Serum
+- Dansk premium skincare, klinisk testet i EU-laboratorier
+- Indkapslet retinol + hyaluronsyre-krydspolymer + peptider
+- Genopretter hudbarrieren, reducerer rynker/fine linjer
+- 60 dages tilfredshedsgaranti
+- 15.000+ danske kunder, 4.7/5 Trustpilot
+
+SKRIVEREGLER (KRITISK):
+- Naturligt, flydende dansk — ALDRIG staccato eller telegram-stil
+- Alle sætninger SKAL have subjekt + verbum
+- Ingen sætninger der starter med "Og"
+- Ingen spørgsmål-svar retoriske mønstre i prosa
+- Hooks SKAL være under 80 tegn
+- Brug KUN verificerbare claims (ingen "fjerner alle rynker" osv.)
+- Skriv som en erfaren dansk kvinde taler — ikke som en AI
+
+DIN OPGAVE:
+1. Brug de medfølgende proven script-blokke som dit primære kildemateriale
+2. Genbrug og tilpas eksisterende proven formuleringer hvor muligt
+3. Skriv nye sætninger KUN når nødvendigt for flow — og basér dem på patterns fra kildematerialet
+4. Følg det valgte framework's struktur
+5. Generér 2 script-varianter med forskellige vinkler
+
+OUTPUT FORMAT — returner ALTID valid JSON:
+{
+  "scripts": [
+    {
+      "variant": "A",
+      "angle": "kort beskrivelse af vinklen",
+      "sections": [
+        { "role": "HOOK", "text": "teksten", "source": "original" eller "VID XX - titel" }
+      ]
+    }
+  ]
+}
+
+"source" angiver om teksten er genbrugt fra en eksisterende blok (skriv script-titlen) eller "original" hvis nyskrevet.
+Returner KUN JSON, ingen anden tekst.`,
+      messages: [{
+        role: 'user',
+        content: `GENERER 2 SCRIPT-VARIANTER
+
+FRAMEWORK: ${fw.name}
+STRUKTUR: ${fw.structure}
+TEMA: ${theme}
+AWARENESS LEVEL: ${awareness || 'Ikke specificeret — vælg selv det mest passende'}
+LÆNGDE: ${lengthGuide}
+${notes ? `EKSTRA NOTER: ${notes}` : ''}
+
+KILDEMATERIALE FRA SCRIPT FACTORY DATABASE:
+${sourceMaterial || '(Ingen blokke fundet for dette tema — skriv fra bunden baseret på produktviden)'}
+
+Generér nu 2 stærke, konverterende script-varianter der følger ${fw.name} strukturen.
+Prioritér genbrug af proven formuleringer fra kildematerialet.
+Hvert script skal have mindst 3-4 unikke hook-varianter.`
+      }]
+    });
+
+    const responseText = response.content[0].text;
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    
+    if (!jsonMatch) {
+      return res.status(400).json({ error: 'Could not parse generated scripts', raw: responseText.substring(0, 500) });
+    }
+
+    const generated = JSON.parse(jsonMatch[0]);
+
+    res.json({
+      success: true,
+      framework: fw,
+      theme,
+      awareness,
+      length: lengthGuide,
+      sourceBlocks: relevantBlocks.length,
+      totalHooks: allHooks.length,
+      ...generated
+    });
+
+  } catch (err) {
+    console.error('Generate script error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/scripts/frameworks', (req, res) => {
+  res.json(FRAMEWORKS);
+});
+
+// ============================================================
 // Serve frontend for all non-API routes (MUST BE LAST)
 // ============================================================
 app.get('*', (req, res) => {
