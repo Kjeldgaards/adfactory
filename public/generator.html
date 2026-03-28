@@ -511,7 +511,17 @@ let lastResult = null;
 
 // ---- INIT ----
 async function init() {
-  // Load frameworks
+  // Hardcoded fallback frameworks (in case API hasn't deployed yet)
+  const fallbackFrameworks = [
+    { id: 'PAS', name: 'PAS (Problem → Agitate → Solution)', description: 'Kort og direkte. Stærk til cold traffic.', roles: ['HOOK','PROBLEM','AGITATION','PRODUCT','BENEFITS','PROOF','CTA'] },
+    { id: 'AIDA', name: 'AIDA (Attention → Interest → Desire → Action)', description: 'Klassisk. Bygger desire op gradvist.', roles: ['HOOK','INTEREST','DESIRE','MECHANISM','PRODUCT','BENEFITS','PROOF','CTA'] },
+    { id: 'BAB', name: 'BAB (Before → After → Bridge)', description: 'Transformation-fokuseret. Før/efter.', roles: ['HOOK','PROBLEM','DESIRE','PRODUCT','MECHANISM','BENEFITS','GUARANTEE','CTA'] },
+    { id: 'SCHWARTZ', name: 'Schwartz Full Sequence', description: 'Komplet salgssekvens. Eugene Schwartz.', roles: ['HOOK','INTEREST','PROBLEM','AGITATION','DESIRE','MECHANISM','PRODUCT','BENEFITS','PROOF','OBJECTION','GUARANTEE','CTA'] },
+    { id: 'THREE_REASONS', name: '3 Reasons Why', description: 'Listicle-format. Product-aware.', roles: ['HOOK','BENEFITS','MECHANISM','PROOF','DESIRE','CTA'] },
+    { id: 'ROOT_CAUSE', name: 'Root Cause (Educational/TEDx)', description: 'Længere, educational format.', roles: ['HOOK','INTEREST','PROBLEM','AGITATION','MECHANISM','PRODUCT','BENEFITS','PROOF','GUARANTEE','CTA'] }
+  ];
+
+  // Load frameworks from API (or use fallback)
   try {
     const fwRes = await fetch(`${API}/api/scripts/frameworks`);
     const fwData = await fwRes.json();
@@ -522,10 +532,12 @@ async function init() {
       description: fw.description,
       roles: fw.roles || []
     }));
-    renderFrameworkCards();
   } catch (e) {
-    console.error('Failed to load frameworks:', e);
+    console.error('API failed, using fallback frameworks:', e);
+    frameworks = fallbackFrameworks;
   }
+  if (!frameworks.length) frameworks = fallbackFrameworks;
+  renderFrameworkCards();
 
   // Load themes from stats
   try {
