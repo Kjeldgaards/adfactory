@@ -1717,7 +1717,11 @@ app.post('/api/scripts/assemble', async (req, res) => {
       return res.json({ script: assembled, blocks: selected, polished: false });
     }
 
-    // Claude polishes transitions
+    // Claude polishes transitions — with knowledge-enriched prompt
+    const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
+    const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
+    const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+
     const polishResponse = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 2048,
@@ -1728,11 +1732,20 @@ Din opgave: Tag et sammensat script (bygget af blokke fra forskellige scripts) o
 REGLER:
 - Bevar ALLE sætningers kernebetydning og salgsbudskab
 - Ændr KUN overgange mellem blokke
-- Hold det i naturligt dansk (ingen AI-dansk, ingen staccato)
+- Hold det i naturligt dansk (ingen AI-dansk, ingen staccato i body)
 - Bevar hook-energi i HOOK, smerte i PROBLEM, handling i CTA
-- Ingen sætninger der starter med "Og"
+- Ingen sætninger der starter med "Og" efter et punktum
 - Ingen spørgsmål-svar retoriske mønstre i prosa
-- Output: kun det polerede script, ingen kommentarer`,
+- Output: kun det polerede script, ingen kommentarer
+
+NATURLIGT DANSK REFERENCE:
+${saetningspar.substring(0, 2000)}
+
+DO — BRUG DISSE FORMULERINGER:
+${doRules}
+
+DON'T — BRUG ALDRIG DISSE:
+${dontRules}`,
       messages: [{ role: 'user', content: `Polér overgangene i dette sammensatte script:\n\n${assembled}` }]
     });
 
@@ -2091,6 +2104,14 @@ app.post('/api/scripts/generate', async (req, res) => {
       });
     }
 
+    // Load knowledge files for quality control
+    const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
+    const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+    const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
+    const ordbank = loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
+    const factsEfficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
+    const factsSafety = loadDoc('FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt');
+
     const lengthGuide = length === 'short' ? '30-45 sekunder (8-12 sætninger)' 
       : length === 'long' ? '90-120 sekunder (25-35 sætninger)' 
       : '45-75 sekunder (15-22 sætninger)';
@@ -2111,14 +2132,39 @@ PRODUKT: KJELDGAARD Barrier Defense Serum
 - 60 dages tilfredshedsgaranti
 - 15.000+ danske kunder, 4.7/5 Trustpilot
 
-SKRIVEREGLER (KRITISK):
-- Naturligt, flydende dansk — ALDRIG staccato eller telegram-stil
+═══════════════════════════════════════
+SKRIVEREGLER (KRITISK — OVERHOLD ALLE)
+═══════════════════════════════════════
+
+1. NATURLIGT DANSK — ALDRIG AI-DANSK:
+${saetningspar.substring(0, 3000)}
+
+2. DO — BRUG DISSE FORMULERINGER:
+${doRules}
+
+3. DON'T — BRUG ALDRIG DISSE:
+${dontRules}
+
+4. KUNDEORD (ORDBANK) — integrer naturligt:
+${ordbank.substring(0, 4000)}
+
+5. FACTS COMPLIANCE — kun godkendte claims:
+${factsEfficacy.substring(0, 2000)}
+${factsSafety.substring(0, 1000)}
+
+═══════════════════════════════════════
+GENERELLE REGLER
+═══════════════════════════════════════
+- Skriv ALT på dansk
 - Alle sætninger SKAL have subjekt + verbum
-- Ingen sætninger der starter med "Og"
-- Ingen spørgsmål-svar retoriske mønstre i prosa
+- Ingen staccato i body-tekst (kun i headlines/hooks/CTAs)
+- Start ALDRIG en sætning med "Og" efter et punktum
+- Brug ALDRIG spørgsmål-svar retorisk mønster i prosa
+- Skriv som en dansk kvinde på 50 ville tale til en veninde — varmt, troværdigt, naturligt
 - Hooks SKAL være under 80 tegn
+- Lav 3-4 hook-varianter per script
+- Inkluder ALTID 60-dages garanti
 - Brug KUN verificerbare claims (ingen "fjerner alle rynker" osv.)
-- Skriv som en erfaren dansk kvinde taler — ikke som en AI
 
 DIN OPGAVE:
 1. Brug de medfølgende proven script-blokke som dit primære kildemateriale
@@ -2190,6 +2236,55 @@ Hvert script skal have mindst 3-4 unikke hook-varianter.`
 
 app.get('/api/scripts/frameworks', (req, res) => {
   res.json(FRAMEWORKS);
+});
+
+// POST — Standalone polish endpoint with knowledge-enriched prompt
+app.post('/api/scripts/polish', async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) return res.status(400).json({ error: 'No text provided' });
+
+    const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
+    const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
+    const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+
+    const polishResponse = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4096,
+      system: `Du er en dansk videoscript-redaktør for KJELDGAARD (premium skincare).
+
+Din opgave: Tag et script og polér det så det flyder naturligt som ÉT sammenhængende, konverterende script.
+
+REGLER:
+- Bevar ALLE sætningers kernebetydning og salgsbudskab
+- Forbedre overgange mellem sektioner
+- Hold det i naturligt dansk (ingen AI-dansk, ingen staccato i body)
+- Bevar hook-energi i HOOK, smerte i PROBLEM, handling i CTA
+- Ingen sætninger der starter med "Og" efter et punktum
+- Ingen spørgsmål-svar retoriske mønstre i prosa
+
+NATURLIGT DANSK REFERENCE:
+${saetningspar.substring(0, 2000)}
+
+DO — BRUG DISSE FORMULERINGER:
+${doRules}
+
+DON'T — BRUG ALDRIG DISSE:
+${dontRules}
+
+Output: kun det polerede script, ingen kommentarer.`,
+      messages: [{ role: 'user', content: `Polér dette script:\n\n${text}` }]
+    });
+
+    res.json({
+      success: true,
+      polished: polishResponse.content[0].text
+    });
+
+  } catch (err) {
+    console.error('Polish error:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ============================================================
