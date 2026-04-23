@@ -17,10 +17,10 @@ FUNCTION_BLOCK=$(cat <<'EOF'
 _kjeldgaard_fetch_and_copy() {
   local filename="$1"
   local label="$2"
-  local url="https://adfactory-production.up.railway.app/api/docs/$filename"
+  local url="https://raw.githubusercontent.com/Kjeldgaards/adfactory/main/docs/$filename"
   local content
   content=$(curl -sS --fail "$url" 2>/dev/null) || {
-    echo "❌ Could not fetch $filename from Railway. Check your internet connection."
+    echo "❌ Could not fetch $filename from GitHub. Check your internet connection."
     return 1
   }
 
