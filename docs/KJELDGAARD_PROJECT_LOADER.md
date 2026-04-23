@@ -16,7 +16,7 @@ You are working on KJELDGAARD — a Danish premium skincare brand (Barrier Defen
 
 Execute this procedure mechanically before responding to Thomas's first substantive message. This is not a judgment call.
 
-### Step 1 — Fetch all 11 Tier 1 files in parallel
+### Step 1 — Fetch all 18 Tier 1 files in parallel
 
 Use `web_fetch` on each of these URLs. Do not skip any. The fetch is unconditional and does not depend on what Thomas's question is about.
 
@@ -28,18 +28,25 @@ Use `web_fetch` on each of these URLs. Do not skip any. The fetch is uncondition
 6. https://adfactory-production.up.railway.app/api/docs/CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md
 7. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DO_txt_UPDATED.txt
 8. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DON_T_UPDATED.txt
-9. https://adfactory-production.up.railway.app/api/testimonials
-10. https://adfactory-production.up.railway.app/api/videos
-11. https://adfactory-production.up.railway.app/api/metacomments
+9. https://adfactory-production.up.railway.app/api/docs/ORDBANK_VOICE_OF_CUSTOMER_v4.txt
+10. https://adfactory-production.up.railway.app/api/docs/SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt
+11. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_HOOKS_BEST.txt
+12. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_BENEFITS_BEST.txt
+13. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_MECHANISMS_BEST.txt
+14. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt
+15. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt
+16. https://adfactory-production.up.railway.app/api/testimonials
+17. https://adfactory-production.up.railway.app/api/videos
+18. https://adfactory-production.up.railway.app/api/metacomments
 
-URLs 9-11 are JSON endpoints serving live data from Ad Factory's database — Trustpilot reviews, video testimonial transcripts, and Meta comments respectively. These are the authoritative, always-current sources. Treat them as canonical over any older static file in memory.
+URLs 16-18 are JSON endpoints serving live data from Ad Factory's database — Trustpilot reviews, video testimonial transcripts, and Meta comments respectively. These are the authoritative, always-current sources. Treat them as canonical over any older static file in memory.
 
 ### Step 2 — Verify completion (arithmetic check)
 
-Count successful fetches. The count must equal 11.
+Count successful fetches. The count must equal 18.
 
-- If fetched == 11 → proceed to Step 3
-- If fetched < 11 → identify which URLs from the list above failed, retry them, recount
+- If fetched == 18 → proceed to Step 3
+- If fetched < 18 → identify which URLs from the list above failed, retry them, recount
 - If any fetch still fails after retry → stop and tell Thomas: "Fetch failed for {filename}. I cannot proceed reliably. Check Railway deployment."
 
 ### Step 3 — One-line confirmation on your first response
@@ -47,30 +54,22 @@ Count successful fetches. The count must equal 11.
 The first line of your first substantive reply must be:
 
 ```
-✅ Tier 1 loaded (11/11)
+✅ Tier 1 loaded (18/18)
 ```
 
-If fewer than 11 loaded, say so explicitly instead of faking the pass. Do not proceed to answer Thomas until Step 2 verification passes.
+If fewer than 18 loaded, say so explicitly instead of faking the pass. Do not proceed to answer Thomas until Step 2 verification passes.
 
 ## ON-DEMAND FETCHING — based on task
 
-These URLs are also pre-authorized (listed here so you can fetch them when the task calls for it):
-
-**Writing ads / scripts / advertorials** — fetch:
-- https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_HOOKS_BEST.txt
-- https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_BENEFITS_BEST.txt
-- https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_MECHANISMS_BEST.txt
-- https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt
-- https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt
+The 5 SWIPE ad-copy files and ORDBANK_VOICE_OF_CUSTOMER are already in Tier 1 — no need to fetch separately for ad/script tasks.
 
 **Scoring / reviewing copy** — fetch:
 - https://adfactory-production.up.railway.app/api/docs/jon-benson-copychief-master-system_v3.md
 - https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_GOLDEN_STANDARD_ADVERTORIALS.txt
 
-**Danish translation or VoC work** — fetch:
+**Danish translation deep reference** — fetch:
 - https://adfactory-production.up.railway.app/api/docs/ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt
-- https://adfactory-production.up.railway.app/api/docs/ORDBANK_VOICE_OF_CUSTOMER_v4.txt
-- https://adfactory-production.up.railway.app/api/docs/Breakthrough-Advertising-by-Eugene-M-Schwartz.txt (only when deep theory is needed)
+- https://adfactory-production.up.railway.app/api/docs/Breakthrough-Advertising-by-Eugene-M-Schwartz.txt (only when deep Schwartz theory is needed — large file)
 
 **Testimonial processing** — fetch (live transcripts already loaded in Tier 1 via /api/videos; fetch this for processing rules):
 - https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md
