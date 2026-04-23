@@ -53,11 +53,15 @@ kjeldgaard-strategist() {
 EOF
 )
 
-# Remove any previous version
+# Remove any previous version (macOS-compatible)
 if grep -q "$MARKER" "$ZSHRC" 2>/dev/null; then
   echo "Removing existing kjeldgaard functions..."
-  sed -i.bak "/$MARKER/,/$END_MARKER/d" "$ZSHRC"
-  rm -f "$ZSHRC.bak"
+  # Use a temp file approach that works on both macOS and Linux
+  awk -v start="$MARKER" -v end="$END_MARKER" '
+    $0 ~ start {skip=1; next}
+    $0 ~ end {skip=0; next}
+    !skip {print}
+  ' "$ZSHRC" > "$ZSHRC.tmp" && mv "$ZSHRC.tmp" "$ZSHRC"
 fi
 
 # Append fresh version
