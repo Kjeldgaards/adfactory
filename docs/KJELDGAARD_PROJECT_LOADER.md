@@ -27,6 +27,7 @@ This file tells you which documents exist, what each covers, and which to fetch 
 For any KJELDGAARD task, always fetch these first:
 
 - `https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_MASTER_INSTRUCTIONS_v1.md`
+- `https://adfactory-production.up.railway.app/api/docs/DECISION_PRIORITY.md`
 - `https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt`
 - `https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt`
 - `https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt`

@@ -29,6 +29,7 @@ This file tells you which documents exist and which to fetch for the current tas
 For any KJELDGAARD task, always fetch these first:
 
 - `https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_MASTER_INSTRUCTIONS_v1.md`
+- `https://adfactory-production.up.railway.app/api/docs/DECISION_PRIORITY.md`
 - `https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt`
 - `https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt`
 - `https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt`
@@ -156,6 +157,7 @@ Pull Hook / Before / Result from real testimonials. Inject Mechanism + CTA + mis
 
 - **Never answer from memory** about KJELDGAARD facts, claims, copy style, or forbidden words. Always fetch the source file.
 - **If a fetch fails**, tell Thomas immediately. Do not improvise.
+- **When goals conflict**, apply `DECISION_PRIORITY.md` — this file has authority to resolve tensions between compliance, VoC, DR structure, and brevity. Do not ask Thomas to adjudicate unless the conflict violates level 1 or 2.
 - **FACTS versions**: EFFICACY v10, SAFETY v10, INGREDIENTS v9. v10 of INGREDIENTS does NOT exist.
 - **Tie recommendations to metrics and economics**: CTR, CVR, CPA/CAC, AOV, LTV, ROAS/MER
 - **Label assumptions explicitly** when data is missing, and state what would confirm or disprove them
