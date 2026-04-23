@@ -1,0 +1,95 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-04-23",
+  "purpose": "Canonical file list for KJELDGAARD Claude projects. The loader fetches this manifest first, then fetches every file listed under 'tier_1_required'. Verification is arithmetic: count fetched files, compare to manifest count. Mismatch = re-fetch.",
+  "base_url": "https://adfactory-production.up.railway.app/api/docs/",
+  "tier_1_required": {
+    "count": 9,
+    "description": "Fetched unconditionally at conversation start. Do not skip any file under any circumstances.",
+    "files": [
+      {
+        "filename": "KJELDGAARD_MASTER_INSTRUCTIONS_v1.md",
+        "bytes": 37117,
+        "purpose": "Complete operating system: copywriting rules, advertorial format, workflows, Danish language rules"
+      },
+      {
+        "filename": "DECISION_PRIORITY.md",
+        "bytes": 4594,
+        "purpose": "Resolves tensions: compliance > forbidden claims > brand voice > VoC > DR structure > polish"
+      },
+      {
+        "filename": "FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt",
+        "bytes": 6175,
+        "purpose": "Approved efficacy claims + clinical study references"
+      },
+      {
+        "filename": "FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt",
+        "bytes": 13665,
+        "purpose": "Ingredient claims, concentrations, mechanisms"
+      },
+      {
+        "filename": "FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt",
+        "bytes": 5672,
+        "purpose": "Safety data, dermatological testing, tolerance"
+      },
+      {
+        "filename": "CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md",
+        "bytes": 70126,
+        "purpose": "Complete sales argument, positioning, USPs, unique mechanism framing"
+      },
+      {
+        "filename": "SWIPE_KJELDGAARD_DO_txt_UPDATED.txt",
+        "bytes": 4970,
+        "purpose": "Approved words, phrases, patterns"
+      },
+      {
+        "filename": "SWIPE_KJELDGAARD_DON_T_UPDATED.txt",
+        "bytes": 2140,
+        "purpose": "Forbidden words, phrases, claims — hard ban list"
+      },
+      {
+        "filename": "TRUSTPILOT_REVIEWS_COMPLETE_5_STARS_ONLY_18_02_26.md",
+        "bytes": 58109,
+        "purpose": "162 verified 5-star reviews — canonical testimonial source"
+      }
+    ]
+  },
+  "tier_2_ads_scripts": {
+    "description": "Fetch when writing ads, scripts, advertorials, or testimonial video content",
+    "files": [
+      {"filename": "SWIPE_KJELDGAARD_HOOKS_BEST.txt", "bytes": 8458},
+      {"filename": "SWIPE_KJELDGAARD_BENEFITS_BEST.txt", "bytes": 3661},
+      {"filename": "SWIPE_KJELDGAARD_MECHANISMS_BEST.txt", "bytes": 4486},
+      {"filename": "SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt", "bytes": 5987},
+      {"filename": "SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt", "bytes": 2886}
+    ]
+  },
+  "tier_3_quality_scoring": {
+    "description": "Fetch when scoring, reviewing, or rewriting copy",
+    "files": [
+      {"filename": "jon-benson-copychief-master-system_v3.md", "bytes": 51697},
+      {"filename": "SWIPE_KJELDGAARD_GOLDEN_STANDARD_ADVERTORIALS.txt", "bytes": 35098}
+    ]
+  },
+  "tier_4_language_reference": {
+    "description": "Fetch for Danish translation or voice-of-customer work",
+    "files": [
+      {"filename": "ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt", "bytes": 25917},
+      {"filename": "ORDBANK_VOICE_OF_CUSTOMER_v4.txt", "bytes": 20269},
+      {"filename": "Breakthrough-Advertising-by-Eugene-M-Schwartz.txt", "bytes": 414362, "note": "Large file — only fetch when deep theory reference is needed"}
+    ]
+  },
+  "tier_5_testimonial_tools": {
+    "description": "Fetch for testimonial processing and video testimonial work",
+    "files": [
+      {"filename": "KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md", "bytes": 17930},
+      {"filename": "KJELDGAARD_VIDEO_TESTIMONIALS_MASTER.md", "bytes": 20394}
+    ]
+  },
+  "task_templates": {
+    "description": "Reusable task specifications. Reference by filename in chat to invoke.",
+    "files": [
+      {"filename": "TASK_META_TESTIMONIAL_SCRIPT_35S.md", "bytes": 3584, "invokes": "3-5 Danish Meta testimonial scripts 35-45s"}
+    ]
+  }
+}
