@@ -13,7 +13,7 @@ FUNCTION_BLOCK=$(cat <<'EOF'
 # === KJELDGAARD_LOADER_START ===
 # Fetches the KJELDGAARD project loader from Railway and copies it to clipboard.
 # Paste into any new Claude project's Custom Instructions field.
-kjeldloader() {
+kjeldgaard() {
   local url="https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_PROJECT_LOADER.md"
   local content
   content=$(curl -sS --fail "$url" 2>/dev/null) || {
@@ -43,7 +43,7 @@ EOF
 
 # Remove any previous version
 if grep -q "$MARKER" "$ZSHRC" 2>/dev/null; then
-  echo "Removing existing kjeldloader function..."
+  echo "Removing existing kjeldgaard function..."
   # Use sed to delete lines between markers (inclusive)
   sed -i.bak "/$MARKER/,/$END_MARKER/d" "$ZSHRC"
   rm -f "$ZSHRC.bak"
@@ -54,7 +54,7 @@ echo "" >> "$ZSHRC"
 echo "$FUNCTION_BLOCK" >> "$ZSHRC"
 
 echo ""
-echo "✅ Installed kjeldloader to $ZSHRC"
+echo "✅ Installed kjeldgaard command to $ZSHRC"
 echo ""
 echo "To activate in your CURRENT terminal, run:"
 echo "    source ~/.zshrc"
@@ -62,6 +62,6 @@ echo ""
 echo "Or just open a new terminal tab."
 echo ""
 echo "Then anywhere, run:"
-echo "    kjeldloader"
+echo "    kjeldgaard"
 echo ""
 echo "The loader will be copied to your clipboard, ready to paste into a Claude project."
