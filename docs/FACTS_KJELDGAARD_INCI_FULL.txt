@@ -1,72 +1,12 @@
 FACTS_KJELDGAARD_INCI_FULL.txt
-Version: FINAL v1
+Version: FINAL v2
 Product: KJELDGAARD Barrier Defense® Serum
-Document type: Juridisk / regulatorisk referencedokument — komplet INCI-liste.
-
-═══════════════════════════════════════════════════════════════
-FORMÅL MED DENNE FIL
-═══════════════════════════════════════════════════════════════
-
-Dette er den fulde, officielle INCI-liste for Barrier Defense® Serum, præcis som den fremgår af produktets emballage og webshop. Listen er sorteret efter EU-reglerne (faldende koncentration ned til 1%, derefter i vilkårlig rækkefølge).
-
-Denne fil er IKKE marketing-materiale.
-
-- Brug denne fil til at besvare juridiske spørgsmål om ingredienser (allergener, specifikke komponenter, fuld deklaration).
-- Brug denne fil til konsistenstjek: alt hvad der nævnes i marketing, skal kunne findes her.
-- Brug IKKE denne fil til at formulere claims. Claims skal altid hentes fra FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt under "MÅ SIGES".
-
-Hvis en ingrediens optræder i denne liste men ikke i INGREDIENTS_v9, betyder det at vi ikke har godkendte marketing-claims for den — så nævn den kun som teknisk ingrediens, ikke som sælgende point.
 
 ═══════════════════════════════════════════════════════════════
 FULD INCI-LISTE (i koncentrationsrækkefølge)
 ═══════════════════════════════════════════════════════════════
 
 Aqua (Water), Glycereth-26, Propanediol, Butylene Glycol, Bis-PEG-18 Methyl Ether Dimethyl Silane, Methyl Gluceth-20, PEG-8, Glycerin, Retinol, Ethylhexylglycerin, Phenoxyethanol, Bakuchiol, Ferulic Acid, Tocopheryl Acetate, Tromethamine, Carbomer, Bisabolol, Pentylene Glycol, Buddleja Officinalis Flower Extract, Trisodium Ethylenediamine Disuccinate, Squalane, Xanthan Gum, Lecithin, Hydrolyzed Collagen, Hydroxypropyl Cyclodextrin, Alcohol, Polysorbate 20, Caprylyl Glycol, Sodium Acetylated Hyaluronate, Sodium Hyaluronate, Sodium Hyaluronate Crosspolymer, Potassium Phosphate, Hydrolyzed Sodium Hyaluronate, Acetyl Hexapeptide-8, BHT, Palmitoyl Tripeptide-38, BHA, Tocopherol, Ascorbyl Palmitate
-
-═══════════════════════════════════════════════════════════════
-KRYDSREFERENCE — hvor i INGREDIENTS_v9 findes hvad
-═══════════════════════════════════════════════════════════════
-
-Disse ingredienser fra INCI-listen har dedikerede sektioner med MÅ SIGES / MÅ IKKE SIGES i FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt:
-
-- Retinol (leveret som ROVISOME® Retinol Moist)       → INGREDIENTS-01
-- Sodium Hyaluronate Crosspolymer                     → INGREDIENTS-02
-- Ferulic Acid                                        → INGREDIENTS-03
-- Phenoxyethanol + Ethylhexylglycerin                 → INGREDIENTS-04
-- Butylene Glycol + Propanediol + PEG-8 + Glycereth-26 → INGREDIENTS-05 (humectants)
-- Squalane                                            → INGREDIENTS-07
-- Buddleja Officinalis Flower Extract (som Soliberine®) → INGREDIENTS-08
-- Bakuchiol (som Sytenol® A)                          → INGREDIENTS-09
-- Methyl Gluceth-20 (som Glucam™ E-20)                → INGREDIENTS-10
-- Tocopheryl Acetate (Vitamin E)                      → INGREDIENTS-11
-- Bisabolol                                           → INGREDIENTS-12
-- Hydrolyzed Collagen (som Promois WU-32R)            → INGREDIENTS-13
-- Acetyl Hexapeptide-8 (Argireline)                   → omtalt i INGREDIENTS-06
-- Palmitoyl Tripeptide-38 (Matrixyl Synthe'6)         → omtalt i INGREDIENTS-06
-
-Ingredienser UDEN dedikeret marketing-sektion (teknisk funktion, ikke marketing-point):
-
-- Aqua (Water)                         — opløsningsmiddel
-- Bis-PEG-18 Methyl Ether Dimethyl Silane — tekstur / finish
-- Glycerin                             — humectant
-- Tromethamine                         — pH-justering
-- Carbomer                             — viskositet
-- Pentylene Glycol                     — opløsningsmiddel / mildt konserverende
-- Trisodium Ethylenediamine Disuccinate — chelating agent
-- Xanthan Gum                          — viskositet / stabilisator
-- Lecithin                             — emulgator / delivery
-- Hydroxypropyl Cyclodextrin           — opløsningsmiddel / delivery
-- Alcohol                              — opløsningsmiddel (lav koncentration, efter Polysorbate 20)
-- Polysorbate 20                       — emulgator
-- Caprylyl Glycol                      — konserveringsbooster / humectant
-- Sodium Acetylated Hyaluronate        — hyaluronsyre-derivat (surface conditioning)
-- Sodium Hyaluronate                   — hyaluronsyre
-- Potassium Phosphate                  — pH-buffer
-- Hydrolyzed Sodium Hyaluronate        — hyaluronsyre-derivat (lav molekylvægt)
-- BHT                                  — antioxidant (stabiliserer formulering)
-- BHA                                  — antioxidant (stabiliserer formulering)
-- Tocopherol                           — Vitamin E (antioxidant, naturlig form)
-- Ascorbyl Palmitate                   — C-vitamin-derivat (antioxidant, stabiliserer formulering)
 
 ═══════════════════════════════════════════════════════════════
 BEMÆRKNINGER
@@ -79,15 +19,3 @@ BEMÆRKNINGER
 - BHT, BHA, Tocopherol og Ascorbyl Palmitate er til stede som antioxidanter der stabiliserer formulering og forlænger holdbarhed — ikke som aktive ingredienser i marketing-forstand.
 
 - Alcohol i listen er i lav koncentration (efter Polysorbate 20) og fungerer som opløsningsmiddel, ikke som høj-alkohol formulering. Vær forsigtig hvis sensitiv hud spørger — nævn det ikke proaktivt, men vær ærlig hvis spurgt.
-
-═══════════════════════════════════════════════════════════════
-VEDLIGEHOLD
-═══════════════════════════════════════════════════════════════
-
-Hvis formuleringen ændres (ny batch, reformulering, ingredienstilpasning), skal denne fil opdateres samtidig med:
-- Produktemballagen
-- Webshop-produktsiden
-- INGREDIENTS_v9 (eller højere version)
-- COMPLIFE/Zurko klinisk dokumentation hvis relevant
-
-Version-bump følger samme system som de øvrige FACTS-filer (v1 → v2 → v3 osv.).
