@@ -1249,6 +1249,40 @@ function loadDoc(filename) {
   return fs.readFileSync(filepath, 'utf8');
 }
 
+// Tier 1 canonical files — matches docs/KJELDGAARD_PROJECT_LOADER.md exactly.
+// Keep this list in sync with both loader files (KJELDGAARD_PROJECT_LOADER.md and
+// KJELDGAARD_PROJECT_LOADER_STRATEGIST.md) so Ad Factory, Script Factory, and
+// Claude Projects all operate on the same knowledge base.
+const TIER_1_DOCS = [
+  'KJELDGAARD_MASTER_INSTRUCTIONS_v1.md',
+  'DECISION_PRIORITY.md',
+  'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt',
+  'FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt',
+  'FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt',
+  'FACTS_KJELDGAARD_INCI_FULL.txt',
+  'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md',
+  'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt',
+  'SWIPE_KJELDGAARD_DON_T_UPDATED.txt',
+  'ORDBANK_VOICE_OF_CUSTOMER_v4.txt',
+  'SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt',
+  'SWIPE_KJELDGAARD_HOOKS_BEST.txt',
+  'SWIPE_KJELDGAARD_BENEFITS_BEST.txt',
+  'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt',
+  'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt',
+  'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt'
+  // Live JSON endpoints (/api/testimonials, /api/videos, /api/metacomments) are the 3 remaining
+  // Tier 1 sources. Ad Factory and Script Factory read them directly from DATA_FILES, not via loadDoc.
+];
+
+// Load every Tier 1 doc and concatenate as prompt context.
+// Each doc wrapped in "=== FILENAME ===" headers for Claude to reference.
+function loadAllTier1Docs() {
+  return TIER_1_DOCS.map(f => {
+    const content = loadDoc(f);
+    return content ? `\n=== ${f} ===\n${content}` : '';
+  }).filter(Boolean).join('\n\n');
+}
+
 app.post('/api/chat', async (req, res) => {
   try {
     const { message, selectedIds, history, templateInfo } = req.body;
@@ -1300,13 +1334,9 @@ app.post('/api/chat', async (req, res) => {
       }
     }
 
-    // Load core docs for context (abbreviated to fit in context window)
-    const doRegler = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
-    const dontRegler = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
-    const ordbank = loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
-    const efficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
-    const hooks = loadDoc('SWIPE_KJELDGAARD_HOOKS_BEST.txt');
-    const benefits = loadDoc('SWIPE_KJELDGAARD_BENEFITS_BEST.txt');
+    // Load full Tier 1 knowledge base — matches what Claude Projects load via the loader.
+    // Ensures Ad Factory chat uses the exact same canonical files as strategist projects.
+    const tier1Context = loadAllTier1Docs();
     const benson = loadDoc('jon-benson-copychief-master-system_v3.md');
 
     const systemPrompt = `Du er KJELDGAARD's kreative AI-assistent integreret i Ad Factory.
@@ -1319,30 +1349,16 @@ BRAND: KJELDGAARD — dansk premium skincare. Hero product: Barrier Defense Seru
 Klinisk testet: 27% reduktion af fine linjer, 100% forbedring, 0% bivirkninger.
 14.000+ kunder, 4.7/5 Trustpilot, ~70 ordrer/dag.
 
-=== DO REGLER ===
-${doRegler.substring(0, 3000)}
+${tier1Context}
 
-=== DON'T REGLER ===
-${dontRegler.substring(0, 2000)}
-
-=== ORDBANK (Kundesprog) ===
-${ordbank.substring(0, 4000)}
-
-=== HOOKS EKSEMPLER ===
-${hooks.substring(0, 2000)}
-
-=== BENEFITS EKSEMPLER ===
-${benefits.substring(0, 2000)}
-
-=== EFFICACY FACTS ===
-${efficacy.substring(0, 2000)}
-
-=== BENSON SCORING (kort) ===
-${benson.substring(0, 3000)}
+=== BENSON SCORING ===
+${benson}
 ${testimonialsContext}${templateContext}
 
 Svar klart og direkte. Når du genererer copy/tekst, giv det som færdige varianter der kan bruges med det samme.
-Brug kundeord fra testimonials når de er tilgængelige.`;
+Brug kundeord fra testimonials når de er tilgængelige.
+Når facts/claims/ingredienser er involveret, følg MÅ SIGES/MÅ IKKE SIGES i FACTS-filerne.
+Ved konflikter, brug DECISION_PRIORITY.md som autoritet.`;
 
     // Build messages array with history
     const messages = [];
@@ -1493,13 +1509,11 @@ app.post('/api/generate', async (req, res) => {
       return res.status(400).json({ error: 'No matching testimonials found for given IDs' });
     }
 
-    // Load docs
-    const docsContent = config.docs.map(f => {
-      const content = loadDoc(f);
-      return content ? `\n=== ${f} ===\n${content}` : '';
-    }).filter(Boolean).join('\n');
+    // Load full Tier 1 knowledge base — same canonical set as Claude Projects.
+    // Replaces the older per-type config.docs subset approach.
+    const docsContent = loadAllTier1Docs();
 
-    // Always load Benson scoring
+    // Always load Benson scoring (Tier 3 — only relevant when scoring/generating, so kept separate)
     const benson = loadDoc('jon-benson-copychief-master-system_v3.md');
 
     // Build testimonials context
@@ -1717,10 +1731,8 @@ app.post('/api/scripts/assemble', async (req, res) => {
       return res.json({ script: assembled, blocks: selected, polished: false });
     }
 
-    // Claude polishes transitions — with knowledge-enriched prompt
-    const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
-    const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
-    const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+    // Claude polishes transitions — with full Tier 1 knowledge base
+    const tier1Context = loadAllTier1Docs();
 
     const polishResponse = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
@@ -1736,16 +1748,12 @@ REGLER:
 - Bevar hook-energi i HOOK, smerte i PROBLEM, handling i CTA
 - Ingen sætninger der starter med "Og" efter et punktum
 - Ingen spørgsmål-svar retoriske mønstre i prosa
+- Følg MÅ SIGES / MÅ IKKE SIGES i FACTS-filerne hvis du rører ved claims
+- Ved konflikter, brug DECISION_PRIORITY.md som autoritet
 - Output: kun det polerede script, ingen kommentarer
 
-NATURLIGT DANSK REFERENCE:
-${saetningspar.substring(0, 2000)}
-
-DO — BRUG DISSE FORMULERINGER:
-${doRules}
-
-DON'T — BRUG ALDRIG DISSE:
-${dontRules}`,
+FULL KNOWLEDGE BASE:
+${tier1Context}`,
       messages: [{ role: 'user', content: `Polér overgangene i dette sammensatte script:\n\n${assembled}` }]
     });
 
@@ -2104,13 +2112,8 @@ app.post('/api/scripts/generate', async (req, res) => {
       });
     }
 
-    // Load knowledge files for quality control
-    const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
-    const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
-    const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
-    const ordbank = loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
-    const factsEfficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
-    const factsSafety = loadDoc('FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt');
+    // Load full Tier 1 knowledge base — same canonical set as Claude Projects
+    const tier1Context = loadAllTier1Docs();
 
     const lengthGuide = length === 'short' ? '30-45 sekunder (8-12 sætninger)' 
       : length === 'long' ? '90-120 sekunder (25-35 sætninger)' 
@@ -2133,24 +2136,9 @@ PRODUKT: KJELDGAARD Barrier Defense Serum
 - 15.000+ danske kunder, 4.7/5 Trustpilot
 
 ═══════════════════════════════════════
-SKRIVEREGLER (KRITISK — OVERHOLD ALLE)
+FULL KNOWLEDGE BASE (KRITISK — OVERHOLD ALLE REGLER)
 ═══════════════════════════════════════
-
-1. NATURLIGT DANSK — ALDRIG AI-DANSK:
-${saetningspar.substring(0, 3000)}
-
-2. DO — BRUG DISSE FORMULERINGER:
-${doRules}
-
-3. DON'T — BRUG ALDRIG DISSE:
-${dontRules}
-
-4. KUNDEORD (ORDBANK) — integrer naturligt:
-${ordbank.substring(0, 4000)}
-
-5. FACTS COMPLIANCE — kun godkendte claims:
-${factsEfficacy.substring(0, 2000)}
-${factsSafety.substring(0, 1000)}
+${tier1Context}
 
 ═══════════════════════════════════════
 GENERELLE REGLER
@@ -2244,9 +2232,7 @@ app.post('/api/scripts/polish', async (req, res) => {
     const { text } = req.body;
     if (!text) return res.status(400).json({ error: 'No text provided' });
 
-    const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
-    const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
-    const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+    const tier1Context = loadAllTier1Docs();
 
     const polishResponse = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
@@ -2262,15 +2248,11 @@ REGLER:
 - Bevar hook-energi i HOOK, smerte i PROBLEM, handling i CTA
 - Ingen sætninger der starter med "Og" efter et punktum
 - Ingen spørgsmål-svar retoriske mønstre i prosa
+- Følg MÅ SIGES / MÅ IKKE SIGES i FACTS-filerne hvis du rører ved claims
+- Ved konflikter, brug DECISION_PRIORITY.md som autoritet
 
-NATURLIGT DANSK REFERENCE:
-${saetningspar.substring(0, 2000)}
-
-DO — BRUG DISSE FORMULERINGER:
-${doRules}
-
-DON'T — BRUG ALDRIG DISSE:
-${dontRules}
+FULL KNOWLEDGE BASE:
+${tier1Context}
 
 Output: kun det polerede script, ingen kommentarer.`,
       messages: [{ role: 'user', content: `Polér dette script:\n\n${text}` }]
