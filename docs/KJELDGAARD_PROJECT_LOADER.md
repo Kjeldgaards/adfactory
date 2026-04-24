@@ -29,7 +29,7 @@ Use `web_fetch` on each of these URLs. Do not skip any. The fetch is uncondition
 7. https://adfactory-production.up.railway.app/api/docs/CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md
 8. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DO_txt_UPDATED.txt
 9. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DON_T_UPDATED.txt
-10. https://adfactory-production.up.railway.app/api/docs/ORDBANK_VOICE_OF_CUSTOMER_v4.txt
+10. https://adfactory-production.up.railway.app/api/customer-voice
 11. https://adfactory-production.up.railway.app/api/docs/SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt
 12. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_HOOKS_BEST.txt
 13. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_BENEFITS_BEST.txt
@@ -81,6 +81,18 @@ The 5 SWIPE ad-copy files and ORDBANK_VOICE_OF_CUSTOMER are already in Tier 1 �
 
 **Task templates (invoke by referencing in chat):**
 - https://adfactory-production.up.railway.app/api/docs/TASK_META_TESTIMONIAL_SCRIPT_35S.md
+
+## CUSTOMER VOICE — THE RAW MATERIAL (non-negotiable)
+
+URL 10 (`/api/customer-voice`) returns a dynamically-generated vocabulary bank from every current Trustpilot review, video transcript, and Meta comment — organized into 8 sections with frequency counts and source attribution.
+
+Hard rules:
+1. **Never write generic marketing language when customer vocabulary has actual phrases for the topic.** If `problem_ord` includes "slatten hud" used by 12 customers, use that phrase instead.
+2. **Prioritize high-frequency phrases.** 20 customers' phrase beats 2 customers' phrase.
+3. **Quote with attribution when distinctive.** "Afhængigheds-serum" (Jeanette Winther, Trustpilot) as a quoted phrase is stronger than rewording.
+4. **Kundesprog = EXPERIENCE. FACTS-ord = PRODUCT.** Don't use customer vocabulary for claims.
+
+Every hook, body, and CTA should show evidence of `/api/customer-voice` input. Generic-sounding copy means Claude didn't use this properly.
 
 ## PRE-DELIVERY OUTPUT CHECK
 

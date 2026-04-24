@@ -846,6 +846,189 @@ app.get('/api/search', (req, res) => {
   res.json({ results, total: results.length, query: q, source, tema, expanded: isExpanded ? searchTerms : null });
 });
 
+// ============================================================
+// CUSTOMER VOICE — Dynamic vocabulary extraction from live data
+// ============================================================
+// Reads ALL testimonials, videos, metacomments and extracts structured
+// vocabulary with frequency signals and source attribution. Cached for 1 hour.
+// Cache invalidates when new data is uploaded via admin endpoints.
+
+let customerVoiceCache = {
+  data: null,
+  generatedAt: 0,
+  dataFingerprint: null
+};
+
+const CUSTOMER_VOICE_CACHE_MS = 60 * 60 * 1000; // 1 hour
+
+// Compute fingerprint of raw data to detect changes
+function computeDataFingerprint() {
+  const tp = loadJSON(DATA_FILES.testimonials);
+  const vdo = loadJSON(DATA_FILES.videos);
+  const meta = loadJSON(DATA_FILES.metacomments);
+  return `tp:${tp.length}|vdo:${vdo.length}|meta:${meta.length}`;
+}
+
+// Invalidate cache (called when new data is uploaded)
+function invalidateCustomerVoiceCache() {
+  customerVoiceCache.data = null;
+  customerVoiceCache.generatedAt = 0;
+  customerVoiceCache.dataFingerprint = null;
+  console.log('  [customer-voice] Cache invalidated');
+}
+
+app.get('/api/customer-voice', async (req, res) => {
+  try {
+    const now = Date.now();
+    const currentFingerprint = computeDataFingerprint();
+    const cacheAge = now - customerVoiceCache.generatedAt;
+    const dataChanged = currentFingerprint !== customerVoiceCache.dataFingerprint;
+    const cacheExpired = cacheAge > CUSTOMER_VOICE_CACHE_MS;
+
+    if (customerVoiceCache.data && !dataChanged && !cacheExpired) {
+      return res.json({
+        ...customerVoiceCache.data,
+        meta: {
+          cached: true,
+          age_minutes: Math.floor(cacheAge / 60000),
+          fingerprint: currentFingerprint
+        }
+      });
+    }
+
+    console.log(`  [customer-voice] Regenerating (changed=${dataChanged}, expired=${cacheExpired})`);
+
+    const tp = loadJSON(DATA_FILES.testimonials);
+    const vdo = loadJSON(DATA_FILES.videos);
+    const meta = loadJSON(DATA_FILES.metacomments);
+
+    // Build raw corpus — preserve source for attribution
+    const corpus = [
+      ...tp.map(t => ({
+        source: 'Trustpilot',
+        author: t.navn || 'Anonym',
+        text: t.tekst || '',
+        id: t.id
+      })),
+      ...vdo.map(v => ({
+        source: 'Video',
+        author: v.navn || 'Anonym',
+        text: v.transkription || v.tekst || '',
+        id: v.id
+      })),
+      ...meta.map(m => ({
+        source: 'Meta',
+        author: m.navn || 'Anonym',
+        text: m.tekst || '',
+        id: m.id
+      }))
+    ].filter(item => item.text && item.text.length > 10);
+
+    if (corpus.length === 0) {
+      return res.json({
+        generated_at: new Date().toISOString(),
+        corpus_size: 0,
+        sections: {},
+        meta: { cached: false, note: 'No customer data available' }
+      });
+    }
+
+    // Format corpus for Claude extraction
+    const corpusText = corpus.map(item =>
+      `[${item.source}:${item.id}] ${item.author}: "${item.text}"`
+    ).join('\n');
+
+    const extractionPrompt = `Du analyserer kundefeedback til KJELDGAARD Barrier Defense® Serum (dansk premium hudpleje). Din opgave er at udtrække KUNDESPROG — de faktiske ord og vendinger kunder bruger — struktureret i 8 sektioner.
+
+KORPUS (${corpus.length} kilder: Trustpilot + Video + Meta):
+
+${corpusText}
+
+UDTRÆKNINGSREGLER:
+1. Brug KUNDENS EGNE ORD — ikke paraphrasing
+2. Tæl frekvens (hvor mange kunder bruger denne vending eller variationer)
+3. Behold kildeattribution for høj-frekvens citater (Trustpilot/Video/Meta + ID)
+4. Kun vendinger der optræder mindst 2 gange = medtag
+5. Prioritér konkrete, sanselige ord over generisk sprog
+
+OUTPUT JSON STRUKTUR:
+{
+  "sections": {
+    "problem_ord": [
+      { "phrase": "...", "frequency": N, "sources": ["Trustpilot:id", "Video:id"], "theme": "kort tema" }
+    ],
+    "resultat_ord": [...],
+    "tidslinjer": [...],
+    "produkt_beskrivelser": [...],
+    "emotionelle_udtryk": [...],
+    "vaerdi_okonomi": [...],
+    "skepsis_overbevisning": [...],
+    "specielle_situationer_alder": [...]
+  }
+}
+
+SEKTION-DEFINITIONER:
+- problem_ord: Hvordan kunder beskriver hudproblemer (rynker, tør hud, pigmentering, osv.)
+- resultat_ord: Hvordan kunder beskriver forbedringer (glød, blød hud, elasticitet, osv.)
+- tidslinjer: Hvornår kunder ser resultater (efter X uger, allerede efter Y dage, osv.)
+- produkt_beskrivelser: Hvordan kunder beskriver selve produktet (tekstur, lugt, anvendelse)
+- emotionelle_udtryk: Stærke følelsesord (elsker, mirakel, afhængig, osv.)
+- vaerdi_okonomi: Pris-værdi vurderinger (dyrt værd, erstatter flere produkter, osv.)
+- skepsis_overbevisning: Fra tvivl til fan (troede ikke på det, nu kan jeg ikke undvære)
+- specielle_situationer_alder: Alderomtaler, overgangsalder, specifikke situationer
+
+Returner KUN valid JSON, ingen anden tekst. Sortér hver sektion efter frequency (højeste først).`;
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 8000,
+      messages: [{ role: 'user', content: extractionPrompt }]
+    });
+
+    let extracted;
+    try {
+      const text = response.content[0].text.trim();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      extracted = JSON.parse(jsonMatch ? jsonMatch[0] : text);
+    } catch (parseErr) {
+      console.error('  [customer-voice] JSON parse failed:', parseErr.message);
+      return res.status(500).json({
+        error: 'Extraction failed — could not parse Claude response',
+        details: parseErr.message
+      });
+    }
+
+    const result = {
+      generated_at: new Date().toISOString(),
+      corpus_size: corpus.length,
+      breakdown: {
+        trustpilot: tp.length,
+        videos: vdo.length,
+        meta_comments: meta.length
+      },
+      sections: extracted.sections || extracted,
+      usage_instructions: {
+        principle: 'Brug kundeord til at beskrive OPLEVELSEN. Brug FACTS-ord til at beskrive PRODUKTET.',
+        integration: 'Kombinér med Schwartz awareness levels, Georgi RMBC mechanism, og Benson 12-factor scoring. Kundesprog = raw material. Frameworks = architecture.',
+        priority: 'Aldrig skriv generisk marketing-sprog hvis en sektion har kundens faktiske ord. Høj-frekvens vendinger er stærkere end lav-frekvens.'
+      }
+    };
+
+    customerVoiceCache = {
+      data: result,
+      generatedAt: now,
+      dataFingerprint: currentFingerprint
+    };
+
+    console.log(`  [customer-voice] Generated from ${corpus.length} sources`);
+    res.json({ ...result, meta: { cached: false, age_minutes: 0, fingerprint: currentFingerprint } });
+
+  } catch (err) {
+    console.error('  [customer-voice] Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/temaer', (req, res) => {
   const counts = {};
   const tp = loadJSON(DATA_FILES.testimonials);
@@ -1249,6 +1432,67 @@ function loadDoc(filename) {
   return fs.readFileSync(filepath, 'utf8');
 }
 
+// Load customer voice vocabulary as formatted text for inclusion in prompts.
+// Uses the same cached data as /api/customer-voice endpoint.
+// Regenerates if data changed or cache expired. Falls back to static ORDBANK on error.
+async function loadCustomerVoiceText() {
+  try {
+    const now = Date.now();
+    const currentFingerprint = computeDataFingerprint();
+    const cacheAge = now - customerVoiceCache.generatedAt;
+    const dataChanged = currentFingerprint !== customerVoiceCache.dataFingerprint;
+    const cacheExpired = cacheAge > CUSTOMER_VOICE_CACHE_MS;
+
+    let voiceData;
+
+    if (customerVoiceCache.data && !dataChanged && !cacheExpired) {
+      voiceData = customerVoiceCache.data;
+    } else {
+      // Force regeneration by calling the endpoint logic directly
+      // (Simpler to just trigger a local fetch)
+      const url = `http://localhost:${process.env.PORT || 3000}/api/customer-voice`;
+      const response = await fetch(url);
+      voiceData = await response.json();
+    }
+
+    if (!voiceData || !voiceData.sections) {
+      return loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
+    }
+
+    // Format as readable Danish text for Claude
+    let text = '═══ KUNDESPROG (live, fra ' + (voiceData.corpus_size || '?') + ' kilder) ═══\n\n';
+    text += 'BRUG DETTE: Kundeord til at beskrive OPLEVELSEN. FACTS-ord til at beskrive PRODUKTET.\n';
+    text += 'Prioritér høj-frekvens vendinger. Kundesprog slår altid generisk marketing-sprog.\n\n';
+
+    const sectionLabels = {
+      problem_ord: 'PROBLEM-ORD (hvordan kunder beskriver hudproblemer)',
+      resultat_ord: 'RESULTAT-ORD (hvordan kunder beskriver forbedringer)',
+      tidslinjer: 'TIDSLINJER (hvornår kunder ser resultater)',
+      produkt_beskrivelser: 'PRODUKT-BESKRIVELSER (hvordan kunder beskriver selve produktet)',
+      emotionelle_udtryk: 'EMOTIONELLE UDTRYK (stærke følelsesord)',
+      vaerdi_okonomi: 'VÆRDI & ØKONOMI (pris-værdi vurderinger)',
+      skepsis_overbevisning: 'SKEPSIS → OVERBEVISNING (fra tvivl til fan)',
+      specielle_situationer_alder: 'SPECIELLE SITUATIONER & ALDER'
+    };
+
+    for (const [key, label] of Object.entries(sectionLabels)) {
+      const items = voiceData.sections[key];
+      if (!items || !items.length) continue;
+      text += `\n--- ${label} ---\n`;
+      items.forEach(item => {
+        const freq = item.frequency ? ` [${item.frequency}x]` : '';
+        const sources = item.sources && item.sources.length ? ` (${item.sources.slice(0, 3).join(', ')})` : '';
+        text += `• "${item.phrase}"${freq}${sources}\n`;
+      });
+    }
+
+    return text;
+  } catch (err) {
+    console.error('  [customer-voice] Load failed, falling back to static ORDBANK:', err.message);
+    return loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
+  }
+}
+
 app.post('/api/chat', async (req, res) => {
   try {
     const { message, selectedIds, history, templateInfo } = req.body;
@@ -1303,7 +1547,7 @@ app.post('/api/chat', async (req, res) => {
     // Load core docs for context (abbreviated to fit in context window)
     const doRegler = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
     const dontRegler = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
-    const ordbank = loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
+    const ordbank = await loadCustomerVoiceText();
     const efficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
     const hooks = loadDoc('SWIPE_KJELDGAARD_HOOKS_BEST.txt');
     const benefits = loadDoc('SWIPE_KJELDGAARD_BENEFITS_BEST.txt');
@@ -1328,8 +1572,8 @@ ${doRegler.substring(0, 3000)}
 === DON'T REGLER ===
 ${dontRegler.substring(0, 2000)}
 
-=== ORDBANK (Kundesprog) ===
-${ordbank.substring(0, 4000)}
+=== ORDBANK (Kundesprog — live) ===
+${ordbank}
 
 === HOOKS EKSEMPLER ===
 ${hooks.substring(0, 2000)}
@@ -1505,11 +1749,16 @@ app.post('/api/generate', async (req, res) => {
       return res.status(400).json({ error: 'No matching testimonials found for given IDs' });
     }
 
-    // Load docs
-    const docsContent = config.docs.map(f => {
-      const content = loadDoc(f);
+    // Load docs — ORDBANK fetched dynamically from /api/customer-voice
+    const docsContent = (await Promise.all(config.docs.map(async f => {
+      let content;
+      if (f === 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt') {
+        content = await loadCustomerVoiceText();
+      } else {
+        content = loadDoc(f);
+      }
       return content ? `\n=== ${f} ===\n${content}` : '';
-    }).filter(Boolean).join('\n');
+    }))).filter(Boolean).join('\n');
 
     // Always load Benson scoring
     const benson = loadDoc('jon-benson-copychief-master-system_v3.md');
@@ -2124,7 +2373,7 @@ app.post('/api/scripts/generate', async (req, res) => {
     const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
     const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
     const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
-    const ordbank = loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
+    const ordbank = await loadCustomerVoiceText();
     const factsEfficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
     const factsSafety = loadDoc('FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt');
     const decisionPriority = loadDoc('DECISION_PRIORITY.md');
@@ -2164,8 +2413,8 @@ ${doRules}
 3. DON'T — BRUG ALDRIG DISSE:
 ${dontRules}
 
-4. KUNDEORD (ORDBANK) — integrer naturligt:
-${ordbank.substring(0, 4000)}
+4. KUNDEORD (ORDBANK live) — integrer naturligt:
+${ordbank}
 
 5. FACTS COMPLIANCE — kun godkendte claims:
 ${factsEfficacy.substring(0, 2000)}
