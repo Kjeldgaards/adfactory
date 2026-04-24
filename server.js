@@ -1308,6 +1308,8 @@ app.post('/api/chat', async (req, res) => {
     const hooks = loadDoc('SWIPE_KJELDGAARD_HOOKS_BEST.txt');
     const benefits = loadDoc('SWIPE_KJELDGAARD_BENEFITS_BEST.txt');
     const benson = loadDoc('jon-benson-copychief-master-system_v3.md');
+    const decisionPriority = loadDoc('DECISION_PRIORITY.md');
+    const inciFull = loadDoc('FACTS_KJELDGAARD_INCI_FULL.txt');
 
     const systemPrompt = `Du er KJELDGAARD's kreative AI-assistent integreret i Ad Factory.
 Du hjælper med at skabe ads, copy, headlines og kreativt indhold til KJELDGAARD Barrier Defense Serum.
@@ -1336,6 +1338,12 @@ ${benefits.substring(0, 2000)}
 
 === EFFICACY FACTS ===
 ${efficacy.substring(0, 2000)}
+
+=== INCI (fuld ingrediensliste) ===
+${inciFull}
+
+=== DECISION_PRIORITY (konfliktløsning) ===
+${decisionPriority}
 
 === BENSON SCORING (kort) ===
 ${benson.substring(0, 3000)}
@@ -1378,7 +1386,7 @@ Brug kundeord fra testimonials når de er tilgængelige.`;
 const GENERATION_TYPES = {
   headlines: {
     label: 'Meta Headlines / Hooks',
-    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt'],
     instruction_base: `Skriv {{count}} Meta ad headlines (hooks) til KJELDGAARD Barrier Defense Serum.
 Brug sprog og vendinger fra de valgte kundecitater herunder.
 Følg DO/DON'T reglerne nøje. Brug HOOKS_BEST som kvalitetseksempler.
@@ -1392,7 +1400,7 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   },
   benefits: {
     label: 'Benefit Statements',
-    docs: ['SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
+    docs: ['SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt'],
     instruction_base: `Skriv {{count}} benefit statements til KJELDGAARD Barrier Defense Serum.
 Brug sprog og vendinger fra de valgte kundecitater herunder.
 Følg DO/DON'T reglerne nøje. Brug BENEFITS_BEST som kvalitetseksempler.
@@ -1406,7 +1414,7 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   },
   adcopy: {
     label: 'Meta Ad Copy (komplet)',
-    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt', 'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt', 'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt'],
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt', 'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt', 'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt'],
     instruction_base: `Skriv {{count}} komplette Meta ad copy varianter til KJELDGAARD Barrier Defense Serum.
 Hver variant skal have: Hook → Problem/Interest → Mechanism → Benefit → Social Proof → CTA.
 Brug sprog og vendinger fra de valgte kundecitater herunder.
@@ -1422,12 +1430,12 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   },
   custom: {
     label: 'Frit prompt',
-    docs: ['SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt'],
+    docs: ['SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt'],
     instruction: `{{customPrompt}}`
   },
   template_ad: {
     label: 'Ad-tekst til template',
-    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt'],
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt'],
     instruction: `Du skal generere tekst til et ad-billede (Orshot template) for KJELDGAARD Barrier Defense Serum.
 
 VIGTIGT: Du har strenge tegngrænser per felt. Teksten SKAL passe inden for disse grænser.
@@ -1721,6 +1729,7 @@ app.post('/api/scripts/assemble', async (req, res) => {
     const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
     const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
     const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+    const decisionPriority = loadDoc('DECISION_PRIORITY.md');
 
     const polishResponse = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
@@ -1745,7 +1754,10 @@ DO — BRUG DISSE FORMULERINGER:
 ${doRules}
 
 DON'T — BRUG ALDRIG DISSE:
-${dontRules}`,
+${dontRules}
+
+DECISION_PRIORITY (konfliktløsning):
+${decisionPriority}`,
       messages: [{ role: 'user', content: `Polér overgangene i dette sammensatte script:\n\n${assembled}` }]
     });
 
@@ -2111,6 +2123,8 @@ app.post('/api/scripts/generate', async (req, res) => {
     const ordbank = loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
     const factsEfficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
     const factsSafety = loadDoc('FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt');
+    const decisionPriority = loadDoc('DECISION_PRIORITY.md');
+    const inciFull = loadDoc('FACTS_KJELDGAARD_INCI_FULL.txt');
 
     const lengthGuide = length === 'short' ? '30-45 sekunder (8-12 sætninger)' 
       : length === 'long' ? '90-120 sekunder (25-35 sætninger)' 
@@ -2151,6 +2165,12 @@ ${ordbank.substring(0, 4000)}
 5. FACTS COMPLIANCE — kun godkendte claims:
 ${factsEfficacy.substring(0, 2000)}
 ${factsSafety.substring(0, 1000)}
+
+6. INCI (fuld ingrediensliste) — alt hvad der nævnes skal findes her:
+${inciFull}
+
+7. DECISION_PRIORITY (konfliktløsning):
+${decisionPriority}
 
 ═══════════════════════════════════════
 GENERELLE REGLER
@@ -2247,6 +2267,7 @@ app.post('/api/scripts/polish', async (req, res) => {
     const saetningspar = loadDoc('SAETNINGSPAR_AI_DANSK_VS_NATURLIGT_DANSK.txt');
     const doRules = loadDoc('SWIPE_KJELDGAARD_DO_txt_UPDATED.txt');
     const dontRules = loadDoc('SWIPE_KJELDGAARD_DON_T_UPDATED.txt');
+    const decisionPriority = loadDoc('DECISION_PRIORITY.md');
 
     const polishResponse = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
@@ -2271,6 +2292,9 @@ ${doRules}
 
 DON'T — BRUG ALDRIG DISSE:
 ${dontRules}
+
+DECISION_PRIORITY (konfliktløsning):
+${decisionPriority}
 
 Output: kun det polerede script, ingen kommentarer.`,
       messages: [{ role: 'user', content: `Polér dette script:\n\n${text}` }]
