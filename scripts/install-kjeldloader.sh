@@ -17,7 +17,7 @@ FUNCTION_BLOCK=$(cat <<'EOF'
 _kjeldgaard_fetch_and_copy() {
   local filename="$1"
   local label="$2"
-  local url="https://raw.githubusercontent.com/Kjeldgaards/adfactory/main/docs/$filename"
+  local url="https://raw.githubusercontent.com/Kjeldgaards/adfactory/main/docs/$filename?cachebust=$(date +%s)"
   local content
   content=$(curl -sS --fail "$url" 2>/dev/null) || {
     echo "❌ Could not fetch $filename from GitHub. Check your internet connection."
