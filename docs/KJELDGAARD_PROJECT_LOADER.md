@@ -70,7 +70,8 @@ The 5 SWIPE ad-copy files and ORDBANK_VOICE_OF_CUSTOMER are already in Tier 1 �
 
 **Danish translation deep reference** — fetch:
 - https://adfactory-production.up.railway.app/api/docs/ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt
-- https://adfactory-production.up.railway.app/api/docs/Breakthrough-Advertising-by-Eugene-M-Schwartz.txt (only when deep Schwartz theory is needed — large file)
+
+**Eugene Schwartz — Breakthrough Advertising** (not fetched — uploaded directly to the Claude project's knowledge base as a static file; reference it when deep theory is needed)
 
 **Testimonial processing** — fetch (live transcripts already loaded in Tier 1 via /api/videos; fetch this for processing rules):
 - https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md

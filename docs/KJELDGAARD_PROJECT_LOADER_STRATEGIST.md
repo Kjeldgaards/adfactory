@@ -71,7 +71,8 @@ Do not proceed to answering Thomas until Step 2 passes.
 
 **Danish deep reference:**
 - https://adfactory-production.up.railway.app/api/docs/ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt
-- https://adfactory-production.up.railway.app/api/docs/Breakthrough-Advertising-by-Eugene-M-Schwartz.txt (only when deep Schwartz theory is needed — large file)
+
+**Eugene Schwartz — Breakthrough Advertising** (not fetched — uploaded directly to the Claude project's knowledge base as a static file; reference it when deep theory is needed)
 
 **Testimonial processing** (live transcripts in Tier 1; fetch this for processing rules):
 - https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md
