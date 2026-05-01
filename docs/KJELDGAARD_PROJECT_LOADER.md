@@ -18,7 +18,9 @@ Execute this procedure mechanically before responding to Thomas's first substant
 
 ### Step 1 — Fetch all 19 Tier 1 files in parallel
 
-Use `web_fetch` on each of these URLs. Do not skip any. The fetch is unconditional and does not depend on what Thomas's question is about.
+Use the `web_fetch` tool on each of these URLs. Do not skip any. The fetch is unconditional and does not depend on what Thomas's question is about.
+
+**CRITICAL TOOL SELECTION** — You MUST use the `web_fetch` tool for these URLs. Do NOT use `bash_tool` with curl, wget, or any shell command to fetch them. The `bash_tool` runs in a sandboxed environment with a restricted network egress allowlist that does NOT include `adfactory-production.up.railway.app` — every curl attempt will fail with HTTP 403 `host_not_allowed`. The `web_fetch` tool runs through Anthropic's servers, has no such restriction, and will retrieve all URLs successfully. If you find yourself reaching for `bash_tool` to fetch these, stop and use `web_fetch` instead. If `web_fetch` is not available in your environment, do NOT improvise with curl — instead halt the startup procedure and tell Thomas: "web_fetch tool is not available in this session — please toggle Web search ON in the chat input ('+' menu)." Do not proceed with 0/19 or partial fetches.
 
 1. https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_MASTER_INSTRUCTIONS_v1.md
 2. https://adfactory-production.up.railway.app/api/docs/DECISION_PRIORITY.md
