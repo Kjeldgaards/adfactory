@@ -1553,7 +1553,7 @@ app.post('/api/chat', async (req, res) => {
     const benefits = loadDoc('SWIPE_KJELDGAARD_BENEFITS_BEST.txt');
     const benson = loadDoc('jon-benson-copychief-master-system_v3.md');
     const decisionPriority = loadDoc('DECISION_PRIORITY.md');
-    const inciFull = loadDoc('FACTS_KJELDGAARD_INCI_FULL.txt');
+    const inciFull = loadDoc('FACTS_KJELDGAARD_INCI_FULL_v2.txt');
     const coreSalesPitch = loadDoc('CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md');
 
     const systemPrompt = `Du er KJELDGAARD's kreative AI-assistent integreret i Ad Factory.
@@ -1634,7 +1634,7 @@ Brug kundeord fra testimonials når de er tilgængelige.`;
 const GENERATION_TYPES = {
   headlines: {
     label: 'Meta Headlines / Hooks',
-    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL_v2.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
     instruction_base: `Skriv {{count}} Meta ad headlines (hooks) til KJELDGAARD Barrier Defense Serum.
 Brug sprog og vendinger fra de valgte kundecitater herunder.
 Følg DO/DON'T reglerne nøje. Brug HOOKS_BEST som kvalitetseksempler.
@@ -1648,7 +1648,7 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   },
   benefits: {
     label: 'Benefit Statements',
-    docs: ['SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
+    docs: ['SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL_v2.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
     instruction_base: `Skriv {{count}} benefit statements til KJELDGAARD Barrier Defense Serum.
 Brug sprog og vendinger fra de valgte kundecitater herunder.
 Følg DO/DON'T reglerne nøje. Brug BENEFITS_BEST som kvalitetseksempler.
@@ -1662,7 +1662,7 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   },
   adcopy: {
     label: 'Meta Ad Copy (komplet)',
-    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt', 'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt', 'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_MECHANISMS_BEST.txt', 'SWIPE_KJELDGAARD_CTA_SOCIALPROOF_BEST.txt', 'SWIPE_KJELDGAARD_INTEREST_PROBLEM_DESIRE_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL_v2.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
     instruction_base: `Skriv {{count}} komplette Meta ad copy varianter til KJELDGAARD Barrier Defense Serum.
 Hver variant skal have: Hook → Problem/Interest → Mechanism → Benefit → Social Proof → CTA.
 Brug sprog og vendinger fra de valgte kundecitater herunder.
@@ -1678,12 +1678,12 @@ Inkludér "navn" (kundens navn) og "alder" (kundens alder hvis nævnt, ellers nu
   },
   custom: {
     label: 'Frit prompt',
-    docs: ['SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
+    docs: ['SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL_v2.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
     instruction: `{{customPrompt}}`
   },
   template_ad: {
     label: 'Ad-tekst til template',
-    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
+    docs: ['SWIPE_KJELDGAARD_HOOKS_BEST.txt', 'SWIPE_KJELDGAARD_BENEFITS_BEST.txt', 'SWIPE_KJELDGAARD_DO_txt_UPDATED.txt', 'SWIPE_KJELDGAARD_DON_T_UPDATED.txt', 'ORDBANK_VOICE_OF_CUSTOMER_v4.txt', 'DECISION_PRIORITY.md', 'FACTS_KJELDGAARD_INCI_FULL_v2.txt', 'CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md'],
     instruction: `Du skal generere tekst til et ad-billede (Orshot template) for KJELDGAARD Barrier Defense Serum.
 
 VIGTIGT: Du har strenge tegngrænser per felt. Teksten SKAL passe inden for disse grænser.
@@ -2377,7 +2377,7 @@ app.post('/api/scripts/generate', async (req, res) => {
     const factsEfficacy = loadDoc('FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt');
     const factsSafety = loadDoc('FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt');
     const decisionPriority = loadDoc('DECISION_PRIORITY.md');
-    const inciFull = loadDoc('FACTS_KJELDGAARD_INCI_FULL.txt');
+    const inciFull = loadDoc('FACTS_KJELDGAARD_INCI_FULL_v2.txt');
     const coreSalesPitch = loadDoc('CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md');
 
     const lengthGuide = length === 'short' ? '30-45 sekunder (8-12 sætninger)' 

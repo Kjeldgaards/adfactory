@@ -27,7 +27,7 @@ Use `web_fetch` on each URL below. Do not skip any. The fetch is unconditional.
 3. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt
 4. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt
 5. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt
-6. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_INCI_FULL.txt
+6. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_INCI_FULL_v2.txt
 7. https://adfactory-production.up.railway.app/api/docs/CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md
 8. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DO_txt_UPDATED.txt
 9. https://adfactory-production.up.railway.app/api/docs/SWIPE_KJELDGAARD_DON_T_UPDATED.txt
