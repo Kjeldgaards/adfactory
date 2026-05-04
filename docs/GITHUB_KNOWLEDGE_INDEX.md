@@ -78,6 +78,40 @@ AI systems must only generate claims supported in these files.
 
 ------------------------------------------------------------
 
+# CLINICAL STUDIES & TEST DOCUMENTATION
+
+Source documentation for all efficacy, safety, stability, and ingredient testing of Barrier Defense Serum (formulation SBW006-05).
+
+Files:
+
+https://adfactory-production.up.railway.app/api/docs/clinical_studies/INDEX_CLINICAL_STUDIES.md  
+https://adfactory-production.up.railway.app/api/docs/clinical_studies/BDS_2_0_TEST_STRATEGY.md  
+
+The INDEX file provides:
+
+• Complete list of all clinical studies with raw PDF locations  
+• ZURKO Research efficacy report (28-day clinical, n=21)  
+• COMPLIFE Italia in vitro studies (Blue Light + Cell Proliferation)  
+• S&J stability test (12 weeks)  
+• S&J Preservative Efficacy Test (PET / Challenge Test, ISO 11930:2019)  
+• GMP certificate (Thai FDA)  
+• 23 ingredient TDS (Technical Data Sheets) from suppliers  
+• Gap analysis of missing tests  
+
+Raw PDFs are stored in `docs/clinical_studies/raw_pdfs/` (not directly fetchable via web_fetch — use INDEX file to understand what data exists).
+
+The BDS_2_0_TEST_STRATEGY file provides:
+
+• Strategy for Barrier Defense 2.0 efficacy testing  
+• Identification of the failed TEWL claim from BDS 1.0  
+• Tier 1/2/3 test recommendations  
+• Required formula changes for new endpoints  
+• Optimal combined study design  
+
+AI systems must reference INDEX_CLINICAL_STUDIES.md when reasoning about what tests have been done and what data exists, rather than relying on summary claims in FACTS files alone.
+
+------------------------------------------------------------
+
 # LANGUAGE & TONE SYSTEM
 
 Defines the KJELDGAARD brand voice and Danish language rules.
