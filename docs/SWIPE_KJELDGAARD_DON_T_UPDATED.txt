@@ -44,6 +44,8 @@ KLINISK / DYBE LAG / KOLLAGEN – FOR HÅRDT FORMULERET
 	•	"virker helt ned på celleniveau" (som hårdt forbrugerløfte – må kun bruges, hvis det er nøje omskrevet og forankret i tests)
 	•	"øger kollagenproduktionen" (som direkte påstand – må i stedet skrives mere forsigtigt)
 	•	"stimulerer kollagen og elastin i dybe hudlag" (for aggressivt)
+	•	"Barrier Defense støtter kollagenproduktionen" (kobler produkt direkte til fysiologisk effekt — ulovlig under EU 1223/2009)
+	•	"styrker hudbarrieren og øger kollagen" (kobler barriere → kollagen som 1:1 årsagssammenhæng — biologisk forkert)
 
 BRAND- OG TONEMÆSSIGT NO-GO
 	•	alt der lyder som direkte Google Translate fra engelsk
@@ -52,3 +54,77 @@ BRAND- OG TONEMÆSSIGT NO-GO
 	◦	"du vil ikke tro dine egne øjne"
 	◦	"det her ændrer alt på 7 dage"
 	◦	"for godt til at være sandt" (som seriøst claim)
+
+═══════════════════════════════════════════════════════════════
+KOLLAGEN-FORMULERINGS-CHEAT-SHEET (tilføjet 4. maj 2026)
+═══════════════════════════════════════════════════════════════
+
+HVORFOR KOLLAGEN-CLAIMS ER PROBLEMATISKE
+	1.	BIOLOGISK KOBLING HOLDER IKKE
+		Hudbarrieren sidder i epidermis (stratum corneum).
+		Kollagen produceres i dermis af fibroblaster.
+		En styrket barriere giver IKKE direkte øget kollagenproduktion —
+		det er to forskellige hudlag med forskellige funktioner.
+
+	2.	"ØGER KOLLAGENPRODUKTION" = LÆGEMIDDEL-LIGNENDE CLAIM
+		Under EU's kosmetikforordning (1223/2009) er det en strukturel/
+		funktionel påstand om at produktet ændrer kroppens fysiologi.
+		Det kræver enten klinisk dokumentation specifikt for det claim,
+		eller også falder produktet i lægemiddelkategorien.
+
+	3.	FASTHED ER ET DERMIS-FÆNOMEN, IKKE ET BARRIERE-FÆNOMEN
+		Hudens fasthed afhænger primært af kvaliteten af dermalt
+		kollagen (70-80% af dermis' tørvægt).
+		Hudbarrieren handler om fugtbevarelse, beskyttelse og reduceret
+		følsomhed — IKKE fasthed.
+
+
+TRE HÅNDTAG TIL AT GØRE KOLLAGEN-FORMULERINGER SIKRE
+
+HÅNDTAG A: SKIFT FRA PRODUKTET → INGREDIENSEN
+	❌	"Barrier Defense støtter kollagenproduktionen"
+	✅	"Barrier Defense indeholder peptider [Acetyl Hexapeptide-8,
+		Palmitoyl Tripeptide-38], som i hudplejeforskning forbindes
+		med støtte til hudens kollagenstruktur"
+
+HÅNDTAG B: SKIFT FRA "PRODUKTION" → "UDSEENDE / STRUKTUR"
+	❌	"støtter kollagenproduktion"
+	✅	"støtter et fastere udseende"
+	✅	"for en mere fyldig fremtoning"
+	✅	"bidrager til hudens kollagenstruktur"
+
+HÅNDTAG C: BRUG HEDGE-ORD (FACTS-QUALIFIER)
+	❌	"øger kollagen"
+	✅	"kan bidrage til"
+	✅	"forbindes ofte med"
+	✅	"er kendt for at understøtte"
+
+
+GODKENDTE FORMULERINGER (BRUG DIREKTE)
+	1.	"Peptider, der i hudplejeforskning er kendt for at støtte
+		hudens kollagenstruktur og et fastere udseende."
+
+	2.	"Ingredienser udvalgt for deres dokumenterede evne til at
+		understøtte en fyldigere, mere fast fremtoning."
+
+	3.	"Acetyl Hexapeptide-8 og Palmitoyl Tripeptide-38 — peptider,
+		som i skincare-videnskab forbindes med smoother, firmer-looking
+		skin." (engelsk version)
+
+	4.	"En styrket hudbarriere bidrager til bedre fugtbevarelse,
+		hvilket kan give en mere fyldig og ungdommelig fremtoning."
+
+	5.	"Problemet er, at mange produkter kun fokuserer på symptomerne —
+		ikke på at styrke hudbarrieren, der hjælper huden med at
+		fastholde fugt og beskytte de dybere lag, hvor hudens fasthed
+		dannes."
+
+
+DEN RØDE LINJE (KORT VERSION)
+Aldrig sig at PRODUKTET ØGER/STIMULERER/BOOSTER PRODUKTIONEN AF kollagen.
+Sig i stedet at INGREDIENSER STØTTER/FORBINDES MED UDSEENDET/STRUKTUREN AF kollagen.
+
+	PRODUKT       →  INGREDIENS
+	ØGER          →  STØTTER / FORBINDES MED
+	PRODUKTION    →  UDSEENDE / STRUKTUR / FREMTONING
+	(absolut)     →  (hedge: "ofte", "kan", "kendt for")
