@@ -23,6 +23,13 @@ Vi mistænker desuden at duften ændrer sig efter produktet har stået noget tid
 ### 3. Rynkereduktion skal op
 Nuværende formel opnåede 27% reduktion ved D28 (PRIMOS-CR). Vi ønsker at hæve dette resultat i BDS 2.0.
 
+Som udgangspunkt for diskussionen tænker vi følgende strategi (S&J bestemmer den tekniske løsning):
+
+- **Hæv peptid-koncentrationerne til klinisk dokumenterede niveauer.** Acetyl Hexapeptide-8 (Argireline) og Palmitoyl Tripeptide-38 (Matrixyl Synthe'6) ligger sidst i nuværende INCI-liste, hvilket indikerer lave koncentrationer. Klinisk litteratur viser markant rynkereduktion ved Matrixyl Synthe'6 ved 2% og Argireline ved 5-10%.
+- **Tilføj Hydroxypinacolone Retinoate (HPR / Granactive Retinoid).** HPR binder direkte til retinoid-receptorer uden enzymatisk konversion og har klinisk dokumenteret komplementær effekt med retinol via dual pathway-aktivering.
+- **Behold encapsulated retinol (ROVISOME) i nuværende koncentration.** Det er kernen der leverer 27%-resultatet.
+- **Behold bakuchiol** (synergi-effekt med retinol).
+
 ---
 
 ## Hvad vi beder om
@@ -63,18 +70,8 @@ Samme protokol som BDS 1.0:
 
 ## Andre punkter
 
-### EU Vitamin A regulering (2024/996)
-EU Regulation 2024/996 trådte i kraft 1. november 2025. Den begrænser retinol/retinyl acetate/retinyl palmitate til **maximum 0,3% Retinol Equivalent** i ansigtsprodukter, og kræver mærkning: *"Contains Vitamin A. Consider your daily intake before use."*
-
-- Bekræft venligst retinol-koncentrationen i nuværende SBW006-05
-- Sikr at BDS 2.0 holder sig inden for 0,3% RE-grænsen
-- Eksisterende BDS 1.0 produkter har deadline 1. maj 2027 til at være compliant
-
 ### GMP-certifikat
 Thai FDA GMP-certifikat for Sriracha-anlægget (Ref. 1-5-04-17-20-0100) udløb 1. november 2023. Bekræft venligst at GMP er fornyet og send opdateret certifikat.
-
-### Formel-version
-I dokumenter for BDS 1.0 ser vi både "SBW006-05" (Zurko, COMPLIFE) og "30029356 / USHC0822-101 / SBW006-05/CONFIRM" (S&J Stability + PET). Bekræft at det er identisk formel.
 
 ---
 
