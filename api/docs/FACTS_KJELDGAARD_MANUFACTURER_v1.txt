@@ -1,0 +1,71 @@
+=========================================================
+FACTS_KJELDGAARD_MANUFACTURER_v1.txt
+=========================================================
+Sidst opdateret: 8. november 2026
+Status: Aktiv
+=========================================================
+MANUFACTURER-01: PRODUCENT — JURIDISK IDENTITET
+Fulde juridiske navn:
+S&J International Enterprises PCL
+(Public Company Limited)
+Adresse:
+549, 2 Sathu Pradit Rd, Chongnonsi
+Yan Nawa
+Bangkok 10120
+Thailand
+SET ticker: S&J
+Bloomberg ID: TH0123010Z00
+Grundlagt: 1980
+Majoritetsejer: SAHA Group
+MÅ SIGES:
+- "Produceret af S&J International i Thailand"
+- "Produceret af en af Thailands største kosmetikproducenter"
+- "Produceret hos en thai-baseret kosmetikproducent (S&J International)"
+- "S&J International, Bangkok, Thailand"
+MÅ IKKE SIGES:
+- Specifikke produktions-claims der ikke er verificeret pr. kontrakt/CoA
+- Ejerskabs- eller eksklusivitets-claims (Kjeldgaards er ikke ejer af SJI)
+KILDE: Thomas-bekræftet 8. november 2026 + verificeret mod offentlig
+SJI contact-side (snjinter.com) + SET-noteringsregistrering.
+=========================================================
+MANUFACTURER-02: CERTIFICERINGER
+Selskabs-niveau certificeringer (S&J International PCL):
+- ISO 9001 (kvalitetsstyring)
+- GMP (Good Manufacturing Practice) — Thailand FDA / Ministry of
+  Public Health
+- RSPO (Roundtable on Sustainable Palm Oil)
+- The Vegan Society-certificeret (første og hidtil eneste beauty/
+  skincare-virksomhed i Thailand)
+PRODUKT-NIVEAU GMP-STATUS FOR BARRIER DEFENSE® SERUM:
+[KRÆVER OPDATERING]
+- Tidligere certifikat: udløb 1. november 2023
+- Aktuel status: ikke verificeret
+- Action required: Bekræft nyt GMP-certifikat-nummer + udløbsdato
+  før GMP-claims bruges i live copy
+MÅ SIGES (forudsat aktuelt certifikat er gyldigt):
+- "Produceret hos en GMP-certificeret producent under Thailand FDA"
+- "Produceret efter Thailand FDA's GMP-standarder"
+MÅ IKKE SIGES:
+- "FDA-godkendt" (uden specificering — leder tankerne mod US FDA)
+- "EU-godkendt" (Thailand FDA er ikke EU-godkendelse)
+- Direkte sammenligning med US FDA eller EMA
+KILDE: SJI corporate disclosures, AdFactory SAFETY-05.
+=========================================================
+MANUFACTURER-03: KONTAKT-INFORMATION
+Telefon (hovedkontor): +66 (0)2676 2727
+Hjemmeside: snjinter.com
+LinkedIn: linkedin.com/company/s-j-international
+NOTE: Disse oplysninger er til intern brug og må ikke bruges i
+ad-copy uden eksplicit godkendelse fra Thomas.
+=========================================================
+MANUFACTURER-04: CLINICAL TESTING PARTNERS
+Kliniske tests af Barrier Defense® Serum er IKKE udført af S&J
+International selv, men af tredjeparts laboratorier i Europa:
+- Zurko Research, Spanien (28-dages efficacy-studie, n=21)
+- COMPLIFE Italia (sikkerheds- og dermatologisk vurdering)
+Dette adskiller produktets test-data fra producent-data og giver
+ekstra troværdighed (uafhængig EU-testing).
+KILDE: AdFactory EFFICACY-01, SAFETY-01, SAFETY-02.
+=========================================================
+END OF FILE
+=========================================================
