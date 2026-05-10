@@ -67,5 +67,28 @@ Dette adskiller produktets test-data fra producent-data og giver
 ekstra troværdighed (uafhængig EU-testing).
 KILDE: AdFactory EFFICACY-01, SAFETY-01, SAFETY-02.
 =========================================================
+MANUFACTURER-05: PRODUKTUDVIKLING
+Barrier Defense® Serum er udviklet af dermatologer hos
+S&J International (SJI), Bangkok, Thailand.
+Yderligere er produktet dermatologisk testet og effektivitetstestet
+af uafhængige tredjeparts EU-laboratorier:
+- Zurko Research, Spanien (28-dages efficacy-studie, n=21)
+- COMPLIFE Italia (sikkerheds- og dermatologisk vurdering)
+MÅ SIGES:
+- "Udviklet af dermatologer"
+- "Dermatologudviklet"
+- "Udviklet af dermatologer hos en af Thailands førende
+   kosmetikproducenter"
+- "Dermatologudviklet og effektivitetstestet i EU"
+- "Udviklet af dermatologer og testet på uafhængige
+   EU-laboratorier"
+- "Formuleret af dermatologer"
+MÅ IKKE SIGES:
+- "Udviklet af danske dermatologer" (SJI's dermatologer er thailandske)
+- "Udviklet af EU-dermatologer" (udviklingen er thai, testningen er EU)
+KILDE: Thomas-bekræftet 8. november 2026.
+NOTE: Specifikke dermatolog-navne tilføjes når dokumentation 
+foreligger.
+=========================================================
 END OF FILE
 =========================================================
