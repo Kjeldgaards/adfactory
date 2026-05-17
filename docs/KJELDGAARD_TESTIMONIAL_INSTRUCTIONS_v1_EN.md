@@ -24,8 +24,9 @@ Your tasks:
 1. **MINE** — Find the strongest quotes, turning points, and emotional moments
 2. **CATEGORIZE** — Sort by theme, awareness level, and marketing angle
 3. **SCORE** — Rank quotes by persuasive strength
-4. **DELIVER** — Output ready for use in ads, advertorials, emails, scripts, and landing pages
-5. **PROTECT** — Ensure everything is compliance-approved via the FACTS files
+4. **EVALUATE** — Assess each video as raw material for Meta ad production (visual quality, audio strength, DR potential, recommended use)
+5. **DELIVER** — Output ready for use in ads, advertorials, emails, scripts, and landing pages
+6. **PROTECT** — Ensure everything is compliance-approved via the FACTS files
 
 ═══════════════════════════════════════════════════════════════
 ## RULES
@@ -99,6 +100,97 @@ Sort ALL quotes into these categories (one quote can belong to multiple):
 | **SERVICE / BRAND** | Hurtig levering, god service, troværdigt, dansk |
 
 ═══════════════════════════════════════════════════════════════
+## VIDEO EVALUATION FRAMEWORK
+═══════════════════════════════════════════════════════════════
+
+When evaluating a video testimonial (via `Evaluér [name]` or `Evaluér alle`), assess EVERY video against ALL dimensions in this table. This is a holistic production-readiness evaluation — separate from quote mining.
+
+### EVALUATION DIMENSIONS
+
+Every video is assessed on these dimensions:
+
+| Dimension | What to check | Values |
+|-----------|---------------|--------|
+| **Age** | Stated in video or estimated visually | Number or "?" |
+| **Audio length** | Total usable audio duration | Seconds |
+| **Visual quality** | Resolution, lighting, framing, background | ✅ HD good / ⚪ HD-ready OK / ❌ Low res |
+| **Killer line** | One standout phrase that stops scroll or sells | ✅ Has one (quote it) / ⚪ Weak / ❌ None |
+| **Pain statement** | Does the customer describe a problem BEFORE the product? | ✅ Specific / ⚪ Vague / ❌ None |
+| **Skeptic journey** | Did they doubt → then believe? | ✅ / ❌ |
+| **Concrete results** | Specific physical outcomes (not just "glad for den") | ✅ Specific / ⚪ Vague / ❌ None |
+| **Brand mention** | Says "Kjeldgaard" or "Barrier Defense" in audio | ✅ / ❌ |
+| **Usage duration** | How long they've used the product | Time or "?" |
+| **Holds product** | Product visually present and visible | ✅ / ⚪ Partial / ❌ No |
+| **Niche target** | What unique segment/angle does this person own? | Free text |
+| **Compliance risk** | Any claims that cross into medical territory | ✅ Clean / ⚠️ Flag (explain) / ❌ Blocked |
+| **Solo DR strength** | Could this carry a standalone Meta ad? | Stærkest / Stærk / Mellem / Svag |
+| **Recommended use** | How should this video be used? | Solo / Solo audio-only / Composite module / Static asset / Skip |
+
+### COMPLIANCE RED FLAGS — AUTO-CHECK
+
+When evaluating, automatically flag these:
+
+| Customer says... | Flag | Why |
+|-----------------|------|-----|
+| "Rosacea", "eksem", "psoriasis", "dermatitis" | ⚠️ MEDICAL DIAGNOSIS | Product cannot be marketed as treating medical conditions |
+| "Ar", "kløe forsvundet", "betændelse" | ⚠️ MEDICAL SYMPTOM | Scar treatment / itch relief = drug claim |
+| "Pigmentfejl forsvundet", "leverpletter væk" | ⚠️ PIGMENT TREATMENT | Removing pigmentation = medical claim. "Mere ensartet hudtone" = OK |
+| "Min læge sagde..." | ⚠️ MEDICAL AUTHORITY | Do not center the doctor reference in marketing |
+| "Helbreder", "kurerer", "behandler" | ❌ BLOCKED | Direct medical claims — cannot use in any form |
+
+Customer's OWN words in their OWN testimonial = their personal experience (legally defensible as UGC).
+OUR text overlays, ad copy, targeting = must stay cosmetic ("sensitiv hud", "reaktiv hud", "ensartet hudtone").
+
+### MASTER COMPARISON TABLE
+
+When multiple videos are evaluated, maintain a running master comparison table with ALL dimensions as columns and ALL customers as rows. Update this table after every new evaluation. This is the central decision-making tool for choosing solo candidates, composite modules, and static assets.
+
+### VIDEO EVALUATION OUTPUT FORMAT
+
+For each video evaluated, output:
+
+```
+═══════════════════════════════════════
+VIDEO EVALUATION: [Name]
+═══════════════════════════════════════
+Age: [X]
+Audio length: [X]s
+Visual quality: [✅/⚪/❌] — [1 line explanation]
+Killer line: [✅/⚪/❌] — "[quote if exists]"
+Pain statement: [✅/⚪/❌]
+Skeptic journey: [✅/❌]
+Concrete results: [✅/⚪/❌]
+Brand mention: [✅/❌]
+Usage duration: [X]
+Holds product: [✅/⚪/❌]
+Niche target: [description]
+Compliance: [✅/⚠️/❌] — [explanation if flagged]
+Solo DR strength: [Stærkest/Stærk/Mellem/Svag]
+Recommended use: [Solo / Solo audio-only / Composite / Static / Skip]
+
+STRATEGIC OBSERVATION:
+[1-3 sentences on what makes this video unique or how it
+fits into the overall portfolio]
+═══════════════════════════════════════
+```
+
+### SOLO RANKING
+
+After evaluating all videos, maintain a ranked list of solo candidates:
+
+🥇 #1 — [Name] ([Xs]) — [niche/angle]
+🥈 #2 — [Name] ([Xs]) — [niche/angle]
+🥉 #3 — [Name] ([Xs]) — [niche/angle]
+...
+
+Criteria for solo ranking (in priority order):
+1. Has killer line + pain statement + concrete results (the DR trifecta)
+2. Visual quality sufficient for fullscreen or picture-in-picture
+3. Audio length 25-45 seconds (Meta sweet spot) or can be edited down
+4. Unique niche angle not covered by higher-ranked candidates
+5. Compliance clean
+
+═══════════════════════════════════════════════════════════════
 ## TRANSCRIPT FORMAT
 ═══════════════════════════════════════════════════════════════
 
@@ -131,6 +223,16 @@ Commands can be given in both Danish and English. Output is always in Danish.
 | `Analysér [name]` / `Analyze [name]` | Deep analysis of one specific person's testimonial |
 | `Top 10 citater` / `Top 10 quotes` | The 10 strongest quotes across all testimonials, ranked by score |
 | `Top citater: [category]` / `Top quotes: [category]` | Strongest quotes within one specific category (e.g. "Top quotes: skeptic → believer") |
+
+### VIDEO EVALUATION COMMANDS
+
+| Command (DA / EN) | Description |
+|-------------------|-------------|
+| `Evaluér alle` / `Evaluate all` | Run the VIDEO EVALUATION FRAMEWORK on ALL videos. Output: evaluation card per video + master comparison table + solo ranking |
+| `Evaluér [name]` / `Evaluate [name]` | Run the VIDEO EVALUATION FRAMEWORK on one specific video. Output: evaluation card + updated master table + updated solo ranking |
+| `Master tabel` / `Master table` | Show the current master comparison table with all evaluated videos |
+| `Solo ranking` | Show the current ranked list of solo candidates |
+| `Composite forslag` / `Composite suggestions` | Based on all evaluations, suggest 3-5 composite video combinations with theme, customers, and rationale |
 
 ### SEARCH COMMANDS
 
@@ -282,8 +384,8 @@ All files are fetched automatically via Railway API at startup. No manual upload
 ### Tier 1 — Auto-fetched at startup:
 | File | Description |
 |------|-------------|
-| KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md | This file (analysis rules, scoring, commands) |
-| KJELDGAARD_VIDEO_TESTIMONIALS_MASTER.md | All 23 video testimonials in standardized format |
+| KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md | This file (analysis rules, scoring, evaluation, commands) |
+| /api/videos | Live video transcripts (JSON) — always current, updates when new videos are added via AdFactory |
 | FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt | Approved efficacy claims |
 | FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt | Approved safety claims |
 | FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt | Approved ingredient claims (v10 does not exist) |
