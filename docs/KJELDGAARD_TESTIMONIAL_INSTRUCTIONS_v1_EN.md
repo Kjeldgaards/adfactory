@@ -191,6 +191,66 @@ Criteria for solo ranking (in priority order):
 5. Compliance clean
 
 ═══════════════════════════════════════════════════════════════
+## FEEDBACK & ACTION ITEMS
+═══════════════════════════════════════════════════════════════
+
+After every video evaluation, AUTOMATICALLY generate a feedback section with specific, actionable instructions. This tells Thomas exactly what is missing and what needs to happen to make the video usable.
+
+### FEEDBACK OUTPUT FORMAT
+
+```
+═══════════════════════════════════════
+FEEDBACK: [Name]
+═══════════════════════════════════════
+
+HVAD DER VIRKER:
+• [Specific strength 1]
+• [Specific strength 2]
+
+HVAD DER MANGLER / SKAL FORBEDRES:
+• [Issue 1] — [Specific instruction on how to fix it]
+• [Issue 2] — [Specific instruction on how to fix it]
+
+SKAL KUNDEN OPTAGE IGEN?
+[Ja/Nej/Delvist] — [Explanation]
+
+HVIS JA — SEND DENNE BESKED TIL KUNDEN:
+"[Ready-to-send message in Danish that Thomas can
+copy-paste to the customer, explaining what to re-record]"
+═══════════════════════════════════════
+```
+
+### COMMON FEEDBACK ITEMS — CHECK EVERY ONE
+
+| Missing element | Feedback instruction |
+|----------------|---------------------|
+| **No age mentioned** | "Bed kunden sige sin alder i starten af videoen — fx 'Jeg hedder X, og jeg er Y år'" |
+| **No pain statement** | "Bed kunden beskrive sin hud FØR produktet — hvad var problemet? Tør hud? Rynker? Irritation?" |
+| **No concrete results** | "Bed kunden beskrive hvad der konkret er ændret — ikke bare 'glad for den' men specifikt hvilke forbedringer" |
+| **No brand mention** | "Bed kunden sige 'Kjeldgaard' eller 'Barrier Defense Serum' mindst én gang" |
+| **No usage duration** | "Bed kunden sige hvor længe de har brugt produktet — fx '3 måneder' eller 'et halvt år'" |
+| **Camera from below** | "Send optagelsesguide: Hold telefonen i øjenhøjde. Sæt den mod en bog eller brug stativ. Aldrig fra nedefra" |
+| **Product not visible** | "Bed kunden holde flasken synligt under hele videoen" |
+| **Too short (<20s)** | "Bed kunden fortælle mere — minimum 25-30 sekunder. Giv dem de 3 spørgsmål at besvare: 1) Hvad var problemet? 2) Hvad skete der? 3) Hvad vil du sige til andre?" |
+| **Too long (>120s)** | "Videoen er for lang til Meta-brug. Identificér de stærkeste 30-45 sekunder og angiv tidsstempler" |
+| **Generic endorsement only** | "Kunden siger kun 'den er god'. Bed dem beskrive hvad der specifikt er ændret — hvilken del af huden, hvornår de så forskel" |
+| **Compliance risk** | "⚠️ Kunden nævner [medicinsk term]. Videoen kan bruges, men citatet kan IKKE bruges i vores markedsføring. Identificér compliance-safe segmenter" |
+| **Low resolution** | "Spørg om kunden har originalen i højere opløsning. Denne video er [X]x[Y] pixels — for lavt til Meta" |
+| **Bad lighting** | "Send optagelsesguide: Film med vindueslys fra siden eller foran. Undgå loftslys direkte ovenfra" |
+| **Distracting background** | "Bed kunden filme foran en neutral væg eller udendørs med naturlig baggrund" |
+
+### AUTO-ANALYSIS PIPELINE
+
+When Thomas provides ANY new video testimonial content (pasted transcript, uploaded file, or reference to a new video in /api/videos), execute this COMPLETE pipeline automatically — no command needed:
+
+1. **VIDEO EVALUATION** — All 14 dimensions, output evaluation card
+2. **QUOTE MINING** — Extract all usable quotes, scored 1-10, awareness-tagged, categorized
+3. **COMPLIANCE CHECK** — Cross-reference all quotes against FACTS files, flag risks
+4. **FEEDBACK & ACTION ITEMS** — What is good, what is missing, should customer re-record, ready-to-send message
+
+All four steps in ONE response. Thomas should never need to run separate commands for a new video.
+
+═══════════════════════════════════════════════════════════════
 ## TRANSCRIPT FORMAT
 ═══════════════════════════════════════════════════════════════
 
