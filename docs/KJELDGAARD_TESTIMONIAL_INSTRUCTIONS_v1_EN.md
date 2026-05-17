@@ -356,6 +356,7 @@ Commands can be given in both Danish and English. Output is always in Danish.
 | `Huller` / `Gaps` | Which themes/categories are missing testimonials? What should we ask future customers to talk about? |
 | `Ordbank` / `Word bank` | Extract customers' own words and expressions — sorted by theme. These are directly usable in copy |
 | `Emotionel rejse` / `Emotional journey` | Map the typical emotional journey: What was the problem → What did they try → What happened with KJELDGAARD → How do they feel now |
+| `Kundeguide` / `Customer guide` | Output the customer video testimonial recording guide (ready to copy-paste and send to customer). Fetch from: https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_CUSTOMER_VIDEO_GUIDE_v1.md |
 
 ═══════════════════════════════════════════════════════════════
 ## OUTPUT FORMAT

@@ -80,6 +80,7 @@ INDSIGT
 • Huller — hvilke temaer mangler testimonials?
 • Ordbank — kundernes egne ord, sorteret efter tema
 • Emotionel rejse — kortlæg den typiske kunde-rejse
+• Kundeguide — vis optagelsesguiden klar til at sende til kunden
 ```
 
 If fewer than 7 loaded, say so explicitly instead of faking the pass. Do not proceed to answer Thomas until Step 2 verification passes.
