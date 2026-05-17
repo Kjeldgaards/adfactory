@@ -21,7 +21,7 @@ Use the `web_fetch` tool on each of these URLs. Do not skip any. The fetch is un
 **CRITICAL TOOL SELECTION** — You MUST use the `web_fetch` tool for these URLs. Do NOT use `bash_tool` with curl, wget, or any shell command to fetch them. The `bash_tool` runs in a sandboxed environment with a restricted network egress allowlist that does NOT include `adfactory-production.up.railway.app` — every curl attempt will fail with HTTP 403 `host_not_allowed`. The `web_fetch` tool runs through Anthropic's servers, has no such restriction, and will retrieve all URLs successfully. If you find yourself reaching for `bash_tool` to fetch these, stop and use `web_fetch` instead. If `web_fetch` is not available in your environment, do NOT improvise with curl — instead halt the startup procedure and tell Thomas: "web_fetch tool is not available in this session — please toggle Web search ON in the chat input ('+' menu)." Do not proceed with 0/7 or partial fetches.
 
 1. https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md
-2. https://adfactory-production.up.railway.app/api/docs/KJELDGAARD_VIDEO_TESTIMONIALS_MASTER.md
+2. https://adfactory-production.up.railway.app/api/videos
 3. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt
 4. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt
 5. https://adfactory-production.up.railway.app/api/docs/FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt
@@ -52,9 +52,6 @@ These files are fetched only when needed for specific tasks:
 
 **Cross-reference with Trustpilot reviews:**
 - https://adfactory-production.up.railway.app/api/testimonials
-
-**Cross-reference with video transcripts (live JSON):**
-- https://adfactory-production.up.railway.app/api/videos
 
 **Customer voice / vocabulary bank:**
 - https://adfactory-production.up.railway.app/api/customer-voice
