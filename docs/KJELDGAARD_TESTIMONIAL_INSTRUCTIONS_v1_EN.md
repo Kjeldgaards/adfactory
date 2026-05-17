@@ -486,3 +486,4 @@ All files are fetched automatically via Railway API at startup. No manual upload
 | /api/testimonials | Live Trustpilot reviews (JSON) |
 | /api/customer-voice | Dynamic vocabulary bank from all customer data |
 | /api/search?q={keyword} | Search across all data sources |
+
