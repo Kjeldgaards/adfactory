@@ -31,22 +31,23 @@ Her er en lille guide så du får den bedste video ud af det. Det tager 30-60 se
 
 🎤 HVAD DU SKAL SIGE
 
-Du behøver IKKE læse op. Tal frit og naturligt. Men prøv at komme omkring disse 5 ting:
+Du behøver IKKE læse op. Tal frit og naturligt. Brug disse 5 spørgsmål som din guide — besvar dem ét ad gangen:
 
-1. "Hej, jeg hedder [dit navn], og jeg er [din alder]"
+1. Hvad hedder du, og hvor gammel er du?
+   Start med: "Hej, jeg hedder [dit navn], og jeg er [din alder]"
 
 2. Hvordan var din hud FØR du begyndte at bruge serummet?
-   — Hvad var du frustreret over?
-   — Havde du prøvet andre produkter der ikke virkede?
+   Hvad var du frustreret over? Havde du prøvet andre produkter
+   der ikke virkede?
 
-3. Hvornår begyndte du at bruge Kjeldgaards Barrier Defense Serum, og hvornår så du de første resultater?
+3. Hvornår begyndte du at bruge Kjeldgaards Barrier Defense Serum,
+   og hvornår begyndte du at se de første resultater?
 
-4. Hvad er der konkret sket med din hud?
-   — Er den blødere, glattere, mere strålende?
-   — Er rynker, tørhed eller rødme blevet mindre?
-   — Har andre lagt mærke til det?
+4. Hvad er der helt konkret sket med din hud?
+   Er den blødere? Glattere? Mere strålende? Er rynker, tørhed
+   eller rødme blevet mindre? Har andre lagt mærke til det?
 
-5. Hvad vil du sige til en kvinde der overvejer at prøve det?
+5. Hvad vil du sige til en anden kvinde der overvejer at prøve det?
 
 
 ⏱️ LÆNGDE
