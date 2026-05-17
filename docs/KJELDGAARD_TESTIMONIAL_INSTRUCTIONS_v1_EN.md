@@ -107,20 +107,40 @@ When evaluating a video testimonial (via `Evaluér [name]` or `Evaluér alle`), 
 
 ### EVALUATION DIMENSIONS
 
-Every video is assessed on these dimensions:
+Every video is assessed on ALL of these dimensions — no exceptions:
 
+#### AUDIO DIMENSIONS
 | Dimension | What to check | Values |
 |-----------|---------------|--------|
-| **Age** | Stated in video or estimated visually | Number or "?" |
+| **Name stated** | Does the customer say their name? | ✅ / ❌ |
+| **Age stated** | Does the customer say their age? | Number or "?" (estimate visually if not stated) |
 | **Audio length** | Total usable audio duration | Seconds |
-| **Visual quality** | Resolution, lighting, framing, background | ✅ HD good / ⚪ HD-ready OK / ❌ Low res |
 | **Killer line** | One standout phrase that stops scroll or sells | ✅ Has one (quote it) / ⚪ Weak / ❌ None |
 | **Pain statement** | Does the customer describe a problem BEFORE the product? | ✅ Specific / ⚪ Vague / ❌ None |
 | **Skeptic journey** | Did they doubt → then believe? | ✅ / ❌ |
 | **Concrete results** | Specific physical outcomes (not just "glad for den") | ✅ Specific / ⚪ Vague / ❌ None |
 | **Brand mention** | Says "Kjeldgaard" or "Barrier Defense" in audio | ✅ / ❌ |
 | **Usage duration** | How long they've used the product | Time or "?" |
-| **Holds product** | Product visually present and visible | ✅ / ⚪ Partial / ❌ No |
+| **Structure** | Is the narrative clear and focused, or rambling/repetitive? | ✅ Clear / ⚪ Rodet / ❌ Kaotisk |
+| **Reads from script** | Does the customer appear to read from a note/screen? Kills authenticity | ✅ Spontan / ⚠️ Ser ud til at læse |
+
+#### VISUAL DIMENSIONS
+| Dimension | What to check | Values |
+|-----------|---------------|--------|
+| **Resolution** | Pixel dimensions — is it usable for Meta? | ✅ HD (1080p+) / ⚪ HD-ready (720p) / ❌ Low res (<720p, specify pixels) |
+| **Camera angle** | Is it filmed at eye level or from below? From below = worst angle for face | ✅ Øjenhøjde / ⚠️ Nedefra / ❌ Stærkt nedefra |
+| **Lighting** | Natural side/front light or harsh overhead/tungsten? | ✅ Godt / ⚪ OK / ❌ Dårligt (specify: overhead, tungsten, shadows) |
+| **Eye contact** | Does the customer look into the camera? | ✅ Ja / ⚪ Delvist / ❌ Kigger væk/ned |
+| **Glasses reflection** | Do glasses block eye contact? | ✅ Ingen briller/ingen refleksion / ⚠️ Refleksion blokerer øjne |
+| **Background** | Clean, neutral, or distracting? | ✅ Ren/neutral / ⚪ OK / ❌ Distraherende (specify what) |
+| **Clothing** | Does clothing distract from face/product? Logos, strong patterns? | ✅ Neutral / ⚠️ Distraherende (specify) |
+| **Holds product** | Product visually present and visible | ✅ Hele tiden / ⚪ Delvist / ❌ Ikke synligt |
+| **Product + box** | Is both bottle AND box visible? Extra brand exposure | ✅ Begge / ⚪ Kun flaske / ❌ Ingen |
+| **Skin looks good** | Does the customer's skin visually support their claims? | ✅ Ja / ⚪ Neutralt / ❌ Modsiger claims |
+
+#### STRATEGIC DIMENSIONS
+| Dimension | What to check | Values |
+|-----------|---------------|--------|
 | **Niche target** | What unique segment/angle does this person own? | Free text |
 | **Compliance risk** | Any claims that cross into medical territory | ✅ Clean / ⚠️ Flag (explain) / ❌ Blocked |
 | **Solo DR strength** | Could this carry a standalone Meta ad? | Stærkest / Stærk / Mellem / Svag |
@@ -224,6 +244,7 @@ copy-paste to the customer, explaining what to re-record]"
 
 | Missing element | Feedback instruction |
 |----------------|---------------------|
+| **No name stated** | "Bed kunden sige sit navn i starten — fx 'Hej, jeg hedder X'" |
 | **No age mentioned** | "Bed kunden sige sin alder i starten af videoen — fx 'Jeg hedder X, og jeg er Y år'" |
 | **No pain statement** | "Bed kunden beskrive sin hud FØR produktet — hvad var problemet? Tør hud? Rynker? Irritation?" |
 | **No concrete results** | "Bed kunden beskrive hvad der konkret er ændret — ikke bare 'glad for den' men specifikt hvilke forbedringer" |
@@ -231,19 +252,25 @@ copy-paste to the customer, explaining what to re-record]"
 | **No usage duration** | "Bed kunden sige hvor længe de har brugt produktet — fx '3 måneder' eller 'et halvt år'" |
 | **Camera from below** | "Send optagelsesguide: Hold telefonen i øjenhøjde. Sæt den mod en bog eller brug stativ. Aldrig fra nedefra" |
 | **Product not visible** | "Bed kunden holde flasken synligt under hele videoen" |
-| **Too short (<20s)** | "Bed kunden fortælle mere — minimum 25-30 sekunder. Giv dem de 3 spørgsmål at besvare: 1) Hvad var problemet? 2) Hvad skete der? 3) Hvad vil du sige til andre?" |
+| **No eye contact** | "Bed kunden kigge direkte ind i kameraet — ikke ned, ikke til siden" |
+| **Glasses reflection** | "Bed kunden vinkle hovedet en smule eller fjerne brillerne under optagelsen — refleksionen blokerer øjenkontakt" |
+| **Distracting clothing** | "Bed kunden bære neutral tøj uden logoer eller stærke mønstre — fokus skal være på ansigt og produkt" |
+| **Reads from script** | "Bed kunden tale frit i stedet for at læse op. Giv dem 3 punkter at huske (problem, resultat, anbefaling) men IKKE en tekst at læse" |
+| **Rambling/repetitive** | "Videoen gentager sig selv. Bed kunden optage igen, kortere og mere fokuseret. Giv dem strukturen: 1) Hvad var problemet? 2) Hvad skete der? 3) Hvad vil du sige til andre?" |
+| **Too short (<20s)** | "Bed kunden fortælle mere — minimum 25-30 sekunder. Giv dem de 3 spørgsmål at besvare" |
 | **Too long (>120s)** | "Videoen er for lang til Meta-brug. Identificér de stærkeste 30-45 sekunder og angiv tidsstempler" |
 | **Generic endorsement only** | "Kunden siger kun 'den er god'. Bed dem beskrive hvad der specifikt er ændret — hvilken del af huden, hvornår de så forskel" |
 | **Compliance risk** | "⚠️ Kunden nævner [medicinsk term]. Videoen kan bruges, men citatet kan IKKE bruges i vores markedsføring. Identificér compliance-safe segmenter" |
 | **Low resolution** | "Spørg om kunden har originalen i højere opløsning. Denne video er [X]x[Y] pixels — for lavt til Meta" |
 | **Bad lighting** | "Send optagelsesguide: Film med vindueslys fra siden eller foran. Undgå loftslys direkte ovenfra" |
 | **Distracting background** | "Bed kunden filme foran en neutral væg eller udendørs med naturlig baggrund" |
+| **Skin contradicts claims** | "Kundens hud ser ikke ud til at matche de claims de gør — overvej om videoen visuelt underminerer budskabet" |
 
 ### AUTO-ANALYSIS PIPELINE
 
-When Thomas provides ANY new video testimonial content (pasted transcript, uploaded file, or reference to a new video in /api/videos), execute this COMPLETE pipeline automatically — no command needed:
+When Thomas provides ANY new video testimonial content (video file, pasted transcript, uploaded transcript file, or reference to a new video in /api/videos), execute this COMPLETE pipeline automatically — no command needed:
 
-1. **VIDEO EVALUATION** — All 14 dimensions, output evaluation card
+1. **VIDEO EVALUATION** — All dimensions (audio + visual + strategic), output evaluation card
 2. **QUOTE MINING** — Extract all usable quotes, scored 1-10, awareness-tagged, categorized
 3. **COMPLIANCE CHECK** — Cross-reference all quotes against FACTS files, flag risks
 4. **FEEDBACK & ACTION ITEMS** — What is good, what is missing, should customer re-record, ready-to-send message
