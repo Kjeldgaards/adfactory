@@ -396,18 +396,5 @@ All files are fetched automatically via Railway API at startup. No manual upload
 | Endpoint | Description |
 |----------|-------------|
 | /api/testimonials | Live Trustpilot reviews (JSON) |
-| /api/videos | Live video transcripts (JSON) |
 | /api/customer-voice | Dynamic vocabulary bank from all customer data |
 | /api/search?q={keyword} | Search across all data sources |
-
-═══════════════════════════════════════════════════════════════
-## QUICK START
-═══════════════════════════════════════════════════════════════
-
-Once Tier 1 is loaded (7/7), start with:
-
-```
-Analyze all testimonials
-```
-
-This gives you the full overview. From there, dive deeper with specific commands.
