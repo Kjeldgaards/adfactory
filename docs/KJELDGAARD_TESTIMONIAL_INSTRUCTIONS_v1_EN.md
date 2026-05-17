@@ -277,26 +277,32 @@ Some video testimonials may be 5-10 minutes long. When analyzing these:
 ## PROJECT FILES
 ═══════════════════════════════════════════════════════════════
 
-### Required files:
-| File | Description | Status |
-|------|-------------|--------|
-| FACTS_EFFICACY_v10 | Approved efficacy claims | MUST UPLOAD |
-| FACTS_SAFETY_v10 | Approved safety claims | MUST UPLOAD |
-| FACTS_INGREDIENTS_v9 | Approved ingredient claims (v10 does not exist) | MUST UPLOAD |
-| Video transcriptions (15+) | Formatted customer video transcriptions | MUST UPLOAD |
+All files are fetched automatically via Railway API at startup. No manual upload needed.
 
-### Optional but recommended files:
-| File | Description | Why |
-|------|-------------|-----|
-| CORE_SALES_PITCH.md | Core sales pitch with demographics, painpoints, proof | Provides context for scoring and categorization |
-| SWIPE_KJELDGAARD_TESTIMONIALS.txt | Existing Trustpilot reviews | Cross-reference with video testimonials |
-| ORDBANK.md | Approved word bank (Danish) | Ensures correct Danish in cleaned quotes |
+### Tier 1 — Auto-fetched at startup:
+| File | Description |
+|------|-------------|
+| KJELDGAARD_TESTIMONIAL_INSTRUCTIONS_v1_EN.md | This file (analysis rules, scoring, commands) |
+| KJELDGAARD_VIDEO_TESTIMONIALS_MASTER.md | All 23 video testimonials in standardized format |
+| FACTS_KJELDGAARD_EFFICACY_FINAL_v10.txt | Approved efficacy claims |
+| FACTS_KJELDGAARD_SAFETY_FINAL_v10.txt | Approved safety claims |
+| FACTS_KJELDGAARD_INGREDIENTS_FINAL_v9.txt | Approved ingredient claims (v10 does not exist) |
+| CORE_SALES_PITCH_KJELDGAARD_COMPLETE.md | Core sales pitch with demographics, painpoints, proof |
+| ORDBANK_ENGELSK_TIL_DANSK_HUDPLEJESPROG.txt | Approved Danish skincare vocabulary |
+
+### On-demand — Fetched when needed:
+| Endpoint | Description |
+|----------|-------------|
+| /api/testimonials | Live Trustpilot reviews (JSON) |
+| /api/videos | Live video transcripts (JSON) |
+| /api/customer-voice | Dynamic vocabulary bank from all customer data |
+| /api/search?q={keyword} | Search across all data sources |
 
 ═══════════════════════════════════════════════════════════════
 ## QUICK START
 ═══════════════════════════════════════════════════════════════
 
-Once all files are uploaded, start with:
+Once Tier 1 is loaded (7/7), start with:
 
 ```
 Analyze all testimonials
