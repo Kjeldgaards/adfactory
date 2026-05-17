@@ -29,25 +29,24 @@ Her er en lille guide så du får den bedste video ud af det. Det tager 30-60 se
 • Bær gerne neutralt tøj uden store logoer eller stærke mønstre
 
 
-🎤 HVAD DU SKAL SIGE
+🎤 BESVAR DISSE 5 SPØRGSMÅL I DIN VIDEO
 
-Du behøver IKKE læse op. Tal frit og naturligt. Brug disse 5 spørgsmål som din guide — besvar dem ét ad gangen:
+Bare tryk optag og svar på dem ét ad gangen — som om du fortæller det til en veninde ☕
 
-1. Hvad hedder du, og hvor gammel er du?
-   Start med: "Hej, jeg hedder [dit navn], og jeg er [din alder]"
+❶ Fortæl os hvem du er!
+   Hvad hedder du, og hvor gammel er du?
 
-2. Hvordan var din hud FØR du begyndte at bruge serummet?
-   Hvad var du frustreret over? Havde du prøvet andre produkter
-   der ikke virkede?
+❷ Hvordan havde din hud det, inden du fandt Barrier Defense Serum?
+   Vi vil gerne høre den ærlige version — hvad frustrerede dig mest?
+   Havde du prøvet andre produkter der skuffede dig?
 
-3. Hvornår begyndte du at bruge Kjeldgaards Barrier Defense Serum,
-   og hvornår begyndte du at se de første resultater?
+❸ Kan du huske hvornår du tænkte "okay, det her virker faktisk"?
+   Hvor lang tid gik der, fra du startede, til du mærkede forskel?
 
-4. Hvad er der helt konkret sket med din hud?
-   Er den blødere? Glattere? Mere strålende? Er rynker, tørhed
-   eller rødme blevet mindre? Har andre lagt mærke til det?
+❹ Hvad er den største forandring du kan se eller mærke på din hud i dag?
+   Og har nogen omkring dig sagt noget? En veninde, din mand, en kollega?
 
-5. Hvad vil du sige til en anden kvinde der overvejer at prøve det?
+❺ Hvis din bedste veninde spurgte dig "skal jeg prøve det?" — hvad ville du sige til hende?
 
 
 ⏱️ LÆNGDE
