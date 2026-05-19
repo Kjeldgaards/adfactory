@@ -435,9 +435,9 @@ Tested on women 30-70 years. On sensitive AND non-sensitive skin. Measured with 
 | Patch Test | Zurko Research, Spain | In vivo (96h occlusive) | M.I.I. 0.016 = Non-irritating |
 
 **2. SOCIAL PROOF:**
-- 14,000+ Danish women have tried Barrier Defense Serum
+- 17,000+ Danish women have tried Barrier Defense Serum
 - 4.7 out of 5 stars on Trustpilot
-- 5-star verified reviews (59+ documented)
+- 5-star verified reviews (200+ documented)
 
 **3. TESTIMONIAL PROOF BY THEME:**
 
@@ -628,7 +628,7 @@ Just like the women in the clinical study, who saw 27% reduction in fine lines.
 
 Just like Vivi, who got "life and glow" back after just a few days.
 
-Just like the 14,000+ Danish women who've already made the shift.
+Just like the 17,000+ Danish women who've already made the shift.
 
 → Try Barrier Defense Serum for 60 days — completely risk-free.
 
@@ -636,7 +636,7 @@ The proof shows in the mirror — every day.
 
 ---
 
-*Document compiled from 59+ Trustpilot reviews, video testimonials, 4 EU clinical studies, and direct-response copy frameworks based on Eugene Schwartz principles.*
+*Document compiled from 200+ Trustpilot reviews, video testimonials, 4 EU clinical studies, and direct-response copy frameworks based on Eugene Schwartz principles.*
 ═══════════════════════════════════════════════════════════════
 ## VIDEO TESTIMONIAL TRANSCRIPTS
 ═══════════════════════════════════════════════════════════════

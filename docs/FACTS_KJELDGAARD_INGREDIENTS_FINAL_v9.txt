@@ -281,6 +281,39 @@ MÅ IKKE SIGES:
 ============================================================
 
 ============================================================
+DEVELOPMENT-01
+KILDETYPE: Skriftlig bekræftelse fra S&J International (producent)
+EMNE: Produktudvikling — dermatologisk involvering
+
+Kort fakta:
+- S&J International (producent) har skriftligt bekræftet, at Barrier Defense® Serum
+  og brandets øvrige produkter er udviklet af anerkendte dermatologer på fabrikken.
+- Produktet er udviklet hos producent S&J International (Thailand).
+- Producenten er GMP-certificeret (se SAFETY-05).
+- Dermatologisk involvering i udviklingen er dokumenteret via mail fra S&J til
+  Thomas Kjeldgaard (arkiveret).
+
+MÅ SIGES I MARKEDSFØRING:
+- Udviklet af anerkendte dermatologer.
+- Udviklet af anerkendte dermatologer på en GMP-certificeret fabrik.
+- Udviklet i samarbejde med anerkendte dermatologer.
+- 100% udviklet af anerkendte dermatologer.
+- Formuleret af anerkendte dermatologer hos en international skønhedsproducent.
+
+MÅ IKKE SIGES:
+- “Anbefalet af dermatologer” (kræver separat anbefalingsdokumentation, ikke
+  det samme som udvikling).
+- Navngivne dermatologer eller titler uden separat skriftlig accept fra dem.
+- Medicinske claims på basis af dermatologisk involvering.
+- “Dermatologisk testet” som synonym for “udviklet af dermatologer” (det er to
+  forskellige ting; dermatologisk testet henviser til Zurko-studierne, se EFFICACY-01).
+
+BEMÆRK: Dermatolog-claim hænger sammen med GMP-certificering (SAFETY-05) og
+klinisk testning under dermatologisk kontrol (EFFICACY-01). Når disse tre
+nævnes sammen, undgå at slå dem sammen til ét claim — de er separate.
+============================================================
+
+============================================================
 AFVENTER (når S&J svarer på mailen)
 S&J skriftlig bekræftelse – hudbarriere (over tid)
 - Indsættes som selvstændig FACTS-blok, når I har svaret på skrift.

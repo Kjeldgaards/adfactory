@@ -91,7 +91,7 @@ Do not proceed to answering Thomas until Step 2 passes.
 - **Hero product**: Barrier Defense® Serum. Encapsulated retinol. S&J International Thailand. Clinical by COMPLIFE Italia + Zurko Research.
 - **Target**: Danish women 40–65, sensitive/reactive/dry/barrier-compromised skin, often using active-heavy routines.
 - **Main channel**: Meta (FB + IG). Spend ~$2,000/day.
-- **Volume**: ~70 orders/day, 14,000–16,000+ customers, 4.7/5 Trustpilot (162 five-star reviews).
+- **Volume**: ~70 orders/day, 17,000+ customers, 4.7/5 Trustpilot (200+ five-star reviews).
 - **Pricing (DKK)**: 1x ~470, 2x ~655–874, 3x ~955–1,269.
 - **CPA target**: ~320 DKK (~$50). Break-even ~380 DKK.
 - **Checkout**: WooCommerce (Shopify migration in progress).

@@ -1,0 +1,113 @@
+FACTS_KJELDGAARD_SOCIAL_PROOF.txt
+Version: FINAL v1
+Opdateret: November 2026
+Rule: "MÅ SIGES" må bruges i marketing. "MÅ IKKE SIGES" må aldrig bruges.
+
+Denne fil samler alle social-proof claims for Barrier Defense® Serum.
+Tal her er de eneste der må bruges i live marketing — ældre tal i øvrige
+filer er konsolideret til disse værdier.
+
+============================================================
+SOCIAL_PROOF-01
+EMNE: Antal kunder (brugere af Barrier Defense® Serum)
+KILDE: Intern salgsdata, opdateret november 2026
+
+Kort fakta:
+- Mere end 17.000 danske kvinder har købt og brugt Barrier Defense® Serum.
+- Tal er kumulativt siden produktlancering (november 2023).
+- Tal er konservativt rundet ned fra faktisk salgsdata.
+
+MÅ SIGES I MARKEDSFØRING:
+- 17.000+ danske kvinder.
+- Mere end 17.000 danske kvinder har prøvet Barrier Defense® Serum.
+- Elsket af mere end 17.000 danske kvinder.
+- Over 17.000 kvinder bruger allerede Barrier Defense® Serum.
+- 17.000+ kvinder tager ikke fejl.
+
+MÅ IKKE SIGES:
+- Højere tal end 17.000 (uden ny opdateret salgsdata).
+- "20.000+", "tusinder af" som erstatning for præcist tal i hovedclaims.
+- Geografisk udvidelse ("over hele Europa" e.l.) — målgruppen er DK.
+- Konkret %-tilfredshed uden henvisning til Zurko-studiet (se EFFICACY-04).
+============================================================
+
+============================================================
+SOCIAL_PROOF-02
+EMNE: Trustpilot-anmeldelser
+KILDE: Live Trustpilot-data, /api/testimonials endpoint
+
+Kort fakta:
+- 4,7/5 stjerner på Trustpilot (gennemsnit).
+- Over 200 femstjernede anmeldelser.
+- Anmeldelser er verificerede via Trustpilots eget system.
+
+MÅ SIGES I MARKEDSFØRING:
+- 4,7/5 stjerner på Trustpilot.
+- 4,7 ud af 5 stjerner på Trustpilot.
+- Over 200 femstjernede anmeldelser på Trustpilot.
+- 200+ anmeldelser med 4,7/5 stjerner.
+- 4,7 på Trustpilot baseret på over 200 anmeldelser.
+- Ægte anmeldelser fra ægte kunder.
+
+MÅ IKKE SIGES:
+- Højere gennemsnit end 4,7/5 (uden opdateret data).
+- Flere end 200 anmeldelser uden at have tjekket live-tallet (når
+  tallet vokser, opdater denne fil først).
+- "100% positive" / "kun positive anmeldelser" (Trustpilot indeholder
+  blandede anmeldelser; gennemsnit er 4,7, ikke 5,0).
+- "Verificeret af eksperter" e.l. — Trustpilot er verificeret per
+  anmeldelse, ikke produkt-anbefaling.
+============================================================
+
+============================================================
+SOCIAL_PROOF-03
+EMNE: Dermatologisk udvikling
+KILDE: Skriftlig bekræftelse fra S&J International (producent),
+       arkiveret hos Thomas Kjeldgaard. Se også DEVELOPMENT-01 i
+       FACTS_KJELDGAARD_INGREDIENTS.
+
+Kort fakta:
+- S&J International har skriftligt bekræftet, at Barrier Defense® Serum
+  og KJELDGAARDs øvrige produkter er udviklet af anerkendte dermatologer
+  hos producenten.
+- Producenten er GMP-certificeret (se SAFETY-05).
+- Dermatologisk involvering gælder produktudvikling — ikke offentlig
+  anbefaling.
+
+MÅ SIGES I MARKEDSFØRING:
+- Udviklet af anerkendte dermatologer.
+- 100% udviklet af anerkendte dermatologer.
+- Udviklet i samarbejde med anerkendte dermatologer.
+- Udviklet af anerkendte dermatologer på en GMP-certificeret fabrik.
+- Formuleret af anerkendte dermatologer.
+
+MÅ IKKE SIGES:
+- "Anbefalet af dermatologer" (kræver separat anbefalingsdokumentation).
+- "Brugt af dermatologer".
+- Navne på specifikke dermatologer eller deres titler uden separat
+  skriftlig accept fra dem.
+- Medicinske claims baseret på dermatologisk involvering.
+- Sammenblanding med "dermatologisk testet" (det refererer til Zurko-
+  studierne, se EFFICACY-01 og SAFETY-02) — udviklet OG testet er to
+  separate fakta, og må gerne nævnes sammen, men ikke som ét claim.
+============================================================
+
+============================================================
+SOCIAL_PROOF-04
+EMNE: Kombineret social proof (til hooks og CTAs)
+
+MÅ SIGES I MARKEDSFØRING (godkendte kombinationer):
+- "Over 17.000 danske kvinder. 4,7 på Trustpilot. Udviklet af anerkendte
+  dermatologer."
+- "17.000+ kunder. 200+ anmeldelser. 4,7/5 stjerner."
+- "Udviklet af anerkendte dermatologer og brugt af over 17.000 danske
+  kvinder."
+- "Klinisk testet i europæisk laboratorium. Udviklet af anerkendte
+  dermatologer. Elsket af over 17.000 danske kvinder."
+
+MÅ IKKE SIGES:
+- Kombinationer der overdriver beyond hvert enkelt claim
+  (fx "17.000+ tilfredse kunder" — vi har ikke data på at alle 17.000
+  er tilfredse; brug i stedet "17.000+ kunder" + separat tilfreds-
+  henvisning til Zurko-studiet).
+============================================================
