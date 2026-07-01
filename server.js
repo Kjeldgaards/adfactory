@@ -494,6 +494,13 @@ app.get('/api/stats', (req, res) => {
 const Anthropic = require('@anthropic-ai/sdk');
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+// ---------------------------------------------------------------
+// Claude model — change THIS ONE LINE when the model is retired.
+// Rule: use the newest Sonnet model ID. (Retired models return a 404.)
+// Updated 2026-07-01: claude-sonnet-4-20250514 (retired) -> claude-sonnet-4-6
+// ---------------------------------------------------------------
+const CLAUDE_MODEL = 'claude-sonnet-4-6';
+
 app.post('/api/extract-from-image', async (req, res) => {
   try {
     const { image, type } = req.body;
@@ -560,7 +567,7 @@ Temaer: Brug ALTID eksisterende temaer når de passer. Her er listen: rynker, fu
     }
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 1024,
       system: systemPrompt,
       messages: [{
@@ -628,7 +635,7 @@ For dato: brug dags dato hvis ikke angivet i teksten.`;
     }
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 1024,
       system: systemPrompt,
       messages: [{ role: 'user', content: userPrompt }]
@@ -980,7 +987,7 @@ SEKTION-DEFINITIONER:
 Returner KUN valid JSON, ingen anden tekst. Sortér hver sektion efter frequency (højeste først).`;
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 8000,
       messages: [{ role: 'user', content: extractionPrompt }]
     });
@@ -1113,7 +1120,7 @@ app.get('/api/search-concept', async (req, res) => {
     }).join('\n');
     
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 1500,
       system: `Du er en intelligent søgemaskine for en testimonial-database. Du forstår naturligt sprog og finder de rigtige testimonials.
 
@@ -1612,7 +1619,7 @@ Brug kundeord fra testimonials når de er tilgængelige.`;
     console.log(`  Chat: msg="${message.substring(0, 80)}...", selected=${selectedIds?.length || 0}, history=${history?.length || 0}`);
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 8000,
       messages,
       system: systemPrompt
@@ -1859,7 +1866,7 @@ Returner KUN JSON array, intet andet.`;
     console.log(`  Generate: type=${type}, count=${count}, minScore=${minScore}, selected=${selected.length}${type === 'template_ad' ? ', fields=' + Object.keys(fieldLimits || {}).join(',') : ''}`);
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 8000,
       messages: [
         { role: 'user', content: userPrompt }
@@ -1985,7 +1992,7 @@ app.post('/api/scripts/assemble', async (req, res) => {
     const decisionPriority = loadDoc('DECISION_PRIORITY.md');
 
     const polishResponse = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 2048,
       system: `Du er en dansk videoscript-redaktør for KJELDGAARD (premium skincare).
 
@@ -2059,7 +2066,7 @@ app.post('/api/scripts', async (req, res) => {
 
     // Claude parses the script into tagged blocks
     const parseResponse = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 4096,
       system: `Du er en script-dekomponerings-ekspert for KJELDGAARD (dansk skincare brand).
 
@@ -2385,7 +2392,7 @@ app.post('/api/scripts/generate', async (req, res) => {
       : '45-75 sekunder (15-22 sætninger)';
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 8000,
       system: `Du er KJELDGAARD's senior copywriter. Du skriver konverterende danske videoscripts til Meta-reklamer for Barrier Defense Serum.
 
@@ -2527,7 +2534,7 @@ app.post('/api/scripts/polish', async (req, res) => {
     const decisionPriority = loadDoc('DECISION_PRIORITY.md');
 
     const polishResponse = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CLAUDE_MODEL,
       max_tokens: 4096,
       system: `Du er en dansk videoscript-redaktør for KJELDGAARD (premium skincare).
 
