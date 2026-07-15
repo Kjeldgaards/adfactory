@@ -986,11 +986,24 @@ SEKTION-DEFINITIONER:
 
 Returner KUN valid JSON, ingen anden tekst. Sortér hver sektion efter frequency (højeste først).`;
 
-    const response = await anthropic.messages.create({
+    // Streaming + higher token ceiling: the ordbank JSON for the full corpus
+    // exceeds 8000 tokens and was truncated mid-array (→ parse fail → HTTP 500 →
+    // never cached → re-ran on every generate). claude-sonnet-4-6 allows up to
+    // 128k output; 32k gives ample headroom. Streaming avoids HTTP timeouts on
+    // the long (~2-4 min) response.
+    const response = await anthropic.messages.stream({
       model: CLAUDE_MODEL,
-      max_tokens: 8000,
+      max_tokens: 32000,
       messages: [{ role: 'user', content: extractionPrompt }]
-    });
+    }).finalMessage();
+
+    if (response.stop_reason === 'max_tokens') {
+      console.error('  [customer-voice] Truncated at max_tokens (32000) — corpus outgrew the ceiling; raise max_tokens');
+      return res.status(500).json({
+        error: 'Extraction truncated at token limit',
+        details: 'stop_reason=max_tokens'
+      });
+    }
 
     let extracted;
     try {
@@ -1440,8 +1453,65 @@ function loadDoc(filename) {
 }
 
 // Load customer voice vocabulary as formatted text for inclusion in prompts.
-// Uses the same cached data as /api/customer-voice endpoint.
-// Regenerates if data changed or cache expired. Falls back to static ORDBANK on error.
+// Formats cached customer-voice data into the ordbank text injected into prompts.
+// Falls back to the static hand-made ORDBANK when no live data is available.
+function formatCustomerVoice(voiceData) {
+  if (!voiceData || !voiceData.sections) {
+    return loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
+  }
+
+  // Format as readable Danish text for Claude
+  let text = '═══ KUNDESPROG (live, fra ' + (voiceData.corpus_size || '?') + ' kilder) ═══\n\n';
+  text += 'BRUG DETTE: Kundeord til at beskrive OPLEVELSEN. FACTS-ord til at beskrive PRODUKTET.\n';
+  text += 'Prioritér høj-frekvens vendinger. Kundesprog slår altid generisk marketing-sprog.\n\n';
+
+  const sectionLabels = {
+    problem_ord: 'PROBLEM-ORD (hvordan kunder beskriver hudproblemer)',
+    resultat_ord: 'RESULTAT-ORD (hvordan kunder beskriver forbedringer)',
+    tidslinjer: 'TIDSLINJER (hvornår kunder ser resultater)',
+    produkt_beskrivelser: 'PRODUKT-BESKRIVELSER (hvordan kunder beskriver selve produktet)',
+    emotionelle_udtryk: 'EMOTIONELLE UDTRYK (stærke følelsesord)',
+    vaerdi_okonomi: 'VÆRDI & ØKONOMI (pris-værdi vurderinger)',
+    skepsis_overbevisning: 'SKEPSIS → OVERBEVISNING (fra tvivl til fan)',
+    specielle_situationer_alder: 'SPECIELLE SITUATIONER & ALDER'
+  };
+
+  for (const [key, label] of Object.entries(sectionLabels)) {
+    const items = voiceData.sections[key];
+    if (!items || !items.length) continue;
+    text += `\n--- ${label} ---\n`;
+    items.forEach(item => {
+      const freq = item.frequency ? ` [${item.frequency}x]` : '';
+      const sources = item.sources && item.sources.length ? ` (${item.sources.slice(0, 3).join(', ')})` : '';
+      text += `• "${item.phrase}"${freq}${sources}\n`;
+    });
+  }
+
+  return text;
+}
+
+// Background (fire-and-forget) refresh of the customer-voice cache. Never blocks
+// the caller; guarded so only one rebuild runs at a time.
+let customerVoiceRegenInFlight = false;
+function triggerCustomerVoiceRegen() {
+  if (customerVoiceRegenInFlight) return;
+  customerVoiceRegenInFlight = true;
+  const url = `http://localhost:${process.env.PORT || 3000}/api/customer-voice`;
+  try {
+    fetch(url)
+      .then(() => console.log('  [customer-voice] Background regen finished'))
+      .catch(err => console.error('  [customer-voice] Background regen failed:', err && err.message))
+      .finally(() => { customerVoiceRegenInFlight = false; });
+  } catch (err) {
+    console.error('  [customer-voice] Background regen could not start:', err && err.message);
+    customerVoiceRegenInFlight = false;
+  }
+}
+
+// Returns the ordbank text for prompt injection. NEVER blocks on the (~2-4 min)
+// rebuild: if the cache is fresh it is used directly; otherwise the last-known
+// cache (or the static ORDBANK) is returned instantly and a refresh runs in the
+// background. This keeps /api/generate and /api/chat fast on every request.
 async function loadCustomerVoiceText() {
   try {
     const now = Date.now();
@@ -1450,50 +1520,15 @@ async function loadCustomerVoiceText() {
     const dataChanged = currentFingerprint !== customerVoiceCache.dataFingerprint;
     const cacheExpired = cacheAge > CUSTOMER_VOICE_CACHE_MS;
 
-    let voiceData;
-
+    // Fresh cache matching current data → use it directly.
     if (customerVoiceCache.data && !dataChanged && !cacheExpired) {
-      voiceData = customerVoiceCache.data;
-    } else {
-      // Force regeneration by calling the endpoint logic directly
-      // (Simpler to just trigger a local fetch)
-      const url = `http://localhost:${process.env.PORT || 3000}/api/customer-voice`;
-      const response = await fetch(url);
-      voiceData = await response.json();
+      return formatCustomerVoice(customerVoiceCache.data);
     }
 
-    if (!voiceData || !voiceData.sections) {
-      return loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
-    }
-
-    // Format as readable Danish text for Claude
-    let text = '═══ KUNDESPROG (live, fra ' + (voiceData.corpus_size || '?') + ' kilder) ═══\n\n';
-    text += 'BRUG DETTE: Kundeord til at beskrive OPLEVELSEN. FACTS-ord til at beskrive PRODUKTET.\n';
-    text += 'Prioritér høj-frekvens vendinger. Kundesprog slår altid generisk marketing-sprog.\n\n';
-
-    const sectionLabels = {
-      problem_ord: 'PROBLEM-ORD (hvordan kunder beskriver hudproblemer)',
-      resultat_ord: 'RESULTAT-ORD (hvordan kunder beskriver forbedringer)',
-      tidslinjer: 'TIDSLINJER (hvornår kunder ser resultater)',
-      produkt_beskrivelser: 'PRODUKT-BESKRIVELSER (hvordan kunder beskriver selve produktet)',
-      emotionelle_udtryk: 'EMOTIONELLE UDTRYK (stærke følelsesord)',
-      vaerdi_okonomi: 'VÆRDI & ØKONOMI (pris-værdi vurderinger)',
-      skepsis_overbevisning: 'SKEPSIS → OVERBEVISNING (fra tvivl til fan)',
-      specielle_situationer_alder: 'SPECIELLE SITUATIONER & ALDER'
-    };
-
-    for (const [key, label] of Object.entries(sectionLabels)) {
-      const items = voiceData.sections[key];
-      if (!items || !items.length) continue;
-      text += `\n--- ${label} ---\n`;
-      items.forEach(item => {
-        const freq = item.frequency ? ` [${item.frequency}x]` : '';
-        const sources = item.sources && item.sources.length ? ` (${item.sources.slice(0, 3).join(', ')})` : '';
-        text += `• "${item.phrase}"${freq}${sources}\n`;
-      });
-    }
-
-    return text;
+    // Stale/missing cache → refresh in the background, respond NOW with whatever
+    // we have (last successful cache, else static ORDBANK).
+    triggerCustomerVoiceRegen();
+    return formatCustomerVoice(customerVoiceCache.data);
   } catch (err) {
     console.error('  [customer-voice] Load failed, falling back to static ORDBANK:', err.message);
     return loadDoc('ORDBANK_VOICE_OF_CUSTOMER_v4.txt');
